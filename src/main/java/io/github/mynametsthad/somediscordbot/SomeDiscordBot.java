@@ -15,7 +15,7 @@ public class SomeDiscordBot {
     public static final String VERSION = "0.1.0";
     public static final int VERSION_ID = 1;
 
-    public static final String TOKEN = "OTIzODcwNjI1ODc2MDI5NDQw.YcWTkQ.xdJh6Fwi7F0eT0cgVgfVdNbvPQ8";
+    public static final String TOKEN = "OTIzODcwNjI1ODc2MDI5NDQw.YcWTkQ.spLTgpRXH1PFyD_4vwrUMk6a1GI";
 
     public static JDA jda;
 
