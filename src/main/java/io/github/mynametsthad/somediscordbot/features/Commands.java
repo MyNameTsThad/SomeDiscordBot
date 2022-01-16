@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -88,6 +89,11 @@ public class Commands extends ListenerAdapter {
                                                             if (!SomeDiscordBot.instance.configs.prefixes.containsKey(event.getGuild().getId())) {
                                                                 SomeDiscordBot.instance.configs.prefixes.put(event.getGuild().getId(), "sdb|");
                                                                 SomeDiscordBot.instance.configs.journalChannels.put(event.getGuild().getId(), "");
+                                                                try {
+                                                                    SomeDiscordBot.instance.configs.saveToFile();
+                                                                } catch (IOException e) {
+                                                                    e.printStackTrace();
+                                                                }
                                                             }
                                                             response.editMessage("""
                                                                     Guild initialized.
@@ -96,6 +102,11 @@ public class Commands extends ListenerAdapter {
                                                                     [:white_check_mark:] Added server-specific configurations""").queue();
                                                         }));
                                                 SomeDiscordBot.instance.configs.sudoersRankIDs.put(event.getGuild().getId(), role.getId());
+                                                try {
+                                                    SomeDiscordBot.instance.configs.saveToFile();
+                                                } catch (IOException e) {
+                                                    e.printStackTrace();
+                                                }
                                             });
                                 } else {
                                     response.editMessage("""
