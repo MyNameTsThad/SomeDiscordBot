@@ -74,7 +74,6 @@ public class Configs {
     }
 
     public void readFromFile() throws IOException {
-
         try {
             String json1 = FileUtils.readFileToString(prefixesPath);
             String json2 = FileUtils.readFileToString(journalChannelsPath);
@@ -94,12 +93,7 @@ public class Configs {
                     e.getMessage().equals("File '/home/iwant2tryhard/somediscordbot/JournalChannels-current.json' does not exist") |
                     e.getMessage().equals("File '/home/iwant2tryhard/somediscordbot/SudoersRankIDs-current.json' does not exist")) {
                 SomeDiscordBot.instance.logger.warn("Storage Files not found; Creating empty files.");
-                FileOutputStream file1 = FileUtils.openOutputStream(prefixesPath);
-                FileOutputStream file2 = FileUtils.openOutputStream(journalChannelsPath);
-                FileOutputStream file3 = FileUtils.openOutputStream(sudoersRankIDsPath);
-                file1.close();
-                file2.close();
-                file3.close();
+                saveToFile();
                 SomeDiscordBot.instance.logger.warn("Successfully Created Storage files.");
             }
         }
