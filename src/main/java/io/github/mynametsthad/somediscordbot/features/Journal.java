@@ -1,8 +1,10 @@
 package io.github.mynametsthad.somediscordbot.features;
 
 import io.github.mynametsthad.somediscordbot.SomeDiscordBot;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRoleAddEvent;
+import net.dv8tion.jda.api.events.guild.member.GuildMemberRoleRemoveEvent;
 import net.dv8tion.jda.api.events.message.MessageBulkDeleteEvent;
 import net.dv8tion.jda.api.events.message.MessageDeleteEvent;
 import net.dv8tion.jda.api.events.message.MessageEmbedEvent;
@@ -16,6 +18,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 import java.util.Objects;
 
 public class Journal extends ListenerAdapter {
@@ -72,6 +75,8 @@ public class Journal extends ListenerAdapter {
 
     @Override
     public void onGuildMemberRoleAdd(@NotNull GuildMemberRoleAddEvent event) {
+        StringBuilder message = new StringBuilder("<@" + event.getMember().getId() + "> got added the following roles:\n");
+        LoopRoles(message, event.getRoles(), event.getGuild());
         if (SomeDiscordBot.instance.overrideRoleAddProtection) return;
         for (Role added : event.getRoles()) {
             String roleId = SomeDiscordBot.instance.configs.sudoersRankIDs.get(event.getGuild().getId());
@@ -83,5 +88,19 @@ public class Journal extends ListenerAdapter {
                 });
             }
         }
+    }
+
+    @Override
+    public void onGuildMemberRoleRemove(@NotNull GuildMemberRoleRemoveEvent event) {
+        StringBuilder message = new StringBuilder("<@" + event.getMember().getId() + "> got removed the following roles:\n");
+        LoopRoles(message, event.getRoles(), event.getGuild());
+    }
+
+    private void LoopRoles(StringBuilder message, List<Role> roles, Guild guild) {
+        for (Role added : roles) {
+            message.append("'").append(added.getName()).append("' (").append(added.getId()).append("), ");
+        }
+        message.setLength(message.length() - 2);
+        Objects.requireNonNull(guild.getTextChannelById(SomeDiscordBot.instance.configs.journalChannels.get(guild.getId()))).sendMessage(message.toString()).queue();
     }
 }
