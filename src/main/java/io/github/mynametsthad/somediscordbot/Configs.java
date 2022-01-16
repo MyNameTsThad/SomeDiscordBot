@@ -12,9 +12,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Configs {
-    private final File prefixesPath = new File(System.getProperty("user.home") + "/somediscordbot/Prefixes-current.json");
-    private final File journalChannelsPath = new File(System.getProperty("user.home") + "/somediscordbot/JournalChannels-current.json");
-    private final File sudoersRankIDsPath = new File(System.getProperty("user.home") + "/somediscordbot/SudoersRankIDs-current.json");
+    private File prefixesPath = new File(System.getProperty("user.home") + "/somediscordbot/Prefixes-current.json");
+    private File journalChannelsPath = new File(System.getProperty("user.home") + "/somediscordbot/JournalChannels-current.json");
+    private File sudoersRankIDsPath = new File(System.getProperty("user.home") + "/somediscordbot/SudoersRankIDs-current.json");
     public Map<String, String> prefixes = new HashMap<>();
     public Map<String, String> journalChannels = new HashMap<>();
     public Map<String, String> sudoersRankIDs = new HashMap<>();
