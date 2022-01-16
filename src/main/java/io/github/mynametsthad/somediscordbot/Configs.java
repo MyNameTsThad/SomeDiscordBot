@@ -65,18 +65,33 @@ public class Configs {
     }
 
     public void readFromFile() throws IOException {
-        String json1 = FileUtils.readFileToString(prefixesPath);
-        String json2 = FileUtils.readFileToString(journalChannelsPath);
-        String json3 = FileUtils.readFileToString(sudoersRankIDsPath);
+        try {
+            String json1 = FileUtils.readFileToString(prefixesPath);
+            String json2 = FileUtils.readFileToString(journalChannelsPath);
+            String json3 = FileUtils.readFileToString(sudoersRankIDsPath);
 
-        prefixes = new Gson().fromJson(json1, new TypeToken<Map<String, String>>() {
-        }.getType());
-        SomeDiscordBot.instance.logger.info("Loaded Prefixes from: " + System.getProperty("user.home") + "/somediscordbot/Prefixes-current.json");
-        journalChannels = new Gson().fromJson(json2, new TypeToken<Map<String, String>>() {
-        }.getType());
-        SomeDiscordBot.instance.logger.info("Loaded JournalChannels from: " + System.getProperty("user.home") + "/somediscordbot/JournalChannels-current.json");
-        sudoersRankIDs = new Gson().fromJson(json3, new TypeToken<Map<String, String>>() {
-        }.getType());
-        SomeDiscordBot.instance.logger.info("Loaded SudoersRankIDs from: " + System.getProperty("user.home") + "/somediscordbot/SudoersRankIDs-current.json");
+            prefixes = new Gson().fromJson(json1, new TypeToken<Map<String, String>>() {
+            }.getType());
+            SomeDiscordBot.instance.logger.info("Loaded Prefixes from: " + System.getProperty("user.home") + "/somediscordbot/Prefixes-current.json");
+            journalChannels = new Gson().fromJson(json2, new TypeToken<Map<String, String>>() {
+            }.getType());
+            SomeDiscordBot.instance.logger.info("Loaded JournalChannels from: " + System.getProperty("user.home") + "/somediscordbot/JournalChannels-current.json");
+            sudoersRankIDs = new Gson().fromJson(json3, new TypeToken<Map<String, String>>() {
+            }.getType());
+            SomeDiscordBot.instance.logger.info("Loaded SudoersRankIDs from: " + System.getProperty("user.home") + "/somediscordbot/SudoersRankIDs-current.json");
+        } catch (IOException e) {
+            if (e.getMessage().equals("File '/home/iwant2tryhard/somediscordbot/Prefixes-current.json' does not exist") |
+                    e.getMessage().equals("File '/home/iwant2tryhard/somediscordbot/JournalChannels-current.json' does not exist") |
+                    e.getMessage().equals("File '/home/iwant2tryhard/somediscordbot/SudoersRankIDs-current.json' does not exist")) {
+                SomeDiscordBot.instance.logger.warn("Storage Files not found; Creating empty files.");
+                FileOutputStream file1 = FileUtils.openOutputStream(prefixesPath);
+                FileOutputStream file2 = FileUtils.openOutputStream(journalChannelsPath);
+                FileOutputStream file3 = FileUtils.openOutputStream(sudoersRankIDsPath);
+                file1.close();
+                file2.close();
+                file3.close();
+                SomeDiscordBot.instance.logger.warn("Successfully Created Storage files.");
+            }
+        }
     }
 }
