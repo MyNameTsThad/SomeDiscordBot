@@ -33,6 +33,11 @@ public class Commands extends ListenerAdapter {
                     if (args[1].equalsIgnoreCase("prefix")) {
                         if (args.length > 2) {
                             SomeDiscordBot.instance.configs.prefixes.replace(event.getGuild().getId(), args[2].toLowerCase(Locale.ROOT) + "|");
+                            try {
+                                SomeDiscordBot.instance.configs.saveToFile();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                             event.getMessage().reply("This guild's bot prefix is now set to `" + SomeDiscordBot.instance.configs.prefixes.get(event.getGuild().getId()) + "`").queue();
                         } else {
                             event.getMessage().reply("The prefix for this guild is: `" + SomeDiscordBot.instance.configs.prefixes.get(event.getGuild().getId()) + "`").queue();
@@ -43,7 +48,11 @@ public class Commands extends ListenerAdapter {
                                 if (args.length > 3) {
                                     String channelID = args[3].substring(2, args[3].length() - 1);
                                     SomeDiscordBot.instance.configs.journalChannels.replace(event.getGuild().getId(), channelID);
-                                    System.out.println("channelID: " + channelID);
+                                    try {
+                                        SomeDiscordBot.instance.configs.saveToFile();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
                                     event.getMessage().reply("Channel <#" + channelID + "> is now the journal channel.").queue();
                                 } else {
                                     event.getMessage().reply("No channel detected! Provide a channel!").queue();
