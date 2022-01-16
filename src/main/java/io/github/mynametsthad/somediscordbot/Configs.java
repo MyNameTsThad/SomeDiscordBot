@@ -12,9 +12,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Configs {
-    private File prefixesPath = new File(System.getProperty("user.home") + "/somediscordbot/Prefixes-current.json");
-    private File journalChannelsPath = new File(System.getProperty("user.home") + "/somediscordbot/JournalChannels-current.json");
-    private File sudoersRankIDsPath = new File(System.getProperty("user.home") + "/somediscordbot/SudoersRankIDs-current.json");
     public Map<String, String> prefixes = new HashMap<>();
     public Map<String, String> journalChannels = new HashMap<>();
     public Map<String, String> sudoersRankIDs = new HashMap<>();
@@ -37,6 +34,9 @@ public class Configs {
             @Override
             public void run() {
                 try {
+                    File prefixesPath = new File(System.getProperty("user.home") + "/somediscordbot/Prefixes-current.json");
+                    File journalChannelsPath = new File(System.getProperty("user.home") + "/somediscordbot/JournalChannels-current.json");
+                    File sudoersRankIDsPath = new File(System.getProperty("user.home") + "/somediscordbot/SudoersRankIDs-current.json");
                     Gson gson = new GsonBuilder().setPrettyPrinting().create();
                     String json1 = gson.toJson(prefixesPath);
                     String json2 = gson.toJson(journalChannelsPath);
@@ -75,6 +75,9 @@ public class Configs {
 
     public void readFromFile() throws IOException {
         try {
+            File prefixesPath = new File(System.getProperty("user.home") + "/somediscordbot/Prefixes-current.json");
+            File journalChannelsPath = new File(System.getProperty("user.home") + "/somediscordbot/JournalChannels-current.json");
+            File sudoersRankIDsPath = new File(System.getProperty("user.home") + "/somediscordbot/SudoersRankIDs-current.json");
             String json1 = FileUtils.readFileToString(prefixesPath);
             String json2 = FileUtils.readFileToString(journalChannelsPath);
             String json3 = FileUtils.readFileToString(sudoersRankIDsPath);
