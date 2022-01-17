@@ -6,6 +6,9 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.requests.GatewayIntent;
+import net.dv8tion.jda.api.utils.ChunkingFilter;
+import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,7 +19,7 @@ public class SomeDiscordBot {
     public static final String SHORTNAME = "SomeDiscordBot";
     public static final String VERSION = "0.2.0";
     public static final int VERSION_ID = 2;
-    public static final String TOKEN = "<TOKEN>";
+    public static final String TOKEN = "OTIzODcwNjI1ODc2MDI5NDQw.YcWTkQ.k3ipeDQbHoaSTHwOYfBLjaC-IKE";
 
     public static SomeDiscordBot instance;
     public Logger logger = LoggerFactory.getLogger(SomeDiscordBot.class);
@@ -29,6 +32,9 @@ public class SomeDiscordBot {
         jdaBuilder.setActivity(Activity.listening("sdb|help"));
         jdaBuilder.setStatus(OnlineStatus.DO_NOT_DISTURB);
 
+        jdaBuilder.setChunkingFilter(ChunkingFilter.ALL); // enable member chunking for all guilds
+        jdaBuilder.setMemberCachePolicy(MemberCachePolicy.ALL); // ignored if chunking enabled
+        jdaBuilder.enableIntents(GatewayIntent.GUILD_MEMBERS);
         jdaBuilder.addEventListeners(
                 new Commands(),
                 new Journal());

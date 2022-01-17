@@ -43,11 +43,11 @@ public class Configs {
         FileOutputStream file3 = FileUtils.openOutputStream(sudoersRankIDsPath);
         try {
             file1.write(json1.getBytes());
-            SomeDiscordBot.instance.logger.info("Saved Prefixes to: " + System.getProperty("user.home") + "/somediscordbot/Prefixes-current.json");
+            System.out.println("Saved Prefixes to: " + System.getProperty("user.home") + "/somediscordbot/Prefixes-current.json");
             file2.write(json2.getBytes());
-            SomeDiscordBot.instance.logger.info("Saved JournalChannels to: " + System.getProperty("user.home") + "/somediscordbot/JournalChannels-current.json");
+            System.out.println("Saved JournalChannels to: " + System.getProperty("user.home") + "/somediscordbot/JournalChannels-current.json");
             file3.write(json3.getBytes());
-            SomeDiscordBot.instance.logger.info("Saved SudoersRankIDs to: " + System.getProperty("user.home") + "/somediscordbot/SudoersRankIDs-current.json");
+            System.out.println("Saved SudoersRankIDs to: " + System.getProperty("user.home") + "/somediscordbot/SudoersRankIDs-current.json");
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -75,17 +75,17 @@ public class Configs {
 
             prefixes = new Gson().fromJson(json1, new TypeToken<Map<String, String>>() {
             }.getType());
-            SomeDiscordBot.instance.logger.info("Loaded Prefixes from: " + System.getProperty("user.home") + "/somediscordbot/Prefixes-current.json");
+            System.out.println("Loaded Prefixes from: " + System.getProperty("user.home") + "/somediscordbot/Prefixes-current.json");
             journalChannels = new Gson().fromJson(json2, new TypeToken<Map<String, String>>() {
             }.getType());
-            SomeDiscordBot.instance.logger.info("Loaded JournalChannels from: " + System.getProperty("user.home") + "/somediscordbot/JournalChannels-current.json");
+            System.out.println("Loaded JournalChannels from: " + System.getProperty("user.home") + "/somediscordbot/JournalChannels-current.json");
             sudoersRankIDs = new Gson().fromJson(json3, new TypeToken<Map<String, String>>() {
             }.getType());
-            SomeDiscordBot.instance.logger.info("Loaded SudoersRankIDs from: " + System.getProperty("user.home") + "/somediscordbot/SudoersRankIDs-current.json");
+            System.out.println("Loaded SudoersRankIDs from: " + System.getProperty("user.home") + "/somediscordbot/SudoersRankIDs-current.json");
         } catch (IOException e) {
-            SomeDiscordBot.instance.logger.warn("Storage Files not found; Creating empty files.");
+            System.out.println("Storage Files not found; Creating empty files.");
             saveToFile();
-            SomeDiscordBot.instance.logger.warn("Successfully Created Storage files.");
+            System.out.println("Successfully Created Storage files.");
         }
     }
 }
