@@ -76,7 +76,7 @@ public class Journal extends ListenerAdapter {
         //System.out.println("added roles to member " + event.getMember().getId() + " on guild " + event.getGuild().getId());
         StringBuilder message = new StringBuilder("<@" + event.getMember().getId() + "> got added the following roles:\n");
         for (Role added : event.getRoles()) {
-            message.append("'").append(added.getName()).append("' (").append(added.getId()).append("), ");
+            message.append("`").append(added.getName()).append("` (").append(added.getId()).append("), ");
         }
         message.setLength(message.length() - 2);
         Objects.requireNonNull(event.getGuild().getTextChannelById(SomeDiscordBot.instance.configs.journalChannels.get(event.getGuild().getId()))).sendMessage(message.toString()).queue();
@@ -98,7 +98,7 @@ public class Journal extends ListenerAdapter {
         //System.out.println("removed roles from member " + event.getMember().getId() + " on guild " + event.getGuild().getId());
         StringBuilder message = new StringBuilder("<@" + event.getMember().getId() + "> got removed the following roles:\n");
         for (Role added : event.getRoles()) {
-            message.append("'").append(added.getName()).append("' (").append(added.getId()).append("), ");
+            message.append("`").append(added.getName()).append("` (").append(added.getId()).append("), ");
         }
         message.setLength(message.length() - 2);
         Objects.requireNonNull(event.getGuild().getTextChannelById(SomeDiscordBot.instance.configs.journalChannels.get(event.getGuild().getId()))).sendMessage(message.toString()).queue();
