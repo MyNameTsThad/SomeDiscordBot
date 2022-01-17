@@ -19,7 +19,7 @@ public class SomeDiscordBot {
     public static final String SHORTNAME = "SomeDiscordBot";
     public static final String VERSION = "0.2.0";
     public static final int VERSION_ID = 2;
-    public static final String TOKEN = "OTIzODcwNjI1ODc2MDI5NDQw.YcWTkQ.k3ipeDQbHoaSTHwOYfBLjaC-IKE";
+    public static final String TOKEN = "<TOKEN>";
 
     public static SomeDiscordBot instance;
     public Logger logger = LoggerFactory.getLogger(SomeDiscordBot.class);
