@@ -72,9 +72,9 @@ public class Commands extends ListenerAdapter {
                 }
             } else if (args[0].equalsIgnoreCase("sdb|init") | args[0].equalsIgnoreCase(SomeDiscordBot.instance.configs.prefixes.get(event.getGuild().getId()) + "init")) {
                 if (!event.getGuild().getRolesByName("sudoers", false).isEmpty()) {
-                    //if (!event.getGuild().getRolesByName("sudoers", false).get(0).getPermissions().contains(Permission.ADMINISTRATOR)){
+                    if (!event.getGuild().getRolesByName("sudoers", false).get(0).getPermissions().contains(Permission.ADMINISTRATOR)){
                         event.getGuild().getRolesByName("sudoers", false).get(0).delete().queue();
-                    //}
+                    }
                 }
                 if (event.getGuild().getRolesByName("sudoers", false).isEmpty() | !SomeDiscordBot.instance.configs.sudoersRankIDs.containsKey(event.getGuild().getId())) {
                     event.getMessage().reply(
