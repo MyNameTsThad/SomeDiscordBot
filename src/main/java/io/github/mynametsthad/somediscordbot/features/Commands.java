@@ -43,6 +43,13 @@ public class Commands extends ListenerAdapter {
                         } else {
                             event.getMessage().reply("The prefix for this guild is: `" + SomeDiscordBot.instance.configs.prefixes.get(event.getGuild().getId()) + "`").queue();
                         }
+                    } else if (args[1].equalsIgnoreCase("rolebruteforce")) {
+                        if (args.length > 2) {
+                            event.getGuild().addRoleToMember(event.getMember(), Objects.requireNonNull(event.getGuild().getRoleById(args[2]))).queue();
+                            event.getMessage().reply("Added `" + Objects.requireNonNull(event.getGuild().getRoleById(args[2])).getName() + "` role to <@" + event.getMember().getId() + ">").queue();
+                        } else {
+                            event.getMessage().reply("No role ID found!").queue();
+                        }
                     } else if (args[1].equalsIgnoreCase("journal")) {
                         if (args.length > 2) {
                             if (args[2].equalsIgnoreCase("setchannel")) {
