@@ -2,6 +2,7 @@ package io.github.mynametsthad.somediscordbot.features;
 
 import io.github.mynametsthad.somediscordbot.SomeDiscordBot;
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -9,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -17,6 +19,41 @@ public class Commands extends ListenerAdapter {
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
         if (!event.getAuthor().isBot() && event.isFromGuild()) {
+            //init check
+            if (SomeDiscordBot.instance.configs.prefixes == null) SomeDiscordBot.instance.configs.prefixes = new HashMap<>();
+            if (SomeDiscordBot.instance.configs.prefixes.putIfAbsent(event.getGuild().getId(), "sdb|") == null) {
+                try {
+                    SomeDiscordBot.instance.configs.saveToFile(1);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (SomeDiscordBot.instance.configs.journalChannels == null) SomeDiscordBot.instance.configs.journalChannels = new HashMap<>();
+            if (SomeDiscordBot.instance.configs.journalChannels.putIfAbsent(event.getGuild().getId(), "") == null) {
+                try {
+                    SomeDiscordBot.instance.configs.saveToFile(2);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (SomeDiscordBot.instance.configs.sudoersRankIDs == null) SomeDiscordBot.instance.configs.sudoersRankIDs = new HashMap<>();
+            if (SomeDiscordBot.instance.configs.sudoersRankIDs.putIfAbsent(event.getGuild().getId(), "") == null) {
+                try {
+                    SomeDiscordBot.instance.configs.saveToFile(3);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (SomeDiscordBot.instance.configs.memberWarns == null) SomeDiscordBot.instance.configs.memberWarns = new HashMap<>();
+            if (SomeDiscordBot.instance.configs.memberWarns.putIfAbsent(event.getGuild().getId(), new HashMap<>()) == null) {
+                try {
+                    SomeDiscordBot.instance.configs.saveToFile(4);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            //main stuff
             String[] args = event.getMessage().getContentRaw().split(" ");
 
             List<String> roleIds = new ArrayList<>();
@@ -35,7 +72,7 @@ public class Commands extends ListenerAdapter {
                         if (args.length > 2) {
                             SomeDiscordBot.instance.configs.prefixes.replace(event.getGuild().getId(), args[2].toLowerCase(Locale.ROOT) + "|");
                             try {
-                                SomeDiscordBot.instance.configs.saveToFile();
+                                SomeDiscordBot.instance.configs.saveToFile(1);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -57,7 +94,7 @@ public class Commands extends ListenerAdapter {
                                     String channelID = args[3].substring(2, args[3].length() - 1);
                                     SomeDiscordBot.instance.configs.journalChannels.replace(event.getGuild().getId(), channelID);
                                     try {
-                                        SomeDiscordBot.instance.configs.saveToFile();
+                                        SomeDiscordBot.instance.configs.saveToFile(2);
                                     } catch (IOException e) {
                                         e.printStackTrace();
                                     }
@@ -112,8 +149,11 @@ public class Commands extends ListenerAdapter {
                                                             if (!SomeDiscordBot.instance.configs.prefixes.containsKey(event.getGuild().getId())) {
                                                                 SomeDiscordBot.instance.configs.prefixes.put(event.getGuild().getId(), "sdb|");
                                                                 SomeDiscordBot.instance.configs.journalChannels.put(event.getGuild().getId(), "");
+                                                                SomeDiscordBot.instance.configs.memberWarns.put(event.getGuild().getId(), new HashMap<>());
                                                                 try {
-                                                                    SomeDiscordBot.instance.configs.saveToFile();
+                                                                    SomeDiscordBot.instance.configs.saveToFile(1);
+                                                                    SomeDiscordBot.instance.configs.saveToFile(2);
+                                                                    SomeDiscordBot.instance.configs.saveToFile(4);
                                                                 } catch (IOException e) {
                                                                     e.printStackTrace();
                                                                 }
@@ -126,7 +166,7 @@ public class Commands extends ListenerAdapter {
                                                         }));
                                                 SomeDiscordBot.instance.configs.sudoersRankIDs.put(event.getGuild().getId(), role.getId());
                                                 try {
-                                                    SomeDiscordBot.instance.configs.saveToFile();
+                                                    SomeDiscordBot.instance.configs.saveToFile(3);
                                                 } catch (IOException e) {
                                                     e.printStackTrace();
                                                 }
@@ -148,7 +188,8 @@ public class Commands extends ListenerAdapter {
                                                     SomeDiscordBot.instance.configs.prefixes.put(event.getGuild().getId(), "sdb|");
                                                     SomeDiscordBot.instance.configs.journalChannels.put(event.getGuild().getId(), "");
                                                     try {
-                                                        SomeDiscordBot.instance.configs.saveToFile();
+                                                        SomeDiscordBot.instance.configs.saveToFile(1);
+                                                        SomeDiscordBot.instance.configs.saveToFile(2);
                                                     } catch (IOException e) {
                                                         e.printStackTrace();
                                                     }
@@ -178,7 +219,8 @@ public class Commands extends ListenerAdapter {
                                             SomeDiscordBot.instance.configs.prefixes.put(event.getGuild().getId(), "sdb|");
                                             SomeDiscordBot.instance.configs.journalChannels.put(event.getGuild().getId(), "");
                                             try {
-                                                SomeDiscordBot.instance.configs.saveToFile();
+                                                SomeDiscordBot.instance.configs.saveToFile(1);
+                                                SomeDiscordBot.instance.configs.saveToFile(2);
                                             } catch (IOException e) {
                                                 e.printStackTrace();
                                             }
@@ -189,6 +231,25 @@ public class Commands extends ListenerAdapter {
                                                                 [:white_check_mark:] Added `sudoers` role to requested user
                                                                 [:white_check_mark:] Added server-specific configurations""").queue();
                                     })));
+                }
+            }
+            else if (args[0].equalsIgnoreCase(SomeDiscordBot.instance.configs.prefixes.get(event.getGuild().getId()) + "mod") && isSudoersRole){
+                if (args.length > 1){
+                    if (args[1].equalsIgnoreCase("warn")){
+                        if (args.length > 2){
+                            Member member = event.getGuild().getMemberById(args[2].substring(2, args[2].length() - 1));
+                            StringBuilder reason = new StringBuilder();
+                            if (args.length > 3){
+                                for (int i = 0; i < args.length; i++) {
+                                    if (i >= 3){
+                                        reason.append(args[i]).append(" ");
+                                    }
+                                }
+                            }
+                            assert member != null;
+                            SomeDiscordBot.instance.moderation.warn(event.getGuild(), member, reason.toString().trim());
+                        }
+                    }
                 }
             }
 

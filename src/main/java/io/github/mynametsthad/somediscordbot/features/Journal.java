@@ -40,10 +40,7 @@ public class Journal extends ListenerAdapter {
     @Override
     public void onMessageDelete(@Nonnull MessageDeleteEvent event) {
         if (event.getChannel().getId().equals(SomeDiscordBot.instance.configs.journalChannels.get(event.getGuild().getId()))) {
-            event.getChannel().retrieveMessageById(event.getChannel().getLatestMessageId()).queue(message -> {
-                event.getChannel().sendMessage("<@" + message.getAuthor().getId() + "> said: '" + message.getContentRaw() + "'")
-                        .queue(success -> event.getChannel().sendMessage("No deleting messages in this channel!").queue());
-            });
+            event.getChannel().sendMessage("No deleting messages in this channel!").queue();
         }
     }
 

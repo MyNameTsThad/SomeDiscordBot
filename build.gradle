@@ -7,7 +7,7 @@ plugins {
 
 mainClassName = "io.github.mynametsthad.somediscordbot.SomeDiscordBot"
 group 'io.github.mynametsthad'
-version '0.2.0'
+version '0.3.0'
 
 repositories {
     mavenCentral()
@@ -21,7 +21,7 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
 
-    implementation("net.dv8tion:JDA:5.0.0-alpha.3")
+    implementation("net.dv8tion:JDA:5.0.0-alpha.4")
 }
 
 test {
