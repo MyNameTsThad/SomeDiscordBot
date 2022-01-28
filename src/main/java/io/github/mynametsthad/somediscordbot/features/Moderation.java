@@ -16,6 +16,7 @@ public class Moderation {
     }
 
     public void warn(Guild guild, Member member, String reason) {
+        System.out.println("attempting to warn member " + member.getEffectiveName() + " (id: " + member.getId() + ") in guild " + guild.getName() + " (id: " + guild.getId() + ") for " + reason);
         if (configs.memberWarns.get(guild.getId()).get(member.getId()) == null) {
             configs.memberWarns.get(guild.getId()).put(member.getId(), 1);
         } else {
