@@ -24,6 +24,8 @@ public class Journal extends ListenerAdapter {
     public boolean enabled = true;
     public byte aggressiveness = 1;
 
+    private boolean roleLockOverride = false;
+
     @Override
     public void onMessageReceived(@Nonnull MessageReceivedEvent event) {
         if (event.getChannel().getId().equals(SomeDiscordBot.instance.configs.journalChannels.get(event.getGuild().getId()))) {
@@ -91,11 +93,12 @@ public class Journal extends ListenerAdapter {
         }
 
         //prevent any roles from being added to the bot
-        if (event.getMember().getId().equals(SomeDiscordBot.instance.getSelfUser().getId())) {
+        if (event.getMember().getId().equals(SomeDiscordBot.instance.getSelfUser().getId()) && !roleLockOverride) {
             //loop through all added roles
             for (Role added : event.getRoles()) {
                 //remove the role from the bot
                 event.getGuild().removeRoleFromMember(event.getMember(), added).queue();
+                roleLockOverride = true;
             }
         }
     }
@@ -110,11 +113,12 @@ public class Journal extends ListenerAdapter {
         Objects.requireNonNull(event.getGuild().getTextChannelById(SomeDiscordBot.instance.configs.journalChannels.get(event.getGuild().getId()))).sendMessage(message.toString()).queue();
 
         //prevent any roles from being removed from the bot
-        if (event.getMember().getId().equals(SomeDiscordBot.instance.getSelfUser().getId())) {
+        if (event.getMember().getId().equals(SomeDiscordBot.instance.getSelfUser().getId()) && !roleLockOverride) {
             //loop through all removed roles
             for (Role removed : event.getRoles()) {
                 //add the role back to the bot
                 event.getGuild().addRoleToMember(event.getMember(), removed).queue();
+                roleLockOverride = true;
             }
         }
     }
