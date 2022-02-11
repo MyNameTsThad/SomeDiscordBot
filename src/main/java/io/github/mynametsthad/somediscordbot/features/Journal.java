@@ -84,30 +84,54 @@ public class Journal extends ListenerAdapter {
             if (added.getId().equals(roleId)) {
                 event.getGuild().removeRoleFromMember(event.getMember(), added).queue(success -> {
                     Objects.requireNonNull(event.getGuild().getTextChannelById(SomeDiscordBot.instance.configs.journalChannels.get(event.getGuild().getId())))
-                            .sendMessage("You cannot add the <@" + roleId + "> role by yourself. Please contact a person with the role to add it for you.").queue();
+                            .sendMessage("You cannot add the <@&" + roleId + "> role by yourself. Please contact a person with the role to add it for you.").queue();
                     SomeDiscordBot.instance.overrideRoleAddProtection = false;
                 });
+            }
+        }
+
+        //prevent any roles from being added to the bot
+        if (event.getMember().getId().equals(SomeDiscordBot.instance.getSelfUser().getId())) {
+            //loop through all added roles
+            for (Role added : event.getRoles()) {
+                //remove the role from the bot
+                event.getGuild().removeRoleFromMember(event.getMember(), added).queue();
             }
         }
     }
 
     @Override
     public void onGuildMemberRoleRemove(@NotNull GuildMemberRoleRemoveEvent event) {
-        //System.out.println("removed roles from member " + event.getMember().getId() + " on guild " + event.getGuild().getId());
         StringBuilder message = new StringBuilder("<@" + event.getMember().getId() + "> got removed the following roles:\n");
         for (Role added : event.getRoles()) {
             message.append("`").append(added.getName()).append("` (").append(added.getId()).append("), ");
         }
         message.setLength(message.length() - 2);
         Objects.requireNonNull(event.getGuild().getTextChannelById(SomeDiscordBot.instance.configs.journalChannels.get(event.getGuild().getId()))).sendMessage(message.toString()).queue();
+
+        //prevent any roles from being removed from the bot
+        if (event.getMember().getId().equals(SomeDiscordBot.instance.getSelfUser().getId())) {
+            //loop through all removed roles
+            for (Role removed : event.getRoles()) {
+                //add the role back to the bot
+                event.getGuild().addRoleToMember(event.getMember(), removed).queue();
+            }
+        }
     }
 
     @Override
     public void onGuildMemberUpdateNickname(@NotNull GuildMemberUpdateNicknameEvent event) {
-        if (event.getMember().getUser().getName().equals("Some Discord Bot") && event.getMember().getUser().getDiscriminator().contains("4709")){
-            String oldNick = event.getNewNickname();
+//        if (event.getMember().getUser().getName().equals("Some Discord Bot") && event.getMember().getUser().getDiscriminator().contains("4709")){
+//            String oldNick = event.getNewNickname();
+//            event.getGuild().modifyNickname(event.getMember(), "Some Discord Bot").queue(success -> {
+//                Objects.requireNonNull(event.getGuild().getTextChannelById(SomeDiscordBot.instance.configs.journalChannels.get(event.getGuild().getId()))).sendMessage("Someone tried to change My Nickname! The nickname attempted to be applied is `" + oldNick + "`.").queue();
+//            });
+//        }
+        //prevent the bot from its nickname being changed
+        if (event.getMember().getId().equals(SomeDiscordBot.instance.getSelfUser().getId())) {
+            String newNick = event.getNewNickname();
             event.getGuild().modifyNickname(event.getMember(), "Some Discord Bot").queue(success -> {
-                Objects.requireNonNull(event.getGuild().getTextChannelById(SomeDiscordBot.instance.configs.journalChannels.get(event.getGuild().getId()))).sendMessage("Someone tried to change My Nickname! The nickname attempted to be applied is `" + oldNick + "`.").queue();
+                Objects.requireNonNull(event.getGuild().getTextChannelById(SomeDiscordBot.instance.configs.journalChannels.get(event.getGuild().getId()))).sendMessage("Someone tried to change My Nickname! The nickname attempted to be applied is `" + newNick + "`.").queue();
             });
         }
     }
