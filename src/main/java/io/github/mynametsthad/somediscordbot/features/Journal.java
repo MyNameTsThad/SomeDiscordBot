@@ -100,6 +100,8 @@ public class Journal extends ListenerAdapter {
                 event.getGuild().removeRoleFromMember(event.getMember(), added).queue();
                 roleLockOverride = true;
             }
+        }else{
+            roleLockOverride = false;
         }
     }
 
@@ -120,6 +122,8 @@ public class Journal extends ListenerAdapter {
                 event.getGuild().addRoleToMember(event.getMember(), removed).queue();
                 roleLockOverride = true;
             }
+        }else{
+            roleLockOverride = false;
         }
     }
 
