@@ -44,6 +44,11 @@ public class Journal extends ListenerAdapter {
                     //increase the social credit of the author
                     SomeDiscordBot.instance.configs.socialCredits.get(event.getGuild().getId()).putIfAbsent(event.getAuthor().getId(), 1000);
                     SomeDiscordBot.instance.configs.socialCredits.get(event.getGuild().getId()).put(event.getAuthor().getId(), SomeDiscordBot.instance.configs.socialCredits.get(event.getGuild().getId()).get(event.getAuthor().getId()) + 500);
+                    try {
+                        SomeDiscordBot.instance.configs.saveToFile(7);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     //send a copypasta message to the channel that the author has been given 50 social credit
                     event.getChannel().sendMessage("<@" + event.getAuthor().getId() + "> [ 中华人民共和国寄语] Great work, Celebrity! Your social credit score has increased by [500] Integers. Xi Jinping would like to meet you personally at Zhongnanhai to encourage your good work. I am sure you notice that you have gained lot of dislike recently. Do not worry. We will send re-education vans to make sure your figure is in good graces. Keep up the good work! [ 中华人民共和国寄语]").queue();
                 }
@@ -62,6 +67,11 @@ public class Journal extends ListenerAdapter {
                     //decrease the social credit of the author
                     SomeDiscordBot.instance.configs.socialCredits.get(event.getGuild().getId()).putIfAbsent(event.getAuthor().getId(), 1000);
                     SomeDiscordBot.instance.configs.socialCredits.get(event.getGuild().getId()).put(event.getAuthor().getId(), SomeDiscordBot.instance.configs.socialCredits.get(event.getGuild().getId()).get(event.getAuthor().getId()) - 250);
+                    try {
+                        SomeDiscordBot.instance.configs.saveToFile(7);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     //send a copypasta message to the channel that the author has lost 250 social credit
                     event.getChannel().sendMessage("<@" + event.getAuthor().getId() + "> VERY BAD! 250 social credits have been deducted 低等公民 Please refrain from mentioning events that never happened that could discredit the great 人民共产党 People’s Communist Party again or we will be forced to 饿了就睡觉 send party agents to escort you to a re-education van [人民行刑车].").queue();
                 }
