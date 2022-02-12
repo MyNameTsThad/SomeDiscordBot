@@ -16,17 +16,18 @@ public class Configs {
     File journalChannelsPath = new File(System.getProperty("user.home") + "/somediscordbot/JournalChannels-current.json");
     File sudoersRankIDsPath = new File(System.getProperty("user.home") + "/somediscordbot/SudoersRankIDs-current.json");
     File memberWarnsPath = new File(System.getProperty("user.home") + "/somediscordbot/MemberWarns-current.json");
+    public Map<String, Map<String, Integer>> socialCredits = new HashMap<>();
+    File journalStatusPath = new File(System.getProperty("user.home") + "/somediscordbot/JournalStatus-current.json");
+    File socialCreditStatusPath = new File(System.getProperty("user.home") + "/somediscordbot/SocialCreditStatus-current.json");
+
     public Map<String, Boolean> journalStatus = new HashMap<>();
     public Map<String, Boolean> socialCreditStatus = new HashMap<>();
-    public Map<String, Integer> socialCredits = new HashMap<>();
-
+    File socialCreditsPath = new File(System.getProperty("user.home") + "/somediscordbot/SocialCredits-current.json");
     public Map<String, String> prefixes = new HashMap<>();
     public Map<String, String> journalChannels = new HashMap<>();
     public Map<String, String> sudoersRankIDs = new HashMap<>();
     public Map<String, Map<String, Integer>> memberWarns = new HashMap<>();
-    File journalStatusPath = new File(System.getProperty("user.home") + "/somediscordbot/JournalStatus-current.json");
-    File socialCreditStatusPath = new File(System.getProperty("user.home") + "/somediscordbot/SocialCreditStatus-current.json");
-    File socialCreditsPath = new File(System.getProperty("user.home") + "/somediscordbot/SocialCredits-current.json");
+
 
     public Configs() {
         new Thread("loadFromFile") {
