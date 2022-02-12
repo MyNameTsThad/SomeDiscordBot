@@ -18,6 +18,8 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.Objects;
 
 public class Journal extends ListenerAdapter {
@@ -27,7 +29,7 @@ public class Journal extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(@Nonnull MessageReceivedEvent event) {
-        if (SomeDiscordBot.instance.configs.journalStatus.get(event.getGuild().getId())) {
+        if (SomeDiscordBot.instance.configs.journalStatus.get(event.getGuild().getId()) != null && SomeDiscordBot.instance.configs.journalStatus.get(event.getGuild().getId())) {
             if (event.getChannel().getId().equals(SomeDiscordBot.instance.configs.journalChannels.get(event.getGuild().getId()))) {
                 if (!event.getAuthor().isBot()) {
                     String authorID = event.getAuthor().getId();
@@ -56,6 +58,15 @@ public class Journal extends ListenerAdapter {
                     event.getChannel().sendMessage("<@" + event.getAuthor().getId() + "> VERY BAD! 250 social credits have been deducted 低等公民 Please refrain from mentioning events that never happened that could discredit the great 人民共产党 People’s Communist Party again or we will be forced to 饿了就睡觉 send party agents to escort you to a re-education van [人民行刑车].").queue();
                 }
             }
+        } else if (SomeDiscordBot.instance.configs.journalStatus.get(event.getGuild().getId()) == null) {
+            SomeDiscordBot.instance.configs.journalStatus = new HashMap<>();
+            if (SomeDiscordBot.instance.configs.journalStatus.putIfAbsent(event.getGuild().getId(), true) == null) {
+                try {
+                    SomeDiscordBot.instance.configs.saveToFile(5);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
@@ -66,7 +77,7 @@ public class Journal extends ListenerAdapter {
     @Override
     public void onMessageDelete(@Nonnull MessageDeleteEvent event) {
         if (event.getChannel().getId().equals(SomeDiscordBot.instance.configs.journalChannels.get(event.getGuild().getId())) && SomeDiscordBot.instance.configs.journalStatus.get(event.getGuild().getId())) {
-            event.getChannel().sendMessage("No deleting messages in this channel!").queue();
+            event.getChannel().sendMessage("someones deleting messages in this channel bruh").queue();
         }
     }
 
@@ -96,13 +107,22 @@ public class Journal extends ListenerAdapter {
 
     @Override
     public void onGuildMemberRoleAdd(@NotNull GuildMemberRoleAddEvent event) {
-        if (SomeDiscordBot.instance.configs.journalStatus.get(event.getGuild().getId())) {
+        if (SomeDiscordBot.instance.configs.journalStatus.get(event.getGuild().getId()) != null && SomeDiscordBot.instance.configs.journalStatus.get(event.getGuild().getId())) {
             StringBuilder message = new StringBuilder("<@" + event.getMember().getId() + "> got added the following roles:\n");
             for (Role added : event.getRoles()) {
                 message.append("`").append(added.getName()).append("` (").append(added.getId()).append("), ");
             }
             message.setLength(message.length() - 2);
             Objects.requireNonNull(event.getGuild().getTextChannelById(SomeDiscordBot.instance.configs.journalChannels.get(event.getGuild().getId()))).sendMessage(message.toString()).queue();
+        } else if (SomeDiscordBot.instance.configs.journalStatus.get(event.getGuild().getId()) == null) {
+            SomeDiscordBot.instance.configs.journalStatus = new HashMap<>();
+            if (SomeDiscordBot.instance.configs.journalStatus.putIfAbsent(event.getGuild().getId(), true) == null) {
+                try {
+                    SomeDiscordBot.instance.configs.saveToFile(5);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         //System.out.println("added roles to member " + event.getMember().getId() + " on guild " + event.getGuild().getId());
         if (SomeDiscordBot.instance.overrideRoleAddProtection) return;
@@ -132,13 +152,22 @@ public class Journal extends ListenerAdapter {
 
     @Override
     public void onGuildMemberRoleRemove(@NotNull GuildMemberRoleRemoveEvent event) {
-        if (SomeDiscordBot.instance.configs.journalStatus.get(event.getGuild().getId())) {
+        if (SomeDiscordBot.instance.configs.journalStatus.get(event.getGuild().getId()) != null && SomeDiscordBot.instance.configs.journalStatus.get(event.getGuild().getId())) {
             StringBuilder message = new StringBuilder("<@" + event.getMember().getId() + "> got removed the following roles:\n");
             for (Role added : event.getRoles()) {
                 message.append("`").append(added.getName()).append("` (").append(added.getId()).append("), ");
             }
             message.setLength(message.length() - 2);
             Objects.requireNonNull(event.getGuild().getTextChannelById(SomeDiscordBot.instance.configs.journalChannels.get(event.getGuild().getId()))).sendMessage(message.toString()).queue();
+        } else if (SomeDiscordBot.instance.configs.journalStatus.get(event.getGuild().getId()) == null) {
+            SomeDiscordBot.instance.configs.journalStatus = new HashMap<>();
+            if (SomeDiscordBot.instance.configs.journalStatus.putIfAbsent(event.getGuild().getId(), true) == null) {
+                try {
+                    SomeDiscordBot.instance.configs.saveToFile(5);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
         //prevent any roles from being removed from the bot
