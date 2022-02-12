@@ -16,9 +16,9 @@ public class Configs {
     File journalChannelsPath = new File(System.getProperty("user.home") + "/somediscordbot/JournalChannels-current.json");
     File sudoersRankIDsPath = new File(System.getProperty("user.home") + "/somediscordbot/SudoersRankIDs-current.json");
     File memberWarnsPath = new File(System.getProperty("user.home") + "/somediscordbot/MemberWarns-current.json");
-    public Map<String, Map<String, Integer>> socialCredits = new HashMap<>();
     File journalStatusPath = new File(System.getProperty("user.home") + "/somediscordbot/JournalStatus-current.json");
     File socialCreditStatusPath = new File(System.getProperty("user.home") + "/somediscordbot/SocialCreditStatus-current.json");
+    public Map<String, Map<String, Integer>> socialCredits = new HashMap<>();
 
     public Map<String, Boolean> journalStatus = new HashMap<>();
     public Map<String, Boolean> socialCreditStatus = new HashMap<>();

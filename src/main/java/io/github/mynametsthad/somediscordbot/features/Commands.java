@@ -73,7 +73,7 @@ public class Commands extends ListenerAdapter {
             }
             if (SomeDiscordBot.instance.configs.socialCredits == null)
                 SomeDiscordBot.instance.configs.socialCredits = new HashMap<>();
-            if (SomeDiscordBot.instance.configs.socialCredits.putIfAbsent(event.getGuild().getId(), 0) == null) {
+            if (SomeDiscordBot.instance.configs.socialCredits.putIfAbsent(event.getGuild().getId(), new HashMap<>()) == null) {
                 try {
                     SomeDiscordBot.instance.configs.saveToFile(7);
                 } catch (IOException e) {
@@ -229,7 +229,7 @@ public class Commands extends ListenerAdapter {
                                                     SomeDiscordBot.instance.configs.journalChannels.put(event.getGuild().getId(), "");
                                                     SomeDiscordBot.instance.configs.journalStatus.put(event.getGuild().getId(), true);
                                                     SomeDiscordBot.instance.configs.socialCreditStatus.put(event.getGuild().getId(), true);
-                                                    SomeDiscordBot.instance.configs.socialCredits.put(event.getGuild().getId(), 1000);
+                                                    SomeDiscordBot.instance.configs.socialCredits.put(event.getGuild().getId(), new HashMap<>());
                                                     try {
                                                         SomeDiscordBot.instance.configs.saveToFile(1);
                                                         SomeDiscordBot.instance.configs.saveToFile(2);
@@ -268,7 +268,7 @@ public class Commands extends ListenerAdapter {
                                             SomeDiscordBot.instance.configs.journalChannels.put(event.getGuild().getId(), "");
                                             SomeDiscordBot.instance.configs.journalStatus.put(event.getGuild().getId(), true);
                                             SomeDiscordBot.instance.configs.socialCreditStatus.put(event.getGuild().getId(), true);
-                                            SomeDiscordBot.instance.configs.socialCredits.put(event.getGuild().getId(), 1000);
+                                            SomeDiscordBot.instance.configs.socialCredits.put(event.getGuild().getId(), new HashMap<>());
                                             try {
                                                 SomeDiscordBot.instance.configs.saveToFile(1);
                                                 SomeDiscordBot.instance.configs.saveToFile(2);
