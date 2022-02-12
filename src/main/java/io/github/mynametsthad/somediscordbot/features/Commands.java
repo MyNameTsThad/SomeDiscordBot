@@ -308,6 +308,12 @@ public class Commands extends ListenerAdapter {
                     }
                 }
             }
+            //status command
+            else if (args[0].equalsIgnoreCase("status")) {
+                event.getMessage().reply("Modules status: \n     "
+                        + "Journaling: " + (SomeDiscordBot.instance.configs.journalStatus.get(event.getGuild().getId()) ? ":green_circle:" : ":red_circle:") + "\n"
+                        + "Social credit: " + (SomeDiscordBot.instance.configs.socialCreditStatus.get(event.getGuild().getId()) ? ":green_circle:" : ":red_circle:")).queue();
+            }
 
             //non dependent command
             else if (args[0].equalsIgnoreCase("sdb|prefix") | args[0].equalsIgnoreCase(SomeDiscordBot.instance.configs.prefixes.get(event.getGuild().getId()) + "prefix")) {
