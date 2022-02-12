@@ -15,19 +15,19 @@ public class Moderation {
         configs = SomeDiscordBot.instance.configs;
     }
 
-    public void warn(Guild guild, Member member, String reason) {
+    public void warn(Guild guild, Member member, Member warner, String reason) {
         System.out.println("attempting to warn member " + member.getEffectiveName() + " (id: " + member.getId() + ") in guild " + guild.getName() + " (id: " + guild.getId() + ") for " + reason);
-        if (configs.memberWarns.get(guild.getId()).get(member.getId()) == null) {
-            configs.memberWarns.get(guild.getId()).put(member.getId(), 1);
-        } else {
-            configs.memberWarns.get(guild.getId()).replace(member.getId(), configs.memberWarns.get(guild.getId()).get(member.getId()) + 1);
+        //increment warns for member in guild
+        if (configs.memberWarns.get(guild.getId()).putIfAbsent(member.getId(), 1) != null) {
+            configs.memberWarns.get(guild.getId()).put(member.getId(), configs.memberWarns.get(guild.getId()).get(member.getId()) + 1);
         }
-        Objects.requireNonNull(guild.getTextChannelById(configs.journalChannels.get(guild.getId()))).sendMessage("User <@" + member.getId() + "> has been warned " + (reason.isEmpty() ? "" : "for '" + reason + "'") + ". They now have " + configs.memberWarns.get(guild.getId()).get(member.getId()) + "warns.").queue();
+        //send message to journal channel
+        if (configs.journalChannels.get(guild.getId()) != null) {
+            Objects.requireNonNull(guild.getTextChannelById(configs.journalChannels.get(guild.getId()))).sendMessage("**" + member.getAsMention() + "** was warned by " + warner.getAsMention() + " for " + reason).queue();
+        }
+        //if warns is divisible by 3, timeout member for their current warns number of minutes
         if (configs.memberWarns.get(guild.getId()).get(member.getId()) % 3 == 0) {
-            guild.timeoutFor(member, configs.memberWarns.get(guild.getId()).get(member.getId()), TimeUnit.MINUTES).queue(success ->
-                    Objects.requireNonNull(guild.getTextChannelById(configs.journalChannels.get(guild.getId()))).sendMessage("User <@" + member.getId() + "> has been warned " +
-                            configs.memberWarns.get(guild.getId()).get(member.getId()) + " times. Timing them out for " + configs.memberWarns.get(guild.getId()).get(member.getId()) +
-                            "minutes.").queue());
+            guild.timeoutFor(member, configs.memberWarns.get(guild.getId()).get(member.getId()), TimeUnit.MINUTES).queue();
         }
     }
 }

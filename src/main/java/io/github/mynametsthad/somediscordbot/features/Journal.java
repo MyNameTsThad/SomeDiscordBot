@@ -21,17 +21,40 @@ import javax.annotation.Nonnull;
 import java.util.Objects;
 
 public class Journal extends ListenerAdapter {
-    public boolean enabled = true;
     public byte aggressiveness = 1;
 
     private boolean roleLockOverride = false;
 
     @Override
     public void onMessageReceived(@Nonnull MessageReceivedEvent event) {
-        if (event.getChannel().getId().equals(SomeDiscordBot.instance.configs.journalChannels.get(event.getGuild().getId()))) {
-            if (!event.getAuthor().isBot()) {
-                String authorID = event.getAuthor().getId();
-                event.getMessage().delete().queue(delete -> event.getChannel().sendMessage("<@" + authorID + ">, you are not allowed to send Messages in this channel.").queue());
+        if (SomeDiscordBot.instance.configs.journalStatus.get(event.getGuild().getId())) {
+            if (event.getChannel().getId().equals(SomeDiscordBot.instance.configs.journalChannels.get(event.getGuild().getId()))) {
+                if (!event.getAuthor().isBot()) {
+                    String authorID = event.getAuthor().getId();
+                    event.getMessage().delete().queue(delete -> event.getChannel().sendMessage("<@" + authorID + ">, you are not allowed to send Messages in this channel.").queue());
+                }
+            }
+
+            //increase the social credit of the author if the message says that they love and glory to the CCP
+            if (event.getMessage().getContentRaw().contains("love") || event.getMessage().getContentRaw().contains("glory") || event.getMessage().getContentRaw().contains("glory to the CCP")) {
+                //if the author is not a bot
+                if (!event.getAuthor().isBot()) {
+                    //increase the social credit of the author
+                    SomeDiscordBot.instance.configs.socialCredits.put(event.getAuthor().getId(), SomeDiscordBot.instance.configs.socialCredits.get(event.getAuthor().getId()) + 50);
+                    //send a copypasta message to the channel that the author has been given 50 social credit
+                    event.getChannel().sendMessage("<@" + event.getAuthor().getId() + "> [ 中华人民共和国寄语] Great work, Celebrity! Your social credit score has increased by [10000] Integers. Xi Jinping would like to meet you personally at Zhongnanhai to encourage your good work. I am sure you notice that you have gained lot of dislike recently. Do not worry. We will send re-education vans to make sure your figure is in good graces. Keep up the good work! [ 中华人民共和国寄语]").queue();
+                }
+            }
+
+            //decrease the social credit of the author if the message says that they hate and shame to the CCP or that Taiwan is a country
+            if ((event.getMessage().getContentRaw().contains("hate") && event.getMessage().getContentRaw().contains("CCP")) || (event.getMessage().getContentRaw().contains("shame") && event.getMessage().getContentRaw().contains("CCP")) || event.getMessage().getContentRaw().contains("Taiwan") || event.getMessage().getContentRaw().contains("Taiwanese") || event.getMessage().getContentRaw().contains("Taiwanese people") || event.getMessage().getContentRaw().contains("Taiwanese people are") || event.getMessage().getContentRaw().contains("Taiwanese people are a country") || event.getMessage().getContentRaw().contains("Taiwanese people are a country") || event.getMessage().getContentRaw().contains("Taiwanese people are a country") || event.getMessage().getContentRaw().contains("Taiwanese people are a country") || event.getMessage().getContentRaw().contains("Taiwanese people are a country") || event.getMessage().getContentRaw().contains("Taiwanese people are a country") || event.getMessage().getContentRaw().contains("Taiwanese people are a country") || event.getMessage().getContentRaw().contains("Taiwanese people are a country") || event.getMessage().getContentRaw().contains("Taiwanese people are a country") || event.getMessage().getContentRaw().contains("Taiwanese people are a country") || event.getMessage().getContentRaw().contains("Taiwanese people are a country") || event.getMessage().getContentRaw().contains("Taiwanese people are a country") || event.getMessage().getContentRaw().contains("Taiwanese people are a country") || event.getMessage().getContentRaw().contains("Taiwanese people are a country") || event.getMessage().getContentRaw().contains("Taiwanese people are a country") || event.getMessage().getContentRaw().contains("Taiwanese people are a country") || event.getMessage().getContentRaw().contains("Taiwanese people are a country") || event.getMessage().getContentRaw().contains("Taiwanese people are a country") || event.getMessage().getContentRaw().contains("Taiwanese people are a country") || event.getMessage().getContentRaw().contains("Taiwanese people are a country") || event.getMessage().getContentRaw().contains("Taiwanese people are a country") || event.getMessage().getContentRaw().contains("Taiwanese people are a country") || event.getMessage().getContentRaw().contains("Taiwan is a country") || event.getMessage().getContentRaw().contains("hate the CCP")) {
+                //if the author is not a bot
+                if (!event.getAuthor().isBot()) {
+                    //decrease the social credit of the author
+                    SomeDiscordBot.instance.configs.socialCredits.put(event.getAuthor().getId(), SomeDiscordBot.instance.configs.socialCredits.get(event.getAuthor().getId()) - 250);
+                    //send a copypasta message to the channel that the author has lost 250 social credit
+                    event.getChannel().sendMessage("<@" + event.getAuthor().getId() + "> VERY BAD! 250 social credits have been deducted 低等公民 Please refrain from mentioning events that never happened that could discredit the great 人民共产党 People’s Communist Party again or we will be forced to 饿了就睡觉 send party agents to escort you to a re-education van [人民行刑车].").queue();
+                }
             }
         }
     }
@@ -42,7 +65,7 @@ public class Journal extends ListenerAdapter {
 
     @Override
     public void onMessageDelete(@Nonnull MessageDeleteEvent event) {
-        if (event.getChannel().getId().equals(SomeDiscordBot.instance.configs.journalChannels.get(event.getGuild().getId()))) {
+        if (event.getChannel().getId().equals(SomeDiscordBot.instance.configs.journalChannels.get(event.getGuild().getId())) && SomeDiscordBot.instance.configs.journalStatus.get(event.getGuild().getId())) {
             event.getChannel().sendMessage("No deleting messages in this channel!").queue();
         }
     }
@@ -73,13 +96,15 @@ public class Journal extends ListenerAdapter {
 
     @Override
     public void onGuildMemberRoleAdd(@NotNull GuildMemberRoleAddEvent event) {
-        //System.out.println("added roles to member " + event.getMember().getId() + " on guild " + event.getGuild().getId());
-        StringBuilder message = new StringBuilder("<@" + event.getMember().getId() + "> got added the following roles:\n");
-        for (Role added : event.getRoles()) {
-            message.append("`").append(added.getName()).append("` (").append(added.getId()).append("), ");
+        if (SomeDiscordBot.instance.configs.journalStatus.get(event.getGuild().getId())) {
+            StringBuilder message = new StringBuilder("<@" + event.getMember().getId() + "> got added the following roles:\n");
+            for (Role added : event.getRoles()) {
+                message.append("`").append(added.getName()).append("` (").append(added.getId()).append("), ");
+            }
+            message.setLength(message.length() - 2);
+            Objects.requireNonNull(event.getGuild().getTextChannelById(SomeDiscordBot.instance.configs.journalChannels.get(event.getGuild().getId()))).sendMessage(message.toString()).queue();
         }
-        message.setLength(message.length() - 2);
-        Objects.requireNonNull(event.getGuild().getTextChannelById(SomeDiscordBot.instance.configs.journalChannels.get(event.getGuild().getId()))).sendMessage(message.toString()).queue();
+        //System.out.println("added roles to member " + event.getMember().getId() + " on guild " + event.getGuild().getId());
         if (SomeDiscordBot.instance.overrideRoleAddProtection) return;
         for (Role added : event.getRoles()) {
             String roleId = SomeDiscordBot.instance.configs.sudoersRankIDs.get(event.getGuild().getId());
@@ -107,12 +132,14 @@ public class Journal extends ListenerAdapter {
 
     @Override
     public void onGuildMemberRoleRemove(@NotNull GuildMemberRoleRemoveEvent event) {
-        StringBuilder message = new StringBuilder("<@" + event.getMember().getId() + "> got removed the following roles:\n");
-        for (Role added : event.getRoles()) {
-            message.append("`").append(added.getName()).append("` (").append(added.getId()).append("), ");
+        if (SomeDiscordBot.instance.configs.journalStatus.get(event.getGuild().getId())) {
+            StringBuilder message = new StringBuilder("<@" + event.getMember().getId() + "> got removed the following roles:\n");
+            for (Role added : event.getRoles()) {
+                message.append("`").append(added.getName()).append("` (").append(added.getId()).append("), ");
+            }
+            message.setLength(message.length() - 2);
+            Objects.requireNonNull(event.getGuild().getTextChannelById(SomeDiscordBot.instance.configs.journalChannels.get(event.getGuild().getId()))).sendMessage(message.toString()).queue();
         }
-        message.setLength(message.length() - 2);
-        Objects.requireNonNull(event.getGuild().getTextChannelById(SomeDiscordBot.instance.configs.journalChannels.get(event.getGuild().getId()))).sendMessage(message.toString()).queue();
 
         //prevent any roles from being removed from the bot
         if (event.getMember().getId().equals(SomeDiscordBot.instance.getSelfUser().getId()) && !roleLockOverride) {
@@ -122,7 +149,7 @@ public class Journal extends ListenerAdapter {
                 event.getGuild().addRoleToMember(event.getMember(), removed).queue();
                 roleLockOverride = true;
             }
-        }else{
+        } else {
             roleLockOverride = false;
         }
     }

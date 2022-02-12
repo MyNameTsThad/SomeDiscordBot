@@ -44,10 +44,38 @@ public class Commands extends ListenerAdapter {
                     e.printStackTrace();
                 }
             }
-            if (SomeDiscordBot.instance.configs.memberWarns == null) SomeDiscordBot.instance.configs.memberWarns = new HashMap<>();
+            if (SomeDiscordBot.instance.configs.memberWarns == null)
+                SomeDiscordBot.instance.configs.memberWarns = new HashMap<>();
             if (SomeDiscordBot.instance.configs.memberWarns.putIfAbsent(event.getGuild().getId(), new HashMap<>()) == null) {
                 try {
                     SomeDiscordBot.instance.configs.saveToFile(4);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (SomeDiscordBot.instance.configs.journalStatus == null)
+                SomeDiscordBot.instance.configs.journalStatus = new HashMap<>();
+            if (SomeDiscordBot.instance.configs.journalStatus.putIfAbsent(event.getGuild().getId(), true) == null) {
+                try {
+                    SomeDiscordBot.instance.configs.saveToFile(5);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (SomeDiscordBot.instance.configs.socialCreditStatus == null)
+                SomeDiscordBot.instance.configs.socialCreditStatus = new HashMap<>();
+            if (SomeDiscordBot.instance.configs.socialCreditStatus.putIfAbsent(event.getGuild().getId(), true) == null) {
+                try {
+                    SomeDiscordBot.instance.configs.saveToFile(6);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (SomeDiscordBot.instance.configs.socialCredits == null)
+                SomeDiscordBot.instance.configs.socialCredits = new HashMap<>();
+            if (SomeDiscordBot.instance.configs.socialCredits.putIfAbsent(event.getGuild().getId(), 0) == null) {
+                try {
+                    SomeDiscordBot.instance.configs.saveToFile(7);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -101,6 +129,18 @@ public class Commands extends ListenerAdapter {
                                     event.getMessage().reply("Channel <#" + channelID + "> is now the journal channel.").queue();
                                 } else {
                                     event.getMessage().reply("No channel detected! Provide a channel!").queue();
+                                }
+                                //command to enable/disable journalling
+                            } else if (args[2].equalsIgnoreCase("status")) {
+                                //enable journalling
+                                if (args.length > 3) {
+                                    if (args[3].equalsIgnoreCase("enable")) {
+                                        SomeDiscordBot.instance.configs.journalStatus.replace(event.getGuild().getId(), true);
+                                    } else if (args[3].equalsIgnoreCase("disable")) {
+                                        SomeDiscordBot.instance.configs.journalStatus.replace(event.getGuild().getId(), false);
+                                    } else {
+                                        event.getMessage().reply("Invalid argument! Use `" + SomeDiscordBot.instance.configs.prefixes.get(event.getGuild().getId()) + "botctl journal status enable` or `" + SomeDiscordBot.instance.configs.prefixes.get(event.getGuild().getId()) + "botctl journal status disable`").queue();
+                                    }
                                 }
                             } else {
                                 event.getMessage().reply("Invalid subcommand. Refer to `" + SomeDiscordBot.instance.configs.prefixes.get(event.getGuild().getId()) + "help` for Commands and Subcommands.").queue();
@@ -187,9 +227,17 @@ public class Commands extends ListenerAdapter {
                                                 if (!SomeDiscordBot.instance.configs.prefixes.containsKey(event.getGuild().getId())) {
                                                     SomeDiscordBot.instance.configs.prefixes.put(event.getGuild().getId(), "sdb|");
                                                     SomeDiscordBot.instance.configs.journalChannels.put(event.getGuild().getId(), "");
+                                                    SomeDiscordBot.instance.configs.journalStatus.put(event.getGuild().getId(), true);
+                                                    SomeDiscordBot.instance.configs.socialCreditStatus.put(event.getGuild().getId(), true);
+                                                    SomeDiscordBot.instance.configs.socialCredits.put(event.getGuild().getId(), 1000);
                                                     try {
                                                         SomeDiscordBot.instance.configs.saveToFile(1);
                                                         SomeDiscordBot.instance.configs.saveToFile(2);
+                                                        SomeDiscordBot.instance.configs.saveToFile(3);
+                                                        SomeDiscordBot.instance.configs.saveToFile(4);
+                                                        SomeDiscordBot.instance.configs.saveToFile(5);
+                                                        SomeDiscordBot.instance.configs.saveToFile(6);
+                                                        SomeDiscordBot.instance.configs.saveToFile(7);
                                                     } catch (IOException e) {
                                                         e.printStackTrace();
                                                     }
@@ -218,37 +266,45 @@ public class Commands extends ListenerAdapter {
                                         if (!SomeDiscordBot.instance.configs.prefixes.containsKey(event.getGuild().getId())) {
                                             SomeDiscordBot.instance.configs.prefixes.put(event.getGuild().getId(), "sdb|");
                                             SomeDiscordBot.instance.configs.journalChannels.put(event.getGuild().getId(), "");
+                                            SomeDiscordBot.instance.configs.journalStatus.put(event.getGuild().getId(), true);
+                                            SomeDiscordBot.instance.configs.socialCreditStatus.put(event.getGuild().getId(), true);
+                                            SomeDiscordBot.instance.configs.socialCredits.put(event.getGuild().getId(), 1000);
                                             try {
                                                 SomeDiscordBot.instance.configs.saveToFile(1);
                                                 SomeDiscordBot.instance.configs.saveToFile(2);
+                                                SomeDiscordBot.instance.configs.saveToFile(3);
+                                                SomeDiscordBot.instance.configs.saveToFile(4);
+                                                SomeDiscordBot.instance.configs.saveToFile(5);
+                                                SomeDiscordBot.instance.configs.saveToFile(6);
+                                                SomeDiscordBot.instance.configs.saveToFile(7);
                                             } catch (IOException e) {
                                                 e.printStackTrace();
                                             }
                                         }
                                         response.editMessage("""
-                                                                Guild initialized.
-                                                                [:white_check_mark:] Created `sudoers` role
-                                                                [:white_check_mark:] Added `sudoers` role to requested user
-                                                                [:white_check_mark:] Added server-specific configurations""").queue();
+                                                Guild initialized.
+                                                [:white_check_mark:] Created `sudoers` role
+                                                [:white_check_mark:] Added `sudoers` role to requested user
+                                                [:white_check_mark:] Added server-specific configurations""").queue();
                                     })));
                 }
             }
-            else if (args[0].equalsIgnoreCase(SomeDiscordBot.instance.configs.prefixes.get(event.getGuild().getId()) + "mod") && isSudoersRole){
-                if (args.length > 1){
-                    if (args[1].equalsIgnoreCase("warn")){
-                        if (args.length > 2){
-                            Member member = event.getGuild().getMemberById(args[2].substring(2, args[2].length() - 1));
-                            StringBuilder reason = new StringBuilder();
-                            if (args.length > 3){
-                                for (int i = 0; i < args.length; i++) {
-                                    if (i >= 3){
-                                        reason.append(args[i]).append(" ");
-                                    }
-                                }
-                            }
-                            assert member != null;
-                            SomeDiscordBot.instance.moderation.warn(event.getGuild(), member, reason.toString().trim());
+            //command to warn member for a specified reason
+            else if (args[0].equalsIgnoreCase("warn") && isSudoersRole) {
+                if (args.length < 3) {
+                    event.getMessage().reply("""
+                            Usage: `[prefix] warn <user> <reason>`
+                            Example: `[prefix] warn @user#1234 "This is a warning"`""").queue();
+                } else {
+                    Member member = event.getGuild().getMemberById(args[1].replace("<@", "").replace(">", ""));
+                    if (member != null) {
+                        StringBuilder reason = new StringBuilder();
+                        for (int i = 2; i < args.length; i++) {
+                            //append reason
+                            reason.append(args[i]).append(" ");
                         }
+                        //call warn method
+                        SomeDiscordBot.instance.moderation.warn(event.getGuild(), member, event.getMember(), reason.toString());
                     }
                 }
             }

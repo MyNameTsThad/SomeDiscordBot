@@ -16,11 +16,17 @@ public class Configs {
     File journalChannelsPath = new File(System.getProperty("user.home") + "/somediscordbot/JournalChannels-current.json");
     File sudoersRankIDsPath = new File(System.getProperty("user.home") + "/somediscordbot/SudoersRankIDs-current.json");
     File memberWarnsPath = new File(System.getProperty("user.home") + "/somediscordbot/MemberWarns-current.json");
+    public Map<String, Boolean> journalStatus = new HashMap<>();
+    public Map<String, Boolean> socialCreditStatus = new HashMap<>();
+    public Map<String, Integer> socialCredits = new HashMap<>();
 
     public Map<String, String> prefixes = new HashMap<>();
     public Map<String, String> journalChannels = new HashMap<>();
     public Map<String, String> sudoersRankIDs = new HashMap<>();
     public Map<String, Map<String, Integer>> memberWarns = new HashMap<>();
+    File journalStatusPath = new File(System.getProperty("user.home") + "/somediscordbot/JournalStatus-current.json");
+    File socialCreditStatusPath = new File(System.getProperty("user.home") + "/somediscordbot/SocialCreditStatus-current.json");
+    File socialCreditsPath = new File(System.getProperty("user.home") + "/somediscordbot/SocialCredits-current.json");
 
     public Configs() {
         new Thread("loadFromFile") {
@@ -66,6 +72,24 @@ public class Configs {
                 file = FileUtils.openOutputStream(memberWarnsPath);
                 path = memberWarnsPath;
                 name = "MemberWarns";
+            }
+            case 5 -> {
+                json = gson.toJson(journalStatus);
+                file = FileUtils.openOutputStream(journalStatusPath);
+                path = journalStatusPath;
+                name = "JournalStatus";
+            }
+            case 6 -> {
+                json = gson.toJson(socialCreditStatus);
+                file = FileUtils.openOutputStream(socialCreditStatusPath);
+                path = socialCreditStatusPath;
+                name = "SocialCreditStatus";
+            }
+            case 7 -> {
+                json = gson.toJson(socialCredits);
+                file = FileUtils.openOutputStream(socialCreditsPath);
+                path = socialCreditsPath;
+                name = "SocialCredits";
             }
         }
 
@@ -125,10 +149,40 @@ public class Configs {
             memberWarns = new Gson().fromJson(json4, new TypeToken<Map<String, Map<String, Integer>>>() {
             }.getType());
             System.out.println("Loaded MemberWarns from: " + System.getProperty("user.home") + "/somediscordbot/MemberWarns-current.json");
-        }catch (IOException e){
+        } catch (IOException e) {
             System.out.println("MemberWarns File not found; Creating empty file.");
             saveToFile(4);
             System.out.println("Successfully Created MemberWarns file.");
+        }
+
+        try {
+            String json5 = FileUtils.readFileToString(journalStatusPath);
+            journalStatus = new Gson().fromJson(json5, new TypeToken<Map<String, Map<String, Boolean>>>() {
+            }.getType());
+        } catch (IOException e) {
+            System.out.println("JournalStatus File not found; Creating empty file.");
+            saveToFile(5);
+            System.out.println("Successfully Created JournalStatus file.");
+        }
+
+        try {
+            String json6 = FileUtils.readFileToString(socialCreditStatusPath);
+            socialCreditStatus = new Gson().fromJson(json6, new TypeToken<Map<String, Map<String, Boolean>>>() {
+            }.getType());
+        } catch (IOException e) {
+            System.out.println("SocialCreditStatus File not found; Creating empty file.");
+            saveToFile(6);
+            System.out.println("Successfully Created SocialCreditStatus file.");
+        }
+
+        try {
+            String json7 = FileUtils.readFileToString(socialCreditsPath);
+            socialCredits = new Gson().fromJson(json7, new TypeToken<Map<String, Map<String, Integer>>>() {
+            }.getType());
+        } catch (IOException e) {
+            System.out.println("SocialCredits File not found; Creating empty file.");
+            saveToFile(7);
+            System.out.println("Successfully Created SocialCredits file.");
         }
     }
 }
