@@ -158,7 +158,7 @@ public class Configs {
 
         try {
             String json5 = FileUtils.readFileToString(journalStatusPath);
-            journalStatus = new Gson().fromJson(json5, new TypeToken<Map<String, Map<String, Boolean>>>() {
+            journalStatus = new Gson().fromJson(json5, new TypeToken<Map<String, Boolean>>() {
             }.getType());
             System.out.println("Loaded JournalStatus from: " + System.getProperty("user.home") + "/somediscordbot/JournalStatus-current.json");
         } catch (IOException e) {
@@ -169,7 +169,7 @@ public class Configs {
 
         try {
             String json6 = FileUtils.readFileToString(socialCreditStatusPath);
-            socialCreditStatus = new Gson().fromJson(json6, new TypeToken<Map<String, Map<String, Boolean>>>() {
+            socialCreditStatus = new Gson().fromJson(json6, new TypeToken<Map<String, Boolean>>() {
             }.getType());
             System.out.println("Loaded SocialCreditStatus from: " + System.getProperty("user.home") + "/somediscordbot/SocialCreditStatus-current.json");
         } catch (IOException e) {
