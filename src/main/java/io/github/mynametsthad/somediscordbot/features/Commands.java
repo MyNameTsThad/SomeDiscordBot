@@ -351,6 +351,12 @@ public class Commands extends ListenerAdapter {
                         }
                         //add rule to server rules
                         SomeDiscordBot.instance.configs.serverRules.get(event.getGuild().getId()).add(rule.toString().trim());
+                        //save to file
+                        try {
+                            SomeDiscordBot.instance.configs.saveToFile(8);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
                 //remove rule by index
@@ -365,6 +371,12 @@ public class Commands extends ListenerAdapter {
                     else {
                         try {
                             SomeDiscordBot.instance.configs.serverRules.get(event.getGuild().getId()).remove(Integer.parseInt(args[2]) - 1);
+                            //save to file
+                            try {
+                                SomeDiscordBot.instance.configs.saveToFile(8);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         } catch (NumberFormatException | IndexOutOfBoundsException e) {
                             event.getMessage().reply("""
                                     Usage: `[prefix] rules remove <rule number>`
