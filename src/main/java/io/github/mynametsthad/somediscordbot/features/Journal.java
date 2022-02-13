@@ -26,6 +26,7 @@ public class Journal extends ListenerAdapter {
     public byte aggressiveness = 1;
 
     private boolean roleLockOverride = false;
+    private boolean deleteLockOverride = false;
 
     @Override
     public void onMessageReceived(@Nonnull MessageReceivedEvent event) {
@@ -33,7 +34,7 @@ public class Journal extends ListenerAdapter {
             if (event.getChannel().getId().equals(SomeDiscordBot.instance.configs.journalChannels.get(event.getGuild().getId()))) {
                 if (!event.getAuthor().isBot()) {
                     String authorID = event.getAuthor().getId();
-                    event.getMessage().delete().queue(delete -> event.getChannel().sendMessage("<@" + authorID + ">, you are not allowed to send Messages in this channel.").queue());
+                    event.getMessage().delete().queue(delete -> event.getChannel().sendMessage("<@" + authorID + ">, you are not allowed to send Messages in this channel.").queue(q -> deleteLockOverride = true));
                 }
             }
 
@@ -96,8 +97,10 @@ public class Journal extends ListenerAdapter {
 
     @Override
     public void onMessageDelete(@Nonnull MessageDeleteEvent event) {
-        if (event.getChannel().getId().equals(SomeDiscordBot.instance.configs.journalChannels.get(event.getGuild().getId())) && SomeDiscordBot.instance.configs.journalStatus.get(event.getGuild().getId())) {
+        if (event.getChannel().getId().equals(SomeDiscordBot.instance.configs.journalChannels.get(event.getGuild().getId())) && SomeDiscordBot.instance.configs.journalStatus.get(event.getGuild().getId()) && !deleteLockOverride) {
             event.getChannel().sendMessage("someones deleting messages in this channel bruh").queue();
+        }else if (deleteLockOverride) {
+            deleteLockOverride = false;
         }
     }
 
