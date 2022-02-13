@@ -336,7 +336,7 @@ public class Commands extends ListenerAdapter {
                             Example: `[prefix] rules add "No spamming"`""").queue();
                 }
                 //add rule
-                else if (args[1].equalsIgnoreCase("add")) {
+                else if (args[1].equalsIgnoreCase("add") && isSudoersRole) {
                     if (args.length < 3) {
                         event.getMessage().reply("""
                                 Usage: `[prefix] rules add <rule>`
@@ -354,7 +354,7 @@ public class Commands extends ListenerAdapter {
                     }
                 }
                 //remove rule by index
-                else if (args[1].equalsIgnoreCase("remove")) {
+                else if (args[1].equalsIgnoreCase("remove") && isSudoersRole) {
                     if (args.length < 3) {
                         event.getMessage().reply("""
                                 Usage: `[prefix] rules remove <rule number>`
@@ -379,6 +379,10 @@ public class Commands extends ListenerAdapter {
                         rules.append(i + 1).append(". ").append(SomeDiscordBot.instance.configs.serverRules.get(event.getGuild().getId()).get(i)).append("\n");
                     }
                     event.getMessage().reply("Rules:\n" + rules).queue();
+                }
+                //if they are not sudoers and they try to add/remove rules, tell them they are not sudoers
+                else if (!isSudoersRole && (args[1].equalsIgnoreCase("add") || args[1].equalsIgnoreCase("remove"))) {
+                    event.getMessage().reply("You do not have the <@&" + SomeDiscordBot.instance.configs.sudoersRankIDs.get(event.getGuild().getId()) + "> role. Please contact them instead.").queue();
                 }
             }
             //status command
