@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Configs {
@@ -18,15 +19,17 @@ public class Configs {
     File memberWarnsPath = new File(System.getProperty("user.home") + "/somediscordbot/MemberWarns-current.json");
     File journalStatusPath = new File(System.getProperty("user.home") + "/somediscordbot/JournalStatus-current.json");
     File socialCreditStatusPath = new File(System.getProperty("user.home") + "/somediscordbot/SocialCreditStatus-current.json");
-    public Map<String, Map<String, Integer>> socialCredits = new HashMap<>();
+    File socialCreditsPath = new File(System.getProperty("user.home") + "/somediscordbot/SocialCredits-current.json");
+    File serverRulesPath = new File(System.getProperty("user.home") + "/somediscordbot/ServerRules-current.json");
 
+    public Map<String, Map<String, Integer>> socialCredits = new HashMap<>();
     public Map<String, Boolean> journalStatus = new HashMap<>();
     public Map<String, Boolean> socialCreditStatus = new HashMap<>();
-    File socialCreditsPath = new File(System.getProperty("user.home") + "/somediscordbot/SocialCredits-current.json");
     public Map<String, String> prefixes = new HashMap<>();
     public Map<String, String> journalChannels = new HashMap<>();
     public Map<String, String> sudoersRankIDs = new HashMap<>();
     public Map<String, Map<String, Integer>> memberWarns = new HashMap<>();
+    public Map<String, List<String>> serverRules = new HashMap<>();
 
 
     public Configs() {
@@ -91,6 +94,12 @@ public class Configs {
                 file = FileUtils.openOutputStream(socialCreditsPath);
                 path = socialCreditsPath;
                 name = "SocialCredits";
+            }
+            case 8 -> {
+                json = gson.toJson(serverRules);
+                file = FileUtils.openOutputStream(serverRulesPath);
+                path = serverRulesPath;
+                name = "ServerRules";
             }
         }
 
@@ -187,6 +196,17 @@ public class Configs {
             System.out.println("SocialCredits File not found; Creating empty file.");
             saveToFile(7);
             System.out.println("Successfully Created SocialCredits file.");
+        }
+
+        try {
+            String json8 = FileUtils.readFileToString(serverRulesPath);
+            serverRules = new Gson().fromJson(json8, new TypeToken<Map<String, String>>() {
+            }.getType());
+            System.out.println("Loaded ServerRules from: " + System.getProperty("user.home") + "/somediscordbot/ServerRules-current.json");
+        } catch (IOException e) {
+            System.out.println("ServerRules File not found; Creating empty file.");
+            saveToFile(8);
+            System.out.println("Successfully Created ServerRules file.");
         }
     }
 }

@@ -20,7 +20,8 @@ public class Commands extends ListenerAdapter {
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
         if (!event.getAuthor().isBot() && event.isFromGuild()) {
             //init check
-            if (SomeDiscordBot.instance.configs.prefixes == null) SomeDiscordBot.instance.configs.prefixes = new HashMap<>();
+            if (SomeDiscordBot.instance.configs.prefixes == null)
+                SomeDiscordBot.instance.configs.prefixes = new HashMap<>();
             if (SomeDiscordBot.instance.configs.prefixes.putIfAbsent(event.getGuild().getId(), "sdb|") == null) {
                 try {
                     SomeDiscordBot.instance.configs.saveToFile(1);
@@ -28,7 +29,8 @@ public class Commands extends ListenerAdapter {
                     e.printStackTrace();
                 }
             }
-            if (SomeDiscordBot.instance.configs.journalChannels == null) SomeDiscordBot.instance.configs.journalChannels = new HashMap<>();
+            if (SomeDiscordBot.instance.configs.journalChannels == null)
+                SomeDiscordBot.instance.configs.journalChannels = new HashMap<>();
             if (SomeDiscordBot.instance.configs.journalChannels.putIfAbsent(event.getGuild().getId(), "") == null) {
                 try {
                     SomeDiscordBot.instance.configs.saveToFile(2);
@@ -36,7 +38,8 @@ public class Commands extends ListenerAdapter {
                     e.printStackTrace();
                 }
             }
-            if (SomeDiscordBot.instance.configs.sudoersRankIDs == null) SomeDiscordBot.instance.configs.sudoersRankIDs = new HashMap<>();
+            if (SomeDiscordBot.instance.configs.sudoersRankIDs == null)
+                SomeDiscordBot.instance.configs.sudoersRankIDs = new HashMap<>();
             if (SomeDiscordBot.instance.configs.sudoersRankIDs.putIfAbsent(event.getGuild().getId(), "") == null) {
                 try {
                     SomeDiscordBot.instance.configs.saveToFile(3);
@@ -76,6 +79,15 @@ public class Commands extends ListenerAdapter {
             if (SomeDiscordBot.instance.configs.socialCredits.putIfAbsent(event.getGuild().getId(), new HashMap<>()) == null) {
                 try {
                     SomeDiscordBot.instance.configs.saveToFile(7);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (SomeDiscordBot.instance.configs.serverRules == null)
+                SomeDiscordBot.instance.configs.serverRules = new HashMap<>();
+            if (SomeDiscordBot.instance.configs.serverRules.putIfAbsent(event.getGuild().getId(), new ArrayList<>()) == null) {
+                try {
+                    SomeDiscordBot.instance.configs.saveToFile(8);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -156,7 +168,7 @@ public class Commands extends ListenerAdapter {
                 }
             } else if (args[0].equalsIgnoreCase("sdb|init") | args[0].equalsIgnoreCase(SomeDiscordBot.instance.configs.prefixes.get(event.getGuild().getId()) + "init")) {
                 if (!event.getGuild().getRolesByName("sudoers", false).isEmpty()) {
-                    if (!event.getGuild().getRolesByName("sudoers", false).get(0).getPermissions().contains(Permission.ADMINISTRATOR)){
+                    if (!event.getGuild().getRolesByName("sudoers", false).get(0).getPermissions().contains(Permission.ADMINISTRATOR)) {
                         event.getGuild().getRolesByName("sudoers", false).get(0).delete().queue();
                     }
                 }
@@ -213,23 +225,24 @@ public class Commands extends ListenerAdapter {
                                             });
                                 } else {
                                     response.editMessage("""
-                                            Initializing guild...
-                                            [:white_check_mark:] Created `sudoers` role
-                                            [ ] Adding `sudoers` role to requested user...
-                                            [ ] Adding server-specific configurations...""")
+                                                    Initializing guild...
+                                                    [:white_check_mark:] Created `sudoers` role
+                                                    [ ] Adding `sudoers` role to requested user...
+                                                    [ ] Adding server-specific configurations...""")
                                             .queue();
                                     event.getGuild().addRoleToMember(Objects.requireNonNull(event.getMember()), Objects.requireNonNull(event.getGuild().getRoleById(SomeDiscordBot.instance.configs.sudoersRankIDs.get(event.getGuild().getId()))))
                                             .queue(nextstep -> response.editMessage("""
-                                                                Initializing guild...
-                                                                [:white_check_mark:] Created `sudoers` role
-                                                                [:white_check_mark:] Added `sudoers` role to requested user
-                                                                [ ] Adding server-specific configurations...""").queue(nextstep2 -> {
+                                                    Initializing guild...
+                                                    [:white_check_mark:] Created `sudoers` role
+                                                    [:white_check_mark:] Added `sudoers` role to requested user
+                                                    [ ] Adding server-specific configurations...""").queue(nextstep2 -> {
                                                 if (!SomeDiscordBot.instance.configs.prefixes.containsKey(event.getGuild().getId())) {
                                                     SomeDiscordBot.instance.configs.prefixes.put(event.getGuild().getId(), "sdb|");
                                                     SomeDiscordBot.instance.configs.journalChannels.put(event.getGuild().getId(), "");
                                                     SomeDiscordBot.instance.configs.journalStatus.put(event.getGuild().getId(), true);
                                                     SomeDiscordBot.instance.configs.socialCreditStatus.put(event.getGuild().getId(), true);
                                                     SomeDiscordBot.instance.configs.socialCredits.put(event.getGuild().getId(), new HashMap<>());
+                                                    SomeDiscordBot.instance.configs.serverRules.put(event.getGuild().getId(), new ArrayList<>());
                                                     try {
                                                         SomeDiscordBot.instance.configs.saveToFile(1);
                                                         SomeDiscordBot.instance.configs.saveToFile(2);
@@ -238,55 +251,58 @@ public class Commands extends ListenerAdapter {
                                                         SomeDiscordBot.instance.configs.saveToFile(5);
                                                         SomeDiscordBot.instance.configs.saveToFile(6);
                                                         SomeDiscordBot.instance.configs.saveToFile(7);
+                                                        SomeDiscordBot.instance.configs.saveToFile(8);
                                                     } catch (IOException e) {
                                                         e.printStackTrace();
                                                     }
                                                 }
                                                 response.editMessage("""
-                                                                    Guild initialized.
-                                                                    [:white_check_mark:] Created `sudoers` role
-                                                                    [:white_check_mark:] Added `sudoers` role to requested user
-                                                                    [:white_check_mark:] Added server-specific configurations""").queue();
+                                                        Guild initialized.
+                                                        [:white_check_mark:] Created `sudoers` role
+                                                        [:white_check_mark:] Added `sudoers` role to requested user
+                                                        [:white_check_mark:] Added server-specific configurations""").queue();
                                             }));
                                 }
                             });
                 } else {
                     event.getMessage().reply("""
-                            Initializing guild...
-                            [:x:] Failed to create `sudoers` role - Role already exists! Please delete the role and try again.
-                            [ ] Adding `sudoers` role to requested user...
-                            [ ] Adding server-specific configurations...""")
+                                    Initializing guild...
+                                    [:x:] Failed to create `sudoers` role - Role already exists! Please delete the role and try again.
+                                    [ ] Adding `sudoers` role to requested user...
+                                    [ ] Adding server-specific configurations...""")
                             .queue(response ->
                                     event.getGuild().addRoleToMember(Objects.requireNonNull(event.getMember()), Objects.requireNonNull(event.getGuild().getRoleById(SomeDiscordBot.instance.configs.sudoersRankIDs.get(event.getGuild().getId()))))
-                                    .queue(nextstep -> response.editMessage("""
-                                                            Initializing guild...
-                                                            [:white_check_mark:] Created `sudoers` role
-                                                            [:white_check_mark:] Added `sudoers` role to requested user
-                                                            [ ] Adding server-specific configurations...""").queue(nextstep2 -> {
-                                        if (!SomeDiscordBot.instance.configs.prefixes.containsKey(event.getGuild().getId())) {
-                                            SomeDiscordBot.instance.configs.prefixes.put(event.getGuild().getId(), "sdb|");
-                                            SomeDiscordBot.instance.configs.journalChannels.put(event.getGuild().getId(), "");
-                                            SomeDiscordBot.instance.configs.journalStatus.put(event.getGuild().getId(), true);
-                                            SomeDiscordBot.instance.configs.socialCreditStatus.put(event.getGuild().getId(), true);
-                                            SomeDiscordBot.instance.configs.socialCredits.put(event.getGuild().getId(), new HashMap<>());
-                                            try {
-                                                SomeDiscordBot.instance.configs.saveToFile(1);
-                                                SomeDiscordBot.instance.configs.saveToFile(2);
-                                                SomeDiscordBot.instance.configs.saveToFile(3);
-                                                SomeDiscordBot.instance.configs.saveToFile(4);
-                                                SomeDiscordBot.instance.configs.saveToFile(5);
-                                                SomeDiscordBot.instance.configs.saveToFile(6);
-                                                SomeDiscordBot.instance.configs.saveToFile(7);
-                                            } catch (IOException e) {
-                                                e.printStackTrace();
-                                            }
-                                        }
-                                        response.editMessage("""
-                                                Guild initialized.
-                                                [:white_check_mark:] Created `sudoers` role
-                                                [:white_check_mark:] Added `sudoers` role to requested user
-                                                [:white_check_mark:] Added server-specific configurations""").queue();
-                                    })));
+                                            .queue(nextstep -> response.editMessage("""
+                                                    Initializing guild...
+                                                    [:white_check_mark:] Created `sudoers` role
+                                                    [:white_check_mark:] Added `sudoers` role to requested user
+                                                    [ ] Adding server-specific configurations...""").queue(nextstep2 -> {
+                                                if (!SomeDiscordBot.instance.configs.prefixes.containsKey(event.getGuild().getId())) {
+                                                    SomeDiscordBot.instance.configs.prefixes.put(event.getGuild().getId(), "sdb|");
+                                                    SomeDiscordBot.instance.configs.journalChannels.put(event.getGuild().getId(), "");
+                                                    SomeDiscordBot.instance.configs.journalStatus.put(event.getGuild().getId(), true);
+                                                    SomeDiscordBot.instance.configs.socialCreditStatus.put(event.getGuild().getId(), true);
+                                                    SomeDiscordBot.instance.configs.socialCredits.put(event.getGuild().getId(), new HashMap<>());
+                                                    SomeDiscordBot.instance.configs.serverRules.put(event.getGuild().getId(), new ArrayList<>());
+                                                    try {
+                                                        SomeDiscordBot.instance.configs.saveToFile(1);
+                                                        SomeDiscordBot.instance.configs.saveToFile(2);
+                                                        SomeDiscordBot.instance.configs.saveToFile(3);
+                                                        SomeDiscordBot.instance.configs.saveToFile(4);
+                                                        SomeDiscordBot.instance.configs.saveToFile(5);
+                                                        SomeDiscordBot.instance.configs.saveToFile(6);
+                                                        SomeDiscordBot.instance.configs.saveToFile(7);
+                                                        SomeDiscordBot.instance.configs.saveToFile(8);
+                                                    } catch (IOException e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                }
+                                                response.editMessage("""
+                                                        Guild initialized.
+                                                        [:white_check_mark:] Created `sudoers` role
+                                                        [:white_check_mark:] Added `sudoers` role to requested user
+                                                        [:white_check_mark:] Added server-specific configurations""").queue();
+                                            })));
                 }
             }
             //command to warn member for a specified reason
@@ -310,6 +326,59 @@ public class Commands extends ListenerAdapter {
                             e.printStackTrace();
                         }
                     }
+                }
+            }
+            //command to set and view server rules
+            else if (args[0].equalsIgnoreCase(SomeDiscordBot.instance.configs.prefixes.get(event.getGuild().getId()) + "rules")) {
+                if (args.length < 2) {
+                    event.getMessage().reply("""
+                            Usage: `[prefix] rules <add/remove/view> <rule>`
+                            Example: `[prefix] rules add "No spamming"`""").queue();
+                }
+                //add rule
+                else if (args[1].equalsIgnoreCase("add")) {
+                    if (args.length < 3) {
+                        event.getMessage().reply("""
+                                Usage: `[prefix] rules add <rule>`
+                                Example: `[prefix] rules add "No spamming"`""").queue();
+                    }
+                    //add rule to server rules
+                    else {
+                        StringBuilder rule = new StringBuilder();
+                        for (int i = 2; i < args.length; i++) {
+                            //append rule
+                            rule.append(args[i]).append(" ");
+                        }
+                        //add rule to server rules
+                        SomeDiscordBot.instance.configs.serverRules.get(event.getGuild().getId()).add(rule.toString().trim());
+                    }
+                }
+                //remove rule by index
+                else if (args[1].equalsIgnoreCase("remove")) {
+                    if (args.length < 3) {
+                        event.getMessage().reply("""
+                                Usage: `[prefix] rules remove <rule number>`
+                                Example: `[prefix] rules remove 1`""").queue();
+
+                    }
+                    //remove rule from server rules
+                    else {
+                        try {
+                            SomeDiscordBot.instance.configs.serverRules.get(event.getGuild().getId()).remove(Integer.parseInt(args[2]) - 1);
+                        } catch (NumberFormatException | IndexOutOfBoundsException e) {
+                            event.getMessage().reply("""
+                                    Usage: `[prefix] rules remove <rule number>`
+                                    Example: `[prefix] rules remove 1`""").queue();
+                        }
+                    }
+                }
+                //view server rules
+                else if (args[1].equalsIgnoreCase("view")) {
+                    StringBuilder rules = new StringBuilder();
+                    for (int i = 0; i < SomeDiscordBot.instance.configs.serverRules.get(event.getGuild().getId()).size(); i++) {
+                        rules.append(i + 1).append(". ").append(SomeDiscordBot.instance.configs.serverRules.get(event.getGuild().getId()).get(i)).append("\n");
+                    }
+                    event.getMessage().reply("Rules:\n" + rules).queue();
                 }
             }
             //status command

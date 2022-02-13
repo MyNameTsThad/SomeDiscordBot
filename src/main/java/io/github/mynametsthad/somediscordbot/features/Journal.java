@@ -63,7 +63,7 @@ public class Journal extends ListenerAdapter {
                     || event.getMessage().getContentRaw().toLowerCase().contains("taiwanese people")
                     || event.getMessage().getContentRaw().toLowerCase().contains("taiwanese people are good people")
                     || event.getMessage().getContentRaw().toLowerCase().contains("taiwan is a country")
-                    || event.getMessage().getContentRaw().toLowerCase().contains("hate the CCP")) {
+                    || event.getMessage().getContentRaw().toLowerCase().contains("hate the ccp")) {
                 //if the author is not a bot
                 if (!event.getAuthor().isBot()) {
                     //decrease the social credit of the author
