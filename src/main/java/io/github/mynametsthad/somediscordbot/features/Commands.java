@@ -296,7 +296,7 @@ public class Commands extends ListenerAdapter {
                             Usage: `[prefix] warn <user> <reason>`
                             Example: `[prefix] warn @user#1234 "This is a warning"`""").queue();
                 } else {
-                    Member member = event.getGuild().getMemberById(args[1].replace("<@", "").replace(">", ""));
+                    Member member = event.getGuild().getMemberById(args[1].replace("<@!", "").replace(">", ""));
                     if (member != null) {
                         StringBuilder reason = new StringBuilder();
                         for (int i = 2; i < args.length; i++) {
@@ -304,7 +304,7 @@ public class Commands extends ListenerAdapter {
                             reason.append(args[i]).append(" ");
                         }
                         //call warn method
-                        SomeDiscordBot.instance.moderation.warn(event.getGuild(), member, event.getMember(), reason.toString());
+                        SomeDiscordBot.instance.moderation.warn(event.getGuild(), member, event.getMember(), reason.toString().trim());
                     }
                 }
             }

@@ -38,7 +38,9 @@ public class Journal extends ListenerAdapter {
             }
 
             //increase the social credit of the author if the message says that they love and glory to the CCP
-            if (event.getMessage().getContentRaw().contains("love") || event.getMessage().getContentRaw().contains("glory") || event.getMessage().getContentRaw().contains("glory to the CCP")) {
+            if ((event.getMessage().getContentRaw().toLowerCase().contains("love") && event.getMessage().getContentRaw().toLowerCase().contains("ccp"))
+                    || (event.getMessage().getContentRaw().toLowerCase().contains("glory") && event.getMessage().getContentRaw().toLowerCase().contains("ccp"))
+                    || event.getMessage().getContentRaw().toLowerCase().contains("glory to the ccp")) {
                 //if the author is not a bot
                 if (!event.getAuthor().isBot()) {
                     //increase the social credit of the author
@@ -55,13 +57,13 @@ public class Journal extends ListenerAdapter {
             }
 
             //decrease the social credit of the author if the message says that they hate and shame to the CCP or that Taiwan is a country
-            if ((event.getMessage().getContentRaw().contains("hate") && event.getMessage().getContentRaw().contains("CCP"))
-                    || (event.getMessage().getContentRaw().contains("shame") && event.getMessage().getContentRaw().contains("CCP"))
-                    || event.getMessage().getContentRaw().contains("Taiwan") || event.getMessage().getContentRaw().contains("Taiwanese")
-                    || event.getMessage().getContentRaw().contains("Taiwanese people")
-                    || event.getMessage().getContentRaw().contains("Taiwanese people are good people")
-                    || event.getMessage().getContentRaw().contains("Taiwan is a country")
-                    || event.getMessage().getContentRaw().contains("hate the CCP")) {
+            if ((event.getMessage().getContentRaw().toLowerCase().contains("hate") && event.getMessage().getContentRaw().toLowerCase().contains("CCP"))
+                    || (event.getMessage().getContentRaw().toLowerCase().contains("shame") && event.getMessage().getContentRaw().toLowerCase().contains("CCP"))
+                    || event.getMessage().getContentRaw().toLowerCase().contains("taiwan") || event.getMessage().getContentRaw().toLowerCase().contains("taiwanese")
+                    || event.getMessage().getContentRaw().toLowerCase().contains("taiwanese people")
+                    || event.getMessage().getContentRaw().toLowerCase().contains("taiwanese people are good people")
+                    || event.getMessage().getContentRaw().toLowerCase().contains("taiwan is a country")
+                    || event.getMessage().getContentRaw().toLowerCase().contains("hate the CCP")) {
                 //if the author is not a bot
                 if (!event.getAuthor().isBot()) {
                     //decrease the social credit of the author
