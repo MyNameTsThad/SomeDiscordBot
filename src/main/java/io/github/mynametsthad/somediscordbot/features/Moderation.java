@@ -31,7 +31,7 @@ public class Moderation {
             guild.timeoutFor(member, configs.memberWarns.get(guild.getId()).get(member.getId()), TimeUnit.MINUTES).queue();
             //send message to journal channel
             if (configs.journalChannels.get(guild.getId()) != null) {
-                Objects.requireNonNull(guild.getTextChannelById(configs.journalChannels.get(guild.getId()))).sendMessage("**" + member.getAsMention() + "** was timed out for " + configs.memberWarns.get(guild.getId()).get(member.getId()) + " minutes due to having" + configs.memberWarns.get(guild.getId()).get(member.getId()) + "warns.").queue();
+                Objects.requireNonNull(guild.getTextChannelById(configs.journalChannels.get(guild.getId()))).sendMessage("**" + member.getAsMention() + "** was timed out for " + configs.memberWarns.get(guild.getId()).get(member.getId()) + " minutes due to having " + configs.memberWarns.get(guild.getId()).get(member.getId()) + " warns.").queue();
             }
         }
 
