@@ -34,7 +34,10 @@ public class Journal extends ListenerAdapter {
             if (event.getChannel().getId().equals(SomeDiscordBot.instance.configs.journalChannels.get(event.getGuild().getId()))) {
                 if (!event.getAuthor().isBot()) {
                     String authorID = event.getAuthor().getId();
-                    event.getMessage().delete().queue(delete -> event.getChannel().sendMessage("<@" + authorID + ">, you are not allowed to send Messages in this channel.").queue(q -> deleteLockOverride = true));
+                    event.getMessage().delete().queue(delete -> {
+                        deleteLockOverride = true;
+                        event.getChannel().sendMessage("<@" + authorID + ">, you are not allowed to send Messages in this channel.").queue();
+                    });
                 }
             }
 
