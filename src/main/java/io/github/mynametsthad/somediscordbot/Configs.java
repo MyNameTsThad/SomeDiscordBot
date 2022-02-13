@@ -200,7 +200,7 @@ public class Configs {
 
         try {
             String json8 = FileUtils.readFileToString(serverRulesPath);
-            serverRules = new Gson().fromJson(json8, new TypeToken<Map<String, String>>() {
+            serverRules = new Gson().fromJson(json8, new TypeToken<Map<String, List<String>>>() {
             }.getType());
             System.out.println("Loaded ServerRules from: " + System.getProperty("user.home") + "/somediscordbot/ServerRules-current.json");
         } catch (IOException e) {
