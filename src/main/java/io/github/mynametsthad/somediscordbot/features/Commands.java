@@ -304,7 +304,11 @@ public class Commands extends ListenerAdapter {
                             reason.append(args[i]).append(" ");
                         }
                         //call warn method
-                        SomeDiscordBot.instance.moderation.warn(event.getGuild(), member, event.getMember(), reason.toString().trim());
+                        try {
+                            SomeDiscordBot.instance.moderation.warn(event.getGuild(), member, event.getMember(), reason.toString().trim());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
