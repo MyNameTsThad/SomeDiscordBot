@@ -4,6 +4,7 @@ import io.github.mynametsthad.somediscordbot.SomeDiscordBot;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.exceptions.HierarchyException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
@@ -121,11 +122,25 @@ public class Commands extends ListenerAdapter {
                             event.getMessage().reply("The prefix for this guild is: `" + SomeDiscordBot.instance.configs.prefixes.get(event.getGuild().getId()) + "`").queue();
                         }
                     } else if (args[1].equalsIgnoreCase("rolebruteforce")) {
+                        //command to add a role to author
+                        //[prefix]rolebruteforce @role
                         if (args.length > 2) {
-                            event.getGuild().addRoleToMember(event.getMember(), Objects.requireNonNull(event.getGuild().getRoleById(args[2]))).queue();
-                            event.getMessage().reply("Added `" + Objects.requireNonNull(event.getGuild().getRoleById(args[2])).getName() + "` role to <@" + event.getMember().getId() + ">").queue();
-                        } else {
-                            event.getMessage().reply("No role ID found!").queue();
+                            if (args[2].startsWith("<@&")) {
+                                String roleId = args[2].substring(3, args[2].length() - 1);
+                                //check if role exists
+                                if (event.getGuild().getRoleById(roleId) != null) {
+                                    //add role to author
+                                    try {
+                                        event.getGuild().addRoleToMember(event.getMember(), Objects.requireNonNull(event.getGuild().getRoleById(roleId))).queue();
+                                    } catch (HierarchyException e) {
+                                        event.getMessage().reply("I can't add that role to you, I don't have the permissions to do that.").queue();
+                                    }
+                                }
+                                //if role doesn't exist, reply with error
+                                else {
+                                    event.getMessage().reply("Role with ID " + roleId + " doesn't exist.").queue();
+                                }
+                            }
                         }
                     } else if (args[1].equalsIgnoreCase("journal")) {
                         if (args.length > 2) {
