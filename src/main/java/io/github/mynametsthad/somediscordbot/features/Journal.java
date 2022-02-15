@@ -1,6 +1,7 @@
 package io.github.mynametsthad.somediscordbot.features;
 
 import io.github.mynametsthad.somediscordbot.SomeDiscordBot;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRoleAddEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRoleRemoveEvent;
@@ -19,7 +20,9 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 
 public class Journal extends ListenerAdapter {
@@ -27,6 +30,8 @@ public class Journal extends ListenerAdapter {
 
     private boolean roleLockOverride = false;
     private boolean deleteLockOverride = false;
+
+    private List<Message> last50MessagesInJournalChannel = new ArrayList<>(50);
 
     @Override
     public void onMessageReceived(@Nonnull MessageReceivedEvent event) {
@@ -38,6 +43,9 @@ public class Journal extends ListenerAdapter {
                     event.getMessage().delete().queue(delete -> {
                         event.getChannel().sendMessage("<@" + authorID + ">, you are not allowed to send Messages in this channel.").queue();
                     });
+                }else{
+                    //get last 50 messages in journal channel
+                    last50MessagesInJournalChannel = event.getChannel().getHistory().retrievePast(50).complete();
                 }
             }
 
@@ -101,7 +109,20 @@ public class Journal extends ListenerAdapter {
     @Override
     public void onMessageDelete(@Nonnull MessageDeleteEvent event) {
         if (event.getChannel().getId().equals(SomeDiscordBot.instance.configs.journalChannels.get(event.getGuild().getId())) && SomeDiscordBot.instance.configs.journalStatus.get(event.getGuild().getId()) && !deleteLockOverride) {
-            event.getChannel().sendMessage("someones deleting messages in this channel bruh").queue();
+            //compare the cached 50 messages list and the current message list to see what messages have been deleted
+            List<Message> currentMessages = event.getChannel().getHistory().retrievePast(50).complete();
+            List<Message> cachedMessages = last50MessagesInJournalChannel;
+            for (int i = 0; i < currentMessages.size(); i++) {
+                if (!currentMessages.get(i).equals(cachedMessages.get(i))) {
+                    //if the message has been deleted, restore the message and mention the original author
+                    int finalI = i;
+                    event.getChannel().sendMessage(cachedMessages.get(i)).queue(message -> message.editMessage(cachedMessages.get(finalI).getContentRaw() + " (originally sent by " + cachedMessages.get(finalI).getAuthor().getAsMention() + ")").queue());
+                    //break the loop
+                    break;
+                }
+            }
+            //update the cached message list
+            last50MessagesInJournalChannel = event.getChannel().getHistory().retrievePast(50).complete();
         }else if (deleteLockOverride) {
             deleteLockOverride = false;
         }
