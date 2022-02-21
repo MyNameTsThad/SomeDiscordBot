@@ -175,6 +175,68 @@ public class Commands extends ListenerAdapter {
                         } else {
                             event.getMessage().reply("No Subcommand detected! Provide a subcommand!").queue();
                         }
+                    } else if (args[1].equalsIgnoreCase("sudoers")) {
+                        //command to add/remove sudoers
+                        if (args.length > 2) {
+                            if (args[2].equalsIgnoreCase("add")) {
+                                if (args.length > 3) {
+                                    //dm the user with a confirmation prompt
+                                    //send a message directly to the user
+                                    //if the user confirms, add to sudoers
+                                    //if the user denies, do nothing
+                                    String userID = args[3].substring(2, args[3].length() - 1);
+                                    event.getAuthor().openPrivateChannel().queue(privateChannel ->
+                                            privateChannel.sendMessage("Are you sure you want to add " + Objects.requireNonNull(event.getGuild().getMemberById(userID)).getAsMention() + " to the sudoers list?\n" + event.getAuthor().getAsMention()).queue(message -> {
+                                                //if the author reacts with the correct emoji, remove from sudoers
+                                                message.addReaction("✅").queue();
+                                                message.addReaction("❌").queue();
+                                                //check if the author reacted with the correct emoji
+                                                message.getReactions().forEach(reaction ->
+                                                        reaction.retrieveUsers().queue(users -> {
+                                                            if (users.contains(event.getAuthor())) {
+                                                                if (reaction.getReactionEmote().getName().equalsIgnoreCase("✅")) {
+                                                                    //if user exists, add to sudoers
+                                                                    event.getGuild().addRoleToMember(Objects.requireNonNull(event.getGuild().getMemberById(userID)),
+                                                                            Objects.requireNonNull(event.getGuild().getRoleById(SomeDiscordBot.instance.configs.sudoersRankIDs.get(event.getGuild().getId())))).queue();
+                                                                    //dm the member that they were added to sudoers
+                                                                    Objects.requireNonNull(event.getGuild().getMemberById(userID)).getUser().openPrivateChannel().queue(privateChannel1 ->
+                                                                            privateChannel1.sendMessage("You have been added to the sudoers list on '" + event.getGuild().getName() + "'.").queue());
+                                                                }
+                                                            }
+                                                        }));
+                                            }));
+                                }
+                            } else if (args[2].equalsIgnoreCase("remove")) {
+                                if (args.length > 3) {
+                                    //dm the user with a confirmation prompt
+                                    //send a message directly to the user
+                                    //if the user confirms, remove from sudoers
+                                    //if the user denies, do nothing
+                                    String userID = args[3].substring(2, args[3].length() - 1);
+                                    event.getAuthor().openPrivateChannel().queue(privateChannel ->
+                                            privateChannel.sendMessage("Are you sure you want to remove " + Objects.requireNonNull(event.getGuild().getMemberById(userID)).getAsMention() + " from the sudoers list?\n" + event.getAuthor().getAsMention()).queue(message -> {
+                                                //if the author reacts with the correct emoji, remove from sudoers
+                                                message.addReaction("✅").queue();
+                                                message.addReaction("❌").queue();
+                                                //check if the author reacted with the correct emoji
+                                                message.getReactions().forEach(reaction ->
+                                                        reaction.retrieveUsers().queue(users -> {
+                                                            if (users.contains(event.getAuthor())) {
+                                                                if (reaction.getReactionEmote().getName().equalsIgnoreCase("✅")) {
+
+                                                                    //if user exists, remove from sudoers
+                                                                    event.getGuild().removeRoleFromMember(Objects.requireNonNull(event.getGuild().getMemberById(userID)),
+                                                                            Objects.requireNonNull(event.getGuild().getRoleById(SomeDiscordBot.instance.configs.sudoersRankIDs.get(event.getGuild().getId())))).queue();
+                                                                    //dm the member that they were removed from sudoers
+                                                                    Objects.requireNonNull(event.getGuild().getMemberById(userID)).getUser().openPrivateChannel().queue(privateChannel1 ->
+                                                                            privateChannel1.sendMessage("You have been removed from the sudoers list on '" + event.getGuild().getName() + "'.").queue());
+                                                                }
+                                                            }
+                                                        }));
+                                            }));
+                                }
+                            }
+                        }
                     } else {
                         event.getMessage().reply("Invalid subcommand. Refer to `" + SomeDiscordBot.instance.configs.prefixes.get(event.getGuild().getId()) + "help` for Commands and Subcommands.").queue();
                     }
