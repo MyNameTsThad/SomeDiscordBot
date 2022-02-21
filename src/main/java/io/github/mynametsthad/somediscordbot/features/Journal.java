@@ -35,7 +35,7 @@ public class Journal extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(@Nonnull MessageReceivedEvent event) {
-        if (SomeDiscordBot.instance.configs.journalStatus.get(event.getGuild().getId()) != null && SomeDiscordBot.instance.configs.journalStatus.get(event.getGuild().getId())) {
+        if (event.isFromGuild() && SomeDiscordBot.instance.configs.journalStatus.get(event.getGuild().getId()) != null && SomeDiscordBot.instance.configs.journalStatus.get(event.getGuild().getId())) {
             if (event.getChannel().getId().equals(SomeDiscordBot.instance.configs.journalChannels.get(event.getGuild().getId()))) {
                 if (!event.getAuthor().isBot()) {
                     String authorID = event.getAuthor().getId();
@@ -90,7 +90,7 @@ public class Journal extends ListenerAdapter {
                     event.getChannel().sendMessage("<@" + event.getAuthor().getId() + "> VERY BAD! 250 social credits have been deducted 低等公民 Please refrain from mentioning events that never happened that could discredit the great 人民共产党 People’s Communist Party again or we will be forced to 饿了就睡觉 send party agents to escort you to a re-education van [人民行刑车].").queue();
                 }
             }
-        } else if (SomeDiscordBot.instance.configs.journalStatus.get(event.getGuild().getId()) == null) {
+        } else if (event.isFromGuild() && SomeDiscordBot.instance.configs.journalStatus.get(event.getGuild().getId()) == null) {
             SomeDiscordBot.instance.configs.journalStatus = new HashMap<>();
             if (SomeDiscordBot.instance.configs.journalStatus.putIfAbsent(event.getGuild().getId(), true) == null) {
                 try {
@@ -108,7 +108,7 @@ public class Journal extends ListenerAdapter {
 
     @Override
     public void onMessageDelete(@Nonnull MessageDeleteEvent event) {
-        if (event.getChannel().getId().equals(SomeDiscordBot.instance.configs.journalChannels.get(event.getGuild().getId())) && SomeDiscordBot.instance.configs.journalStatus.get(event.getGuild().getId()) && !deleteLockOverride) {
+        if (event.isFromGuild() && event.getChannel().getId().equals(SomeDiscordBot.instance.configs.journalChannels.get(event.getGuild().getId())) && SomeDiscordBot.instance.configs.journalStatus.get(event.getGuild().getId()) && !deleteLockOverride) {
             //compare the cached 50 messages list and the current message list to see what messages have been deleted
             List<Message> currentMessages = event.getChannel().getHistory().retrievePast(50).complete();
             List<Message> cachedMessages = last50MessagesInJournalChannel;
@@ -123,7 +123,7 @@ public class Journal extends ListenerAdapter {
             }
             //update the cached message list
             last50MessagesInJournalChannel = event.getChannel().getHistory().retrievePast(50).complete();
-        }else if (deleteLockOverride) {
+        }else if (event.isFromGuild() && deleteLockOverride) {
             deleteLockOverride = false;
         }
     }
