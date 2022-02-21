@@ -196,6 +196,7 @@ public class Commands extends ListenerAdapter {
                                                 new Timer().scheduleAtFixedRate(new TimerTask() {
                                                     @Override
                                                     public void run() {
+                                                        System.out.println("waiting");
                                                         //check if the author reacted with the correct emoji
                                                         message.getReactions().forEach(reaction ->
                                                                 reaction.retrieveUsers().queue(users -> {
@@ -208,7 +209,8 @@ public class Commands extends ListenerAdapter {
                                                                             privateChannel.sendMessage(Objects.requireNonNull(event.getGuild().getMemberById(userID)).getAsMention() + " has been added to the sudoers list on '" + event.getGuild().getName() + "'.").queue();
                                                                             Objects.requireNonNull(event.getGuild().getMemberById(userID)).getUser().openPrivateChannel().queue(privateChannel1 ->
                                                                                     privateChannel1.sendMessage("You have been added to the sudoers list on '" + event.getGuild().getName() + "'.").queue());
-                                                                            Thread.currentThread().interrupt();
+                                                                            //stop the timer
+                                                                            this.cancel();
                                                                         }
                                                                     }
                                                                 }));
@@ -229,9 +231,10 @@ public class Commands extends ListenerAdapter {
                                                 message.addReaction("✅").queue();
                                                 message.addReaction("❌").queue();
                                                 //wait for 10 seconds
-                                                new Timer().scheduleAtFixedRate(new TimerTask() {
+                                                new Timer("boi").scheduleAtFixedRate(new TimerTask() {
                                                     @Override
                                                     public void run() {
+                                                        System.out.println("waiting");
                                                         //check if the author reacted with the correct emoji
                                                         message.getReactions().forEach(reaction ->
                                                                 reaction.retrieveUsers().queue(users -> {
@@ -244,7 +247,8 @@ public class Commands extends ListenerAdapter {
                                                                             privateChannel.sendMessage(Objects.requireNonNull(event.getGuild().getMemberById(userID)).getAsMention() + " has been removed from the sudoers list on '" + event.getGuild().getName() + "'.").queue();
                                                                             Objects.requireNonNull(event.getGuild().getMemberById(userID)).getUser().openPrivateChannel().queue(privateChannel1 ->
                                                                                     privateChannel1.sendMessage("You have been removed from the sudoers list on '" + event.getGuild().getName() + "'.").queue());
-                                                                            Thread.currentThread().interrupt();
+                                                                            //stop the timer
+                                                                            this.cancel();
                                                                         }
                                                                     }
                                                                 }));
