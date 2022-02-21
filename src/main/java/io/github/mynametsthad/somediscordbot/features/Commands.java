@@ -184,7 +184,7 @@ public class Commands extends ListenerAdapter {
                                     //send a message directly to the user
                                     //if the user confirms, add to sudoers
                                     //if the user denies, do nothing
-                                    String userID = args[3].substring(2, args[3].length() - 1);
+                                    String userID = args[3].substring(3, args[3].length() - 1);
                                     event.getAuthor().openPrivateChannel().queue(privateChannel ->
                                             privateChannel.sendMessage("Are you sure you want to add " + Objects.requireNonNull(event.getGuild().getMemberById(userID)).getAsMention() + " to the sudoers list?\n" + event.getAuthor().getAsMention()).queue(message -> {
                                                 //if the author reacts with the correct emoji, remove from sudoers
@@ -212,7 +212,7 @@ public class Commands extends ListenerAdapter {
                                     //send a message directly to the user
                                     //if the user confirms, remove from sudoers
                                     //if the user denies, do nothing
-                                    String userID = args[3].substring(2, args[3].length() - 1);
+                                    String userID = args[3].substring(3, args[3].length() - 1);
                                     event.getAuthor().openPrivateChannel().queue(privateChannel ->
                                             privateChannel.sendMessage("Are you sure you want to remove " + Objects.requireNonNull(event.getGuild().getMemberById(userID)).getAsMention() + " from the sudoers list?\n" + event.getAuthor().getAsMention()).queue(message -> {
                                                 //if the author reacts with the correct emoji, remove from sudoers
