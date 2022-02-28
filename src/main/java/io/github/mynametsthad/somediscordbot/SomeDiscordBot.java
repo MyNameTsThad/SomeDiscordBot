@@ -19,33 +19,38 @@ import javax.security.auth.login.LoginException;
 public class SomeDiscordBot {
     public static final String NAME = "Some Discord Bot";
     public static final String SHORTNAME = "SomeDiscordBot";
-    public static final String VERSION = "0.4.0";
-    public static final int VERSION_ID = 4;
-    public static final String TOKEN = "<TOKEN>";
+    public static final String VERSION = "0.5.0";
+    public static final int VERSION_ID = 5;
+    public static final String TOKEN = ""; //token here
+
+    public static final boolean devMode = true;
 
     public static SomeDiscordBot instance;
     public Logger logger = LoggerFactory.getLogger(SomeDiscordBot.class);
     public JDA jda;
     public Configs configs;
     public Moderation moderation;
-    public boolean overrideRoleAddProtection = false;
+    public Journal journal;
+    public boolean overrideSudoersRoleProtection = false;
 
     public SomeDiscordBot() throws LoginException {
         JDABuilder jdaBuilder = JDABuilder.createDefault(TOKEN);
-        jdaBuilder.setActivity(Activity.listening("sdb|help"));
+        jdaBuilder.setActivity(devMode ? Activity.playing("DEVMODE: sdb|help") : Activity.listening("sdb|help"));
         jdaBuilder.setStatus(OnlineStatus.DO_NOT_DISTURB);
 
         jdaBuilder.setChunkingFilter(ChunkingFilter.ALL); // enable member chunking for all guilds
         jdaBuilder.setMemberCachePolicy(MemberCachePolicy.ALL); // ignored if chunking enabled
         jdaBuilder.enableIntents(GatewayIntent.GUILD_MEMBERS);
-        jdaBuilder.addEventListeners(
-                new Commands(),
-                new Journal());
 
-        jda = jdaBuilder.build();
         instance = this;
         configs = new Configs();
+        journal = new Journal();
         moderation = new Moderation();
+        jdaBuilder.addEventListeners(
+                new Commands(),
+                journal);
+
+        jda = jdaBuilder.build();
     }
 
     public static void main(String[] args) throws LoginException {

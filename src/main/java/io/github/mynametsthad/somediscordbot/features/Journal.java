@@ -1,6 +1,7 @@
 package io.github.mynametsthad.somediscordbot.features;
 
 import io.github.mynametsthad.somediscordbot.SomeDiscordBot;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRoleAddEvent;
@@ -23,6 +24,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class Journal extends ListenerAdapter {
@@ -32,6 +34,9 @@ public class Journal extends ListenerAdapter {
     private boolean deleteLockOverride = false;
 
     private List<Message> last50MessagesInJournalChannel = new ArrayList<>(50);
+
+    public Map<String, String[]> addConfirmationMap = new HashMap<>();
+    public Map<String, String[]> removeConfirmationMap = new HashMap<>();
 
     @Override
     public void onMessageReceived(@Nonnull MessageReceivedEvent event) {
@@ -43,7 +48,7 @@ public class Journal extends ListenerAdapter {
                     event.getMessage().delete().queue(delete -> {
                         event.getChannel().sendMessage("<@" + authorID + ">, you are not allowed to send Messages in this channel.").queue();
                     });
-                }else{
+                } else {
                     //get last 50 messages in journal channel
                     last50MessagesInJournalChannel = event.getChannel().getHistory().retrievePast(50).complete();
                 }
@@ -100,6 +105,29 @@ public class Journal extends ListenerAdapter {
                 }
             }
         }
+
+        //troll
+        if (event.getGuild().getId().equals("915071717901238304")) {
+            if (event.getAuthor().getId().equals("829231018191749120")) {
+                //if message contains more than 2 emotes
+                if (event.getMessage().getEmotes().size() > 2) {
+                    //if the author is not a bot
+                    if (!event.getAuthor().isBot()) {
+                        //react the message with "cringe" emojis
+                        event.getMessage().addReaction(":regional_indicator_c:").queue();
+                        event.getMessage().addReaction(":regional_indicator_r:").queue();
+                        event.getMessage().addReaction(":regional_indicator_i:").queue();
+                        event.getMessage().addReaction(":regional_indicator_n:").queue();
+                        event.getMessage().addReaction(":regional_indicator_g:").queue();
+                        event.getMessage().addReaction(":regional_indicator_e:").queue();
+                        //clown emoji
+                        event.getMessage().addReaction(":clown:").queue();
+                        //camera with flash
+                        event.getMessage().addReaction(":camera_with_flash:").queue();
+                    }
+                }
+            }
+        }
     }
 
     @Override
@@ -123,7 +151,7 @@ public class Journal extends ListenerAdapter {
             }
             //update the cached message list
             last50MessagesInJournalChannel = event.getChannel().getHistory().retrievePast(50).complete();
-        }else if (event.isFromGuild() && deleteLockOverride) {
+        } else if (event.isFromGuild() && deleteLockOverride) {
             deleteLockOverride = false;
         }
     }
@@ -138,6 +166,82 @@ public class Journal extends ListenerAdapter {
 
     @Override
     public void onMessageReactionAdd(@Nonnull MessageReactionAddEvent event) {
+        if (Objects.requireNonNull(event.getUser()).isBot()) return;
+        if (!event.isFromGuild()) {
+            if (addConfirmationMap.containsKey(event.getUser().getId())) {
+                if (addConfirmationMap.get(event.getUser().getId())[0].equals(event.getMessageId())) {
+                    event.retrieveMessage().queue(message ->
+                            message.getReactions().forEach(reaction -> {
+                                //check if the author reacted with the correct emoji
+                                reaction.retrieveUsers().queue(users -> {
+                                    if (users.contains(event.getUser())) {
+                                        if (reaction.getReactionEmote().getName().equalsIgnoreCase("✅")) {
+                                            String userID = addConfirmationMap.get(event.getUser().getId())[2];
+                                            Guild guild = Objects.requireNonNull(SomeDiscordBot.instance.jda.getGuildById(addConfirmationMap.get(event.getUser().getId())[1]));
+                                            //if user exists, add to sudoers
+                                            SomeDiscordBot.instance.overrideSudoersRoleProtection = true;
+                                            guild.addRoleToMember(Objects.requireNonNull(guild.getMemberById(userID)),
+                                                    Objects.requireNonNull(guild.getRoleById(SomeDiscordBot.instance.configs.sudoersRankIDs.get(guild.getId())))).queue();
+                                            //dm the member that they were added to sudoers
+                                            message.getChannel().sendMessage(Objects.requireNonNull(guild.getMemberById(userID)).getAsMention() + " has been added to the sudoers list on '" + guild.getName() + "'.").queue();
+                                            Objects.requireNonNull(guild.getMemberById(userID)).getUser().openPrivateChannel().queue(privateChannel1 ->
+                                                    privateChannel1.sendMessage("You have been added to the sudoers list on '" + guild.getName() + "'.").queue());
+                                            addConfirmationMap.remove(event.getUser().getId(), new String[]{event.getMessageId(), guild.getId()});
+                                        }
+                                    }
+                                });
+                            }));
+                } else if (removeConfirmationMap.containsKey(event.getUser().getId())) {
+                    if (removeConfirmationMap.get(event.getUser().getId())[0].equals(event.getMessageId())) {
+                        event.retrieveMessage().queue(message ->
+                                message.getReactions().forEach(reaction -> {
+                                    //check if the author reacted with the correct emoji
+                                    reaction.retrieveUsers().queue(users -> {
+                                        if (users.contains(event.getUser())) {
+                                            if (reaction.getReactionEmote().getName().equalsIgnoreCase("✅")) {
+                                                String userID = removeConfirmationMap.get(event.getUser().getId())[2];
+                                                Guild guild = Objects.requireNonNull(SomeDiscordBot.instance.jda.getGuildById(removeConfirmationMap.get(event.getUser().getId())[1]));
+                                                //if user exists, remove from sudoers
+                                                SomeDiscordBot.instance.overrideSudoersRoleProtection = true;
+                                                guild.removeRoleFromMember(Objects.requireNonNull(guild.getMemberById(userID)),
+                                                        Objects.requireNonNull(guild.getRoleById(SomeDiscordBot.instance.configs.sudoersRankIDs.get(guild.getId())))).queue();
+                                                //dm the member that they were removed from sudoers
+                                                message.getChannel().sendMessage(Objects.requireNonNull(guild.getMemberById(userID)).getAsMention() + " has been removed from the sudoers list on '" + guild.getName() + "'.").queue();
+                                                Objects.requireNonNull(guild.getMemberById(userID)).getUser().openPrivateChannel().queue(privateChannel1 ->
+                                                        privateChannel1.sendMessage("You have been removed from the sudoers list on '" + guild.getName() + "'.").queue());
+                                                removeConfirmationMap.remove(event.getUser().getId(), new String[]{event.getMessageId(), guild.getId()});
+                                            }
+                                        }
+                                    });
+                                }));
+                    }
+                }
+            } else if (removeConfirmationMap.containsKey(event.getUser().getId())) {
+                if (removeConfirmationMap.get(event.getUser().getId())[0].equals(event.getMessageId())) {
+                    event.retrieveMessage().queue(message ->
+                            message.getReactions().forEach(reaction -> {
+                                //check if the author reacted with the correct emoji
+                                reaction.retrieveUsers().queue(users -> {
+                                    if (users.contains(event.getUser())) {
+                                        if (reaction.getReactionEmote().getName().equalsIgnoreCase("✅")) {
+                                            String userID = removeConfirmationMap.get(event.getUser().getId())[2];
+                                            Guild guild = Objects.requireNonNull(SomeDiscordBot.instance.jda.getGuildById(removeConfirmationMap.get(event.getUser().getId())[1]));
+                                            //if user exists, remove from sudoers
+                                            SomeDiscordBot.instance.overrideSudoersRoleProtection = true;
+                                            guild.removeRoleFromMember(Objects.requireNonNull(guild.getMemberById(userID)),
+                                                    Objects.requireNonNull(guild.getRoleById(SomeDiscordBot.instance.configs.sudoersRankIDs.get(guild.getId())))).queue();
+                                            //dm the member that they were removed from sudoers
+                                            message.getChannel().sendMessage(Objects.requireNonNull(guild.getMemberById(userID)).getAsMention() + " has been removed from the sudoers list on '" + guild.getName() + "'.").queue();
+                                            Objects.requireNonNull(guild.getMemberById(userID)).getUser().openPrivateChannel().queue(privateChannel1 ->
+                                                    privateChannel1.sendMessage("You have been removed from the sudoers list on '" + guild.getName() + "'.").queue());
+                                            removeConfirmationMap.remove(event.getUser().getId(), new String[]{event.getMessageId(), guild.getId()});
+                                        }
+                                    }
+                                });
+                            }));
+                }
+            }
+        }
     }
 
     @Override
@@ -172,16 +276,19 @@ public class Journal extends ListenerAdapter {
             }
         }
         //System.out.println("added roles to member " + event.getMember().getId() + " on guild " + event.getGuild().getId());
-        if (SomeDiscordBot.instance.overrideRoleAddProtection) return;
-        for (Role added : event.getRoles()) {
-            String roleId = SomeDiscordBot.instance.configs.sudoersRankIDs.get(event.getGuild().getId());
-            if (added.getId().equals(roleId)) {
-                event.getGuild().removeRoleFromMember(event.getMember(), added).queue(success -> {
-                    Objects.requireNonNull(event.getGuild().getTextChannelById(SomeDiscordBot.instance.configs.journalChannels.get(event.getGuild().getId())))
-                            .sendMessage("You cannot add the <@&" + roleId + "> role by yourself. Please contact a person with the role to add it for you.").queue();
-                    SomeDiscordBot.instance.overrideRoleAddProtection = false;
-                });
+        if (!SomeDiscordBot.instance.overrideSudoersRoleProtection) {
+            for (Role added : event.getRoles()) {
+                String roleId = SomeDiscordBot.instance.configs.sudoersRankIDs.get(event.getGuild().getId());
+                if (added.getId().equals(roleId)) {
+                    SomeDiscordBot.instance.overrideSudoersRoleProtection = true;
+                    event.getGuild().removeRoleFromMember(event.getMember(), added).queue(success -> {
+                        Objects.requireNonNull(event.getGuild().getTextChannelById(SomeDiscordBot.instance.configs.journalChannels.get(event.getGuild().getId())))
+                                .sendMessage("You cannot add the <@&" + roleId + "> role by yourself. Please contact a person with the role to add it for you.").queue();
+                    });
+                }
             }
+        }else{
+            SomeDiscordBot.instance.overrideSudoersRoleProtection = false;
         }
 
         //prevent any roles from being added to the bot
@@ -192,7 +299,7 @@ public class Journal extends ListenerAdapter {
                 event.getGuild().removeRoleFromMember(event.getMember(), added).queue();
                 roleLockOverride = true;
             }
-        }else{
+        } else {
             roleLockOverride = false;
         }
     }
@@ -228,6 +335,22 @@ public class Journal extends ListenerAdapter {
         } else {
             roleLockOverride = false;
         }
+
+        if (!SomeDiscordBot.instance.overrideSudoersRoleProtection){
+            for (Role removed : event.getRoles()) {
+                String roleId = SomeDiscordBot.instance.configs.sudoersRankIDs.get(event.getGuild().getId());
+                if (removed.getId().equals(roleId)) {
+                    SomeDiscordBot.instance.overrideSudoersRoleProtection = true;
+                    event.getGuild().addRoleToMember(event.getMember(), removed).queue(success -> {
+                        Objects.requireNonNull(event.getGuild().getTextChannelById(SomeDiscordBot.instance.configs.journalChannels.get(event.getGuild().getId())))
+                                .sendMessage("You cannot remove the <@&" + roleId + "> role by using Discord alone.").queue();
+                    });
+                }
+            }
+        }else{
+            SomeDiscordBot.instance.overrideSudoersRoleProtection = false;
+        }
+
     }
 
     @Override

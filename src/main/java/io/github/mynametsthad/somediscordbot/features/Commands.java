@@ -15,8 +15,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class Commands extends ListenerAdapter {
     @Override
@@ -192,68 +190,17 @@ public class Commands extends ListenerAdapter {
                                                 //if the author reacts with the correct emoji, remove from sudoers
                                                 message.addReaction("✅").queue();
                                                 message.addReaction("❌").queue();
-                                                //wait for 10 seconds
-                                                new Timer().scheduleAtFixedRate(new TimerTask() {
-                                                    @Override
-                                                    public void run() {
-                                                        System.out.println("waiting");
-                                                        //check if the author reacted with the correct emoji
-                                                        message.getReactions().forEach(reaction ->
-                                                                reaction.retrieveUsers().queue(users -> {
-                                                                    if (users.contains(event.getAuthor())) {
-                                                                        if (reaction.getReactionEmote().getName().equalsIgnoreCase("✅")) {
-                                                                            //if user exists, add to sudoers
-                                                                            event.getGuild().addRoleToMember(Objects.requireNonNull(event.getGuild().getMemberById(userID)),
-                                                                                    Objects.requireNonNull(event.getGuild().getRoleById(SomeDiscordBot.instance.configs.sudoersRankIDs.get(event.getGuild().getId())))).queue();
-                                                                            //dm the member that they were added to sudoers
-                                                                            privateChannel.sendMessage(Objects.requireNonNull(event.getGuild().getMemberById(userID)).getAsMention() + " has been added to the sudoers list on '" + event.getGuild().getName() + "'.").queue();
-                                                                            Objects.requireNonNull(event.getGuild().getMemberById(userID)).getUser().openPrivateChannel().queue(privateChannel1 ->
-                                                                                    privateChannel1.sendMessage("You have been added to the sudoers list on '" + event.getGuild().getName() + "'.").queue());
-                                                                            //stop the timer
-                                                                            this.cancel();
-                                                                        }
-                                                                    }
-                                                                }));
-                                                    }
-                                                }, 1000, 1000);
+                                                SomeDiscordBot.instance.journal.addConfirmationMap.put(privateChannel.getUser().getId(), new String[]{message.getId(), event.getGuild().getId(), userID});
                                             }));
                                 }
                             } else if (args[2].equalsIgnoreCase("remove")) {
                                 if (args.length > 3) {
-                                    //dm the user with a confirmation prompt
-                                    //send a message directly to the user
-                                    //if the user confirms, remove from sudoers
-                                    //if the user denies, do nothing
                                     String userID = args[3].substring(3, args[3].length() - 1);
                                     event.getAuthor().openPrivateChannel().queue(privateChannel ->
                                             privateChannel.sendMessage("Are you sure you want to remove " + Objects.requireNonNull(event.getGuild().getMemberById(userID)).getAsMention() + " from the sudoers list?\n" + event.getAuthor().getAsMention()).queue(message -> {
-                                                //if the author reacts with the correct emoji, remove from sudoers
                                                 message.addReaction("✅").queue();
                                                 message.addReaction("❌").queue();
-                                                //wait for 10 seconds
-                                                new Timer("boi").scheduleAtFixedRate(new TimerTask() {
-                                                    @Override
-                                                    public void run() {
-                                                        System.out.println("waiting");
-                                                        //check if the author reacted with the correct emoji
-                                                        message.getReactions().forEach(reaction ->
-                                                                reaction.retrieveUsers().queue(users -> {
-                                                                    if (users.contains(event.getAuthor())) {
-                                                                        if (reaction.getReactionEmote().getName().equalsIgnoreCase("✅")) {
-                                                                            //if user exists, remove from sudoers
-                                                                            event.getGuild().removeRoleFromMember(Objects.requireNonNull(event.getGuild().getMemberById(userID)),
-                                                                                    Objects.requireNonNull(event.getGuild().getRoleById(SomeDiscordBot.instance.configs.sudoersRankIDs.get(event.getGuild().getId())))).queue();
-                                                                            //dm the member that they were removed from sudoers
-                                                                            privateChannel.sendMessage(Objects.requireNonNull(event.getGuild().getMemberById(userID)).getAsMention() + " has been removed from the sudoers list on '" + event.getGuild().getName() + "'.").queue();
-                                                                            Objects.requireNonNull(event.getGuild().getMemberById(userID)).getUser().openPrivateChannel().queue(privateChannel1 ->
-                                                                                    privateChannel1.sendMessage("You have been removed from the sudoers list on '" + event.getGuild().getName() + "'.").queue());
-                                                                            //stop the timer
-                                                                            this.cancel();
-                                                                        }
-                                                                    }
-                                                                }));
-                                                    }
-                                                }, 1000, 1000);
+                                                SomeDiscordBot.instance.journal.removeConfirmationMap.put(privateChannel.getUser().getId(), new String[]{message.getId(), event.getGuild().getId(), userID});
                                             }));
                                 }
                             }
@@ -289,7 +236,7 @@ public class Commands extends ListenerAdapter {
                                                         [:white_check_mark:] Created `sudoers` role
                                                         [ ] Adding `sudoers` role to requested user...
                                                         [ ] Adding server-specific configurations...""").queue();
-                                                SomeDiscordBot.instance.overrideRoleAddProtection = true;
+                                                SomeDiscordBot.instance.overrideSudoersRoleProtection = true;
                                                 event.getGuild().addRoleToMember(Objects.requireNonNull(event.getMember()), Objects.requireNonNull(event.getGuild().getRoleById(role.getId())))
                                                         .queue(nextstep1 -> response.editMessage("""
                                                                 Initializing guild...
@@ -490,7 +437,7 @@ public class Commands extends ListenerAdapter {
                     }
                     event.getMessage().reply("Rules:\n" + rules).queue();
                 }
-                //if they are not sudoers and they try to add/remove rules, tell them they are not sudoers
+                //if they are not sudoers, and they try to add/remove rules, tell them they are not sudoers
                 else if (!isSudoersRole && (args[1].equalsIgnoreCase("add") || args[1].equalsIgnoreCase("remove"))) {
                     event.getMessage().reply("You do not have the <@&" + SomeDiscordBot.instance.configs.sudoersRankIDs.get(event.getGuild().getId()) + "> role. Please contact them instead.").queue();
                 }
