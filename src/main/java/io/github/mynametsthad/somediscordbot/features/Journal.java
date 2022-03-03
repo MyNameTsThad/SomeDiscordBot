@@ -110,21 +110,16 @@ public class Journal extends ListenerAdapter {
         if (event.getGuild().getId().equals("915071717901238304")) {
             if (event.getAuthor().getId().equals("829231018191749120")) {
                 //if message contains more than 2 emotes
-                if (event.getMessage().getEmotes().size() > 2) {
-                    //if the author is not a bot
-                    if (!event.getAuthor().isBot()) {
-                        //react the message with "cringe" emojis
-                        event.getMessage().addReaction(":regional_indicator_c:").queue();
-                        event.getMessage().addReaction(":regional_indicator_r:").queue();
-                        event.getMessage().addReaction(":regional_indicator_i:").queue();
-                        event.getMessage().addReaction(":regional_indicator_n:").queue();
-                        event.getMessage().addReaction(":regional_indicator_g:").queue();
-                        event.getMessage().addReaction(":regional_indicator_e:").queue();
-                        //clown emoji
-                        event.getMessage().addReaction(":clown:").queue();
-                        //camera with flash
-                        event.getMessage().addReaction(":camera_with_flash:").queue();
-                    }
+                if (event.getMessage().getEmotes().size() >= 1) {
+                    //react the message with "cringe" emojis
+                    event.getMessage().addReaction(":regional_indicator_e:").queue();
+                    event.getMessage().addReaction(":regional_indicator_m:").queue();
+                    event.getMessage().addReaction(":regional_indicator_o:").queue();
+                    event.getMessage().addReaction(":regional_indicator_j:").queue();
+                    event.getMessage().addReaction(":regional_indicator_i:").queue();
+                    event.getMessage().addReaction(":regional_indicator_s:").queue();
+                    event.getMessage().addReaction(":clown:").queue();
+                    event.getMessage().addReaction(":camera_with_flash:").queue();
                 }
             }
         }
@@ -287,7 +282,7 @@ public class Journal extends ListenerAdapter {
                     });
                 }
             }
-        }else{
+        } else {
             SomeDiscordBot.instance.overrideSudoersRoleProtection = false;
         }
 
@@ -336,7 +331,7 @@ public class Journal extends ListenerAdapter {
             roleLockOverride = false;
         }
 
-        if (!SomeDiscordBot.instance.overrideSudoersRoleProtection){
+        if (!SomeDiscordBot.instance.overrideSudoersRoleProtection) {
             for (Role removed : event.getRoles()) {
                 String roleId = SomeDiscordBot.instance.configs.sudoersRankIDs.get(event.getGuild().getId());
                 if (removed.getId().equals(roleId)) {
@@ -347,7 +342,7 @@ public class Journal extends ListenerAdapter {
                     });
                 }
             }
-        }else{
+        } else {
             SomeDiscordBot.instance.overrideSudoersRoleProtection = false;
         }
 
