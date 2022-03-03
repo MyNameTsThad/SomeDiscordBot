@@ -112,15 +112,16 @@ public class Journal extends ListenerAdapter {
                 //if message contains more than 2 emotes
                 if (event.getMessage().getEmotes().size() >= 1) {
                     //react the message with "cringe" emojis
-                    event.getMessage().addReaction(":regional_indicator_e:").queue();
-                    event.getMessage().addReaction(":regional_indicator_m:").queue();
-                    event.getMessage().addReaction(":regional_indicator_o:").queue();
-                    event.getMessage().addReaction(":regional_indicator_j:").queue();
-                    event.getMessage().addReaction(":regional_indicator_i:").queue();
-                    event.getMessage().addReaction(":regional_indicator_s:").queue();
-                    event.getMessage().addReaction(":clown:").queue();
-                    event.getMessage().addReaction(":camera_with_flash:").queue();
+                    event.getMessage().addReaction("\uD83C\uDDEA").queue();
+                    event.getMessage().addReaction("\uD83C\uDDF2").queue();
+                    event.getMessage().addReaction("\uD83C\uDDF4").queue();
+                    event.getMessage().addReaction("\uD83C\uDDEF").queue();
+                    event.getMessage().addReaction("\uD83C\uDDEE").queue();
+                    event.getMessage().addReaction("\uD83C\uDDF8").queue();
+                    event.getMessage().addReaction("\uD83E\uDD21").queue();
+                    event.getMessage().addReaction("\uD83D\uDCF8").queue();
                 }
+                System.out.println("cringe");
             }
         }
     }
