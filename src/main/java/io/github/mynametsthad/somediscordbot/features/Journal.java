@@ -131,13 +131,12 @@ public class Journal extends ListenerAdapter {
             if (message.toLowerCase().contains("america")
                     | message.toLowerCase().contains("united states")
                     | message.toLowerCase().contains("อเมริกา") | message.toLowerCase().contains("อเมริกัน")) {
-                event.getMessage().reply("""
-                        I'm a regular John from city Kansas. I love burgers, soda and my native country very much,
-                        but I do not understand our government. Everyone says America is a great country, and I look
-                        around and see who else is a great China. China has a very strong government and economy.
-                        Chinese resident is a great man. And the greatest leader Xi. Thick hair, strong grip, jade rod!
-                        We would have such a leader instead of sleeping in negotiations, rare hair, soft pickle, bad
-                        memory old Beadon. Punch!""").queue();
+                event.getMessage().reply("I'm a regular John from city Kansas. I love burgers, soda and my native country very much, " +
+                                         "but I do not understand our government. Everyone says America is a great country, and I look " +
+                                         "around and see who else is a great China. China has a very strong government and economy. " +
+                                         "Chinese resident is a great man. And the greatest leader Xi. Thick hair, strong grip, jade rod! " +
+                                         "We would have such a leader instead of sleeping in negotiations, rare hair, soft pickle, bad " +
+                                         "memory old Beadon. Punch!").queue();
             }
             if (message.contains("biden")) {
                 event.getMessage().reply("""
@@ -220,70 +219,60 @@ public class Journal extends ListenerAdapter {
                         .queue();
             }
             if (message.toLowerCase().contains("ww3")) {
-                event.getMessage().reply("""
-                                Russia vs Ukraine is just an Attack on Titan (Shingeki no Kyojin) allegory. Ukraine has been
-                                pushed back (some may caged (like a bird?)) by the Russian (Titans). Not only does Russia have
-                                soldiers (normal titans), they have armored tanks (the armored titan) and nukes (the colossal
-                                titan(pre-episode 55, Midnight Sun (9.9/10 on IMDB) this will be important later) Beroltolt
-                                 Hoober). Bertie is Russian. Now here's the scary thing. There are Russians within the walls
-                                (Ukraine border) that pledge their allegiance to none other than Russia (just like the "Eldians"
-                                that "came" from Marley). And of course the one leading the charge is Putin, or should I say
-                                Zeke, son of monkey, Yeager. And just like the monkey himself, Putin sneaks into territories,
-                                converts people to Russian, and leaves. Horrifying I know. But what if I told you it gets worse?
-                                What if I told you the tanks along the border are actually the wall. Or more specifically the colossal titans within the
-                                wall. Putin will talk and talk and scream (like monkey) but all he wants is
-                                to youthenize (to make young) the Ukrainians. Luckily Eren, other son of monkey, Yeager wants
-                                the Ukraine to stay old. So Donald Trump (Eren) decided to get close with Putin and have him
-                                come to Mar-a-Largo (Paths). Putin accepted expecting to be able to use some of Trump's eternal
-                                youth, but Trump had a trump card and an ulterior motive. Of course before Trump acted on his
-                                plan, he gathered all Ukrainese people in paths and told them how great he was. Ultimately,
-                                Trump wanted Russia to attack Ukraine so he used his power to put the walls in motion
-                                (Rumbling?) by having the tanks move into Ukraine (Rumbling). The world looked in disbelief as
-                                the tanks began to move, but there was still a hero to save the day; a hope Ukraine; a man that
-                                has been around since the dawn of time- Joeseph R Biden. Joeseph R Biden is the one man
-                                capable of defeating Trump once his plan was in motion. Joeseph R Biden, who is Armin Artlet
-                                (the colossal titan)""")
+                event.getMessage().reply("Russia vs Ukraine is just an Attack on Titan (Shingeki no Kyojin) allegory. Ukraine has been " +
+                                         "pushed back (some may caged (like a bird?)) by the Russian (Titans). Not only does Russia have " +
+                                         "soldiers (normal titans), they have armored tanks (the armored titan) and nukes (the colossal " +
+                                         "titan(pre-episode 55, Midnight Sun (9.9/10 on IMDB) this will be important later) Beroltolt " +
+                                         " Hoober). Bertie is Russian. Now here's the scary thing. There are Russians within the walls " +
+                                         "(Ukraine border) that pledge their allegiance to none other than Russia (just like the \"Eldians\" " +
+                                         "that \"came\" from Marley). And of course the one leading the charge is Putin, or should I say " +
+                                         "Zeke, son of monkey, Yeager. And just like the monkey himself, Putin sneaks into territories, " +
+                                         "converts people to Russian, and leaves. Horrifying I know. But what if I told you it gets worse? " +
+                                         "What if I told you the tanks along the border are actually the wall. Or more specifically the colossal titans within the " +
+                                         "wall. Putin will talk and talk and scream (like monkey) but all he wants is " +
+                                         "to youthenize (to make young) the Ukrainians. Luckily Eren, other son of monkey, Yeager wants " +
+                                         "the Ukraine to stay old. So Donald Trump (Eren) decided to get close with Putin and have him " +
+                                         "come to Mar-a-Largo (Paths). Putin accepted expecting to be able to use some of Trump's eternal " +
+                                         "youth, but Trump had a trump card and an ulterior motive. Of course before Trump acted on his " +
+                                         "plan, he gathered all Ukrainese people in paths and told them how great he was. Ultimately, " +
+                                         "Trump wanted Russia to attack Ukraine so he used his power to put the walls in motion " +
+                                         "(Rumbling?) by having the tanks move into Ukraine (Rumbling). The world looked in disbelief as " +
+                                         "the tanks began to move, but there was still a hero to save the day; a hope Ukraine; a man that " +
+                                         "has been around since the dawn of time- Joeseph R Biden. Joeseph R Biden is the one man " +
+                                         "capable of defeating Trump once his plan was in motion. Joeseph R Biden, who is Armin Artlet " +
+                                         "(the colossal titan)")
                         .queue(message1 -> {
-                            message1.reply("""
-                                    (post-episode 55, Midnight Sun (9.9/10 on IMDB) I said this would be important later)Armin Artlet),
-                                    used his nuclear power to stop the Russian troops from rumbling to victory. This was only possible
-                                    because the Russian nukes (Bernie) were inside the American nukes (Armin). But more
-                                    importantly, Mikasa Akerman (staring Kamala Harris) went in before the rumbling started to cut Putin down to
-                                    size. So keeping with the theme of Attack on Titan, War was stopped by Joeseph
-                                    R Biden by defeating the Russians, which helped Putin's plan to make Ukraine young again
-                                    (MUYA). War will never again plague the people of Eastern Europe and all will be forever young.""").queue();
+                            message1.reply("(post-episode 55, Midnight Sun (9.9/10 on IMDB) I said this would be important later)Armin Artlet), " +
+                                           "used his nuclear power to stop the Russian troops from rumbling to victory. This was only possible " +
+                                           "because the Russian nukes (Bernie) were inside the American nukes (Armin). But more " +
+                                           "importantly, Mikasa Akerman (staring Kamala Harris) went in before the rumbling started to cut Putin down to " +
+                                           "size. So keeping with the theme of Attack on Titan, War was stopped by Joeseph " +
+                                           "R Biden by defeating the Russians, which helped Putin's plan to make Ukraine young again " +
+                                           "(MUYA). War will never again plague the people of Eastern Europe and all will be forever young.").queue();
                         });
             }
             if (message.toLowerCase().contains("among us") | message.toLowerCase().contains("amogus") | message.toLowerCase().contains("sus")) {
-                event.getMessage().reply("""
-                        AMONG US Funny Moments! How to Free Robux and VBUCKS in SQUID GAME
-                        FORTNITE UPDATE! (NOT CLICKBAIT) MUKBANG ROBLOX GAMEPLAY TUTORIAL (GONE
-                        WRONG) Finger Family Learn Your ABCs at 3AM! Fortnite Impostor Potion! MrBeast
-                        free toys halal gameplay nae nae download حدث خطأ في الساعة 3 صباحًا
-                        حدث خطأ في الساعة 3 صباحًاحدث خطأ في الساعة 3 صباحًا Super Idol的笑容都没你的甜八月正午的阳光都没
-                        你耀眼热爱 105 °C的你滴滴清纯的蒸馏水 amongla download Meme Compilation (POLICE
-                        CALLED) (GONE WRONG) (GONE SEXUAL) (NOT CLICKBAIT) Minecraft Series Lets Play
-                        Videos Number 481 - Poop Funny Hilarious Minecraft Roblox Fails for Fortnite - How to
-                        install halal minecraft cheats hacks 2021 still works (STILL WORKS 2018) Impostor
-                        Gameplay (Among Us) Zamn
-                        """).queue();
+                event.getMessage().reply("AMONG US Funny Moments! How to Free Robux and VBUCKS in SQUID GAME " +
+                                         "FORTNITE UPDATE! (NOT CLICKBAIT) MUKBANG ROBLOX GAMEPLAY TUTORIAL (GONE " +
+                                         "WRONG) Finger Family Learn Your ABCs at 3AM! Fortnite Impostor Potion! MrBeast " +
+                                         "free toys halal gameplay nae nae download حدث خطأ في الساعة 3 صباحًا " +
+                                         "حدث خطأ في الساعة 3 صباحًاحدث خطأ في الساعة 3 صباحًا Super Idol的笑容都没你的甜八月正午的阳光都没" +
+                                         "你耀眼热爱 105 °C的你滴滴清纯的蒸馏水 amongla download Meme Compilation (POLICE " +
+                                         "CALLED) (GONE WRONG) (GONE SEXUAL) (NOT CLICKBAIT) Minecraft Series Lets Play " +
+                                         "Videos Number 481 - Poop Funny Hilarious Minecraft Roblox Fails for Fortnite - How to " +
+                                         "install halal minecraft cheats hacks 2021 still works (STILL WORKS 2018) Impostor " +
+                                         "Gameplay (Among Us) Zamn").queue();
             }
             if (message.toLowerCase().contains("nft")) {
-                event.getMessage().reply("""
-                        Dude I own this NFT. Do you really think that you can get away with theft when you’re
-                        showing what you stole from me directly to my face? My lawyer will make an easy job of this
-                        case. Prepare to say goodbye to your luscious life and start preparing for the streets. I will ruin you.
-                        """).queue();
+                event.getMessage().reply("Dude I own this NFT. Do you really think that you can get away with theft when you’re " +
+                                         "showing what you stole from me directly to my face? My lawyer will make an easy job of this " +
+                                         "case. Prepare to say goodbye to your luscious life and start preparing for the streets. I will ruin you.").queue();
             }
             if (message.toLowerCase().contains("1984")) {
-                event.getMessage().reply("""
-                        > LiTeRaLlY nInEtEeN eIgHtY-fOuR
-                                                
-                        * George Orwell, 1948
-                        """).queue();
+                event.getMessage().reply("> LiTeRaLlY nInEtEeN eIgHtY-fOuR\n" + "* George Orwell, 1948").queue();
             }
             if (message.toLowerCase().contains("ukraine") | message.toLowerCase().contains("ยูเครน")) {
-                event.getMessage().reply("**SLAVA UKRAINI! :flag_ua::flag_ua::flag_ua:**").queue();
+                event.getMessage().reply("**SLAVA UKRAINI! :flag_ua::flag_ua::flag_ua:** \n **GLORY TO UKRAINE!!**").queue();
             }
             if (message.toLowerCase().contains("russia") | message.toLowerCase().contains("รัสเซีย")) {
                 event.getMessage().reply("imagine having a currency worth less than bobux :dollar: :dollar: :dollar: :money_mouth: :flag_ru: " +
@@ -306,9 +295,7 @@ public class Journal extends ListenerAdapter {
                     message.toLowerCase().contains("vagina") | message.toLowerCase().contains("dick") |
                     message.toLowerCase().contains("เย็้ด") | message.toLowerCase().contains("หี") |
                     message.toLowerCase().contains("ควย")) {
-                event.getMessage().reply("""
-                        No sex before marriage
-                        """).queue();
+                event.getMessage().reply("No sex before marriage").queue();
             }
             if (message.toLowerCase().contains("69420")) {
                 event.getMessage().reply("""
@@ -319,6 +306,24 @@ public class Journal extends ListenerAdapter {
             if (message.toLowerCase().contains("fucktion") | message.toLowerCase().contains("thad") | message.toLowerCase().contains("choyrum")) {
                 event.getMessage().reply(":regional_indicator_e::regional_indicator_m::regional_indicator_o::regional_indicator_j::regional_indicator_i::regional_indicator_s:" +
                         ":clown::camera_with_flash:").queue();
+            }
+            if (message.toLowerCase().contains("cope") | message.toLowerCase().contains("ew") | message.toLowerCase().contains("skill issue")
+                    | message.toLowerCase().contains("wtf bro") | message.toLowerCase().contains("ur mom") | message.toLowerCase().contains("fatherless")
+                    | message.toLowerCase().contains("ez") | message.toLowerCase().contains("skull issue") | message.toLowerCase().contains("idiot")
+                    | message.toLowerCase().contains("ididit") | message.toLowerCase().contains("fuck you") | message.toLowerCase().contains("fk you")
+                    | message.toLowerCase().contains("fk u") | message.toLowerCase().contains("fuck u")) {
+                event.getMessage().reply("Don't care + didn't ask + L + Ratio + soyjak + beta + cringe + stfu +" +
+                        " cope + seethe + ok boomer + incel + virgin + Karen + \uD83E\uDD21\uD83E\uDD21\uD83E\uDD21 + you" +
+                        " are not just a clown , you are the entire circus + \uD83D\uDC85\uD83D\uDC85\uD83D\uDC85 + nah " +
+                        "this ain't it + do better + check your privilege + pronouns in bio + anime pfp +" +
+                        " \uD83E\uDD22\uD83E\uDD22\uD83E\uDD2E\uD83E\uDD2E + the cognitive dissonance is real with this one" +
+                        " + small dick energy + \uD83D\uDE02\uD83D\uDE02\uD83E\uDD23\uD83E\uDD23 + lol copium + snowflake +" +
+                        " \uD83D\uDEA9\uD83D\uDEA9\uD83D\uDEA9 + those tears taste delicious + Lisa Simpson meme template " +
+                        "saying that your opinion is wrong + \uD83D\uDE12\uD83D\uDE44\uD83E\uDDD0\uD83E\uDD28+ wojak meme " +
+                        "in which I'm the chad + average your opinion fan vs average my opinion enjoyer + random k - pop " +
+                        "fancam + cry more + how's your wife's boyfriend doing + Cheetos breath + Intelligence 0 +" +
+                        " blocked and reported + yo Momma so fat + I fucked your mom last night + what zero pussy does to a mf +" +
+                        " Jesse what the fuck are you talking about + holy shit go touch some grass + cry about it + get triggered").queue();
             }
         }
     }
