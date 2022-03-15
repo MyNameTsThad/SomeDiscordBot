@@ -19,11 +19,11 @@ import javax.security.auth.login.LoginException;
 public class SomeDiscordBot {
     public static final String NAME = "Some Discord Bot";
     public static final String SHORTNAME = "SomeDiscordBot";
-    public static final String VERSION = "1.1.0";
+    public static final String VERSION = "1.1.0-1";
     public static final int VERSION_ID = 5;
     public static final String TOKEN = ""; //token here
 
-    public static final boolean devMode = true;
+    public static final boolean devMode = false;
 
     public static SomeDiscordBot instance;
     public Logger logger = LoggerFactory.getLogger(SomeDiscordBot.class);
