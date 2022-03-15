@@ -7,7 +7,7 @@ plugins {
 
 mainClassName = "io.github.mynametsthad.somediscordbot.SomeDiscordBot"
 group 'io.github.mynametsthad'
-version '1.2.0'
+version '1.2.0-1'
 
 repositories {
     mavenCentral()
