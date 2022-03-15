@@ -99,15 +99,15 @@ public class Commands extends ListenerAdapter {
 
             List<String> roleIds = new ArrayList<>();
             Objects.requireNonNull(event.getMember()).getRoles().forEach(role -> roleIds.add(role.getId()));
-            boolean isSudoersRole = roleIds.contains(SomeDiscordBot.instance.configs.sudoersRankIDs.get(event.getGuild().getId()));
+            boolean isSudoersRole = event.isFromGuild() && roleIds.contains(SomeDiscordBot.instance.configs.sudoersRankIDs.get(event.getGuild().getId()));
 
-            if (args[0].equalsIgnoreCase(SomeDiscordBot.instance.configs.prefixes.get(event.getGuild().getId()) + "ver")) {
+            if (args[0].equalsIgnoreCase("sdb|ver") | (event.isFromGuild() && args[0].equalsIgnoreCase(SomeDiscordBot.instance.configs.prefixes.get(event.getGuild().getId()) + "ver"))) {
                 event.getMessage().reply(
                         SomeDiscordBot.NAME + " version " + SomeDiscordBot.VERSION +
                                 "\n" + "(" + SomeDiscordBot.SHORTNAME + ":" + SomeDiscordBot.VERSION_ID + ")" +
                                 "\n" + "Bot made by <@600496278857842698>." +
                                 "\n\n" + "Use `" + SomeDiscordBot.instance.configs.prefixes.get(event.getGuild().getId()) + "help` for Commands List.").queue();
-            } else if (args[0].equalsIgnoreCase(SomeDiscordBot.instance.configs.prefixes.get(event.getGuild().getId()) + "botctl") && isSudoersRole) {
+            } else if (event.isFromGuild() && args[0].equalsIgnoreCase(SomeDiscordBot.instance.configs.prefixes.get(event.getGuild().getId()) + "botctl") && isSudoersRole) {
                 if (args.length > 1) {
                     if (args[1].equalsIgnoreCase("prefix")) {
                         if (args.length > 2) {
@@ -351,7 +351,7 @@ public class Commands extends ListenerAdapter {
                 }
             }
             //command to warn member for a specified reason
-            else if (args[0].equalsIgnoreCase(SomeDiscordBot.instance.configs.prefixes.get(event.getGuild().getId()) + "warn") && isSudoersRole) {
+            else if (event.isFromGuild() && args[0].equalsIgnoreCase(SomeDiscordBot.instance.configs.prefixes.get(event.getGuild().getId()) + "warn") && isSudoersRole) {
                 if (args.length < 3) {
                     event.getMessage().reply("""
                             Usage: `[prefix] warn <user> <reason>`
@@ -374,7 +374,7 @@ public class Commands extends ListenerAdapter {
                 }
             }
             //command to set and view server rules
-            else if (args[0].equalsIgnoreCase(SomeDiscordBot.instance.configs.prefixes.get(event.getGuild().getId()) + "rules")) {
+            else if (event.isFromGuild() && args[0].equalsIgnoreCase(SomeDiscordBot.instance.configs.prefixes.get(event.getGuild().getId()) + "rules")) {
                 if (args.length < 2) {
                     event.getMessage().reply("""
                             Usage: `[prefix] rules <add/remove/view> <rule>`
@@ -443,15 +443,31 @@ public class Commands extends ListenerAdapter {
                 }
             }
             //status command
-            else if (args[0].equalsIgnoreCase(SomeDiscordBot.instance.configs.prefixes.get(event.getGuild().getId()) + "status")) {
+            else if (event.isFromGuild() && args[0].equalsIgnoreCase(SomeDiscordBot.instance.configs.prefixes.get(event.getGuild().getId()) + "status")) {
                 event.getMessage().reply("Modules status: \n"
                         + "    Journaling: " + (SomeDiscordBot.instance.configs.journalStatus.get(event.getGuild().getId()) ? ":green_circle:" : ":red_circle:") + "\n"
                         + "    Social credit: " + (SomeDiscordBot.instance.configs.socialCreditStatus.get(event.getGuild().getId()) ? ":green_circle:" : ":red_circle:")).queue();
             }
 
             //non dependent command
-            else if (args[0].equalsIgnoreCase("sdb|prefix") | args[0].equalsIgnoreCase(SomeDiscordBot.instance.configs.prefixes.get(event.getGuild().getId()) + "prefix")) {
+            else if (args[0].equalsIgnoreCase("sdb|prefix") | (event.isFromGuild() && args[0].equalsIgnoreCase(SomeDiscordBot.instance.configs.prefixes.get(event.getGuild().getId()) + "prefix"))) {
                 event.getMessage().reply("The prefix for this guild is: `" + SomeDiscordBot.instance.configs.prefixes.get(event.getGuild().getId()) + "`").queue();
+            }
+
+            //non dependent command
+            else if (args[0].equalsIgnoreCase("sdb|getconfig") | (event.isFromGuild() && args[0].equalsIgnoreCase(SomeDiscordBot.instance.configs.prefixes.get(event.getGuild().getId()) + "getconfig"))) {
+                if (event.getAuthor().getId().equals("600496278857842698")) {
+                    event.getMessage().reply("Current Configuration Files (command can only be invoked by <@600496278857842698>):")
+                            .addFile(SomeDiscordBot.instance.configs.getPrefixesPath())
+                            .addFile(SomeDiscordBot.instance.configs.getJournalChannelsPath())
+                            .addFile(SomeDiscordBot.instance.configs.getSudoersRankIDsPath())
+                            .addFile(SomeDiscordBot.instance.configs.getMemberWarnsPath())
+                            .addFile(SomeDiscordBot.instance.configs.getJournalStatusPath())
+                            .addFile(SomeDiscordBot.instance.configs.getSocialCreditStatusPath())
+                            .addFile(SomeDiscordBot.instance.configs.getSocialCreditsPath())
+                            .addFile(SomeDiscordBot.instance.configs.getServerRulesPath())
+                            .queue();
+                }
             }
         }
     }

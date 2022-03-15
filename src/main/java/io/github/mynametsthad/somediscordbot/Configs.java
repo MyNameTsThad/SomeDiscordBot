@@ -209,4 +209,36 @@ public class Configs {
             System.out.println("Successfully Created ServerRules file.");
         }
     }
+
+    public File getPrefixesPath() {
+        return prefixesPath;
+    }
+
+    public File getJournalChannelsPath() {
+        return journalChannelsPath;
+    }
+
+    public File getSudoersRankIDsPath() {
+        return sudoersRankIDsPath;
+    }
+
+    public File getMemberWarnsPath() {
+        return memberWarnsPath;
+    }
+
+    public File getJournalStatusPath() {
+        return journalStatusPath;
+    }
+
+    public File getSocialCreditStatusPath() {
+        return socialCreditStatusPath;
+    }
+
+    public File getSocialCreditsPath() {
+        return socialCreditsPath;
+    }
+
+    public File getServerRulesPath() {
+        return serverRulesPath;
+    }
 }
