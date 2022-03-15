@@ -166,7 +166,7 @@ public class Journal extends ListenerAdapter {
                                                  
                         THIS IS WHAT THE LEFT WANT!""").queue();
             }
-            if (message.toLowerCase().contains("bitches") | message.toLowerCase().contains("กะหรี่")) {
+            if (message.toLowerCase().contains("bitches") | message.toLowerCase().contains("กะหรี่") | message.toLowerCase().contains("bitch")) {
                 event.getMessage().reply("""
                         No bitches?
                         ```
