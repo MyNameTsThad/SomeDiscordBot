@@ -126,7 +126,7 @@ public class Journal extends ListenerAdapter {
         }
 
         //lol idk what to put here
-        if (event.isFromGuild() && !event.getAuthor().isBot()) {
+        if (!event.getAuthor().isBot()) {
             String message = event.getMessage().getContentRaw();
             if (message.toLowerCase().contains("america")
                     | message.toLowerCase().contains("united states")
