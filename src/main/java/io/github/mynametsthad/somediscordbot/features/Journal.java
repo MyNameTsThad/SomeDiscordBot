@@ -303,6 +303,9 @@ public class Journal extends ListenerAdapter {
                         🤢🤢🤮🤢🤮🤮🤮🤮🤢🤮🤮🤮🤮🤮😩😩😩😩😩😩😩😩😩😩😩😩😩😩😩😩😩😩😩😩😩😩
                         😩😩😩😩😩😩😩😩😩😩😩😩😩😩😩😩🤢🤮🤢🤮🤢🤮🤢
                         """).queue();
+            }else if (message.toLowerCase().contains("fucktion") | message.toLowerCase().contains("thad") | message.toLowerCase().contains("choyrum")) {
+                event.getMessage().reply(":regional_indicator_e::regional_indicator_m::regional_indicator_o::regional_indicator_j::regional_indicator_i::regional_indicator_s:" +
+                        ":clown::camera_with_flash:").queue();
             }
         }
     }
