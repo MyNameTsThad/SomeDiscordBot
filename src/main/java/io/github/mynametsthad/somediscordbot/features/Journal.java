@@ -107,7 +107,7 @@ public class Journal extends ListenerAdapter {
         }
 
         //troll
-        if (event.getGuild().getId().equals("915071717901238304")) {
+        if (event.isFromGuild() && event.getGuild().getId().equals("915071717901238304")) {
             if (event.getAuthor().getId().equals("829231018191749120")) {
                 //if message contains more than 2 emotes
                 if (event.getMessage().getEmotes().size() >= 1) {
