@@ -19,7 +19,7 @@ import javax.security.auth.login.LoginException;
 public class SomeDiscordBot {
     public static final String NAME = "Some Discord Bot";
     public static final String SHORTNAME = "SomeDiscordBot";
-    public static final String VERSION = "0.5.0";
+    public static final String VERSION = "1.0.0";
     public static final int VERSION_ID = 5;
     public static final String TOKEN = ""; //token here
 
