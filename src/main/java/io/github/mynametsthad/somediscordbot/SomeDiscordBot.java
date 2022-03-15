@@ -19,8 +19,8 @@ import javax.security.auth.login.LoginException;
 public class SomeDiscordBot {
     public static final String NAME = "Some Discord Bot";
     public static final String SHORTNAME = "SomeDiscordBot";
-    public static final String VERSION = "1.1.0-1";
-    public static final int VERSION_ID = 5;
+    public static final String VERSION = "1.1.0-2";
+    public static final int VERSION_ID = 64;
     public static final String TOKEN = ""; //token here
 
     public static final boolean devMode = false;
