@@ -46,7 +46,12 @@ public class Journal extends ListenerAdapter {
                     String authorID = event.getAuthor().getId();
                     deleteLockOverride = true;
                     event.getMessage().delete().queue(delete -> {
-                        event.getChannel().sendMessage("<@" + authorID + ">, you are not allowed to send Messages in this channel.").queue();
+                        event.getChannel().sendMessage("<@" + authorID + ">, you are not allowed to send Messages in this channel. You will be warned.").queue();
+                        try {
+                            SomeDiscordBot.instance.moderation.warn(event.getGuild(), Objects.requireNonNull(event.getGuild().getMember(event.getAuthor())), event.getGuild().getMember(SomeDiscordBot.instance.jda.getSelfUser()), "Sending messages in journal channel");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     });
                 } else {
                     //get last 50 messages in journal channel
