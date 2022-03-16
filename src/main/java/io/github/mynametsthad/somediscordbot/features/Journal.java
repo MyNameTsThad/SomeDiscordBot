@@ -312,9 +312,9 @@ public class Journal extends ListenerAdapter {
                 event.getMessage().reply(":regional_indicator_e::regional_indicator_m::regional_indicator_o::regional_indicator_j::regional_indicator_i::regional_indicator_s:" +
                         ":clown::camera_with_flash:").queue();
             }
-            if (message.toLowerCase().contains(" cope ") | message.toLowerCase().contains(" ew") | message.toLowerCase().contains("skill issue")
+            if (message.toLowerCase().contains("cope") | message.toLowerCase().contains("eww") | message.toLowerCase().contains("skill issue")
                     | message.toLowerCase().contains("wtf bro") | message.toLowerCase().contains("ur mom") | message.toLowerCase().contains("fatherless")
-                    | message.toLowerCase().contains(" ez ") | message.toLowerCase().contains("skull issue") | message.toLowerCase().contains("idiot")
+                    | message.toLowerCase().contains("ez") | message.toLowerCase().contains("skull issue") | message.toLowerCase().contains("idiot")
                     | message.toLowerCase().contains("ididit") | message.toLowerCase().contains("fuck you") | message.toLowerCase().contains("fk you")
                     | message.toLowerCase().contains("fk u") | message.toLowerCase().contains("fuck u")) {
                 event.getMessage().reply("Don't care + didn't ask + L + Ratio + soyjak + beta + cringe + stfu +" +
