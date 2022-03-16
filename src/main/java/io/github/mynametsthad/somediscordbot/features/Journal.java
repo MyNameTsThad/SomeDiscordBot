@@ -342,6 +342,8 @@ public class Journal extends ListenerAdapter {
         if (event.isFromGuild() && event.getChannel().getId().equals(SomeDiscordBot.instance.configs.journalChannels.get(event.getGuild().getId())) && SomeDiscordBot.instance.configs.journalStatus.get(event.getGuild().getId()) && !deleteLockOverride) {
             //compare the cached 50 messages list and the current message list to see what messages have been deleted
             List<Message> currentMessages = event.getChannel().getHistory().retrievePast(50).complete();
+            if (last50MessagesInJournalChannel.isEmpty())
+                last50MessagesInJournalChannel = event.getChannel().getHistory().retrievePast(50).complete();
             List<Message> cachedMessages = last50MessagesInJournalChannel;
             for (int i = 0; i < currentMessages.size(); i++) {
                 if (!currentMessages.get(i).equals(cachedMessages.get(i))) {
