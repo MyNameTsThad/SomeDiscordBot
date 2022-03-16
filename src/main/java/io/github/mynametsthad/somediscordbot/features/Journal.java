@@ -40,7 +40,7 @@ public class Journal extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(@Nonnull MessageReceivedEvent event) {
-        if (event.isFromGuild() && SomeDiscordBot.instance.configs.journalStatus.get(event.getGuild().getId()) != null && SomeDiscordBot.instance.configs.journalStatus.get(event.getGuild().getId())) {
+        if (event.isFromGuild() && !event.getMessage().getType().isSystem() && SomeDiscordBot.instance.configs.journalStatus.get(event.getGuild().getId()) != null && SomeDiscordBot.instance.configs.journalStatus.get(event.getGuild().getId())) {
             if (event.getChannel().getId().equals(SomeDiscordBot.instance.configs.journalChannels.get(event.getGuild().getId()))) {
                 if (!event.getAuthor().isBot()) {
                     String authorID = event.getAuthor().getId();
