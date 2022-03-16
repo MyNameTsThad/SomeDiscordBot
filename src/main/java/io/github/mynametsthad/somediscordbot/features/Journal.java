@@ -218,7 +218,7 @@ public class Journal extends ListenerAdapter {
                                 I just looked through all 308 pages of your user history, figures I'm debating a glormpf supporter. A moron.""")
                         .queue();
             }
-            if (message.toLowerCase().contains("ww3")) {
+            if (message.toLowerCase().contains(" ww3 ")) {
                 event.getMessage().reply("Russia vs Ukraine is just an Attack on Titan (Shingeki no Kyojin) allegory. Ukraine has been " +
                                          "pushed back (some may caged (like a bird?)) by the Russian (Titans). Not only does Russia have " +
                                          "soldiers (normal titans), they have armored tanks (the armored titan) and nukes (the colossal " +
@@ -251,7 +251,7 @@ public class Journal extends ListenerAdapter {
                                            "(MUYA). War will never again plague the people of Eastern Europe and all will be forever young.").queue();
                         });
             }
-            if (message.toLowerCase().contains("among us") | message.toLowerCase().contains("amogus") | message.toLowerCase().contains("sus")) {
+            if (message.toLowerCase().contains("among us") | message.toLowerCase().contains("amogus") | message.toLowerCase().contains("sus") | message.toLowerCase().contains("imposter")) {
                 event.getMessage().reply("AMONG US Funny Moments! How to Free Robux and VBUCKS in SQUID GAME " +
                                          "FORTNITE UPDATE! (NOT CLICKBAIT) MUKBANG ROBLOX GAMEPLAY TUTORIAL (GONE " +
                                          "WRONG) Finger Family Learn Your ABCs at 3AM! Fortnite Impostor Potion! MrBeast " +
@@ -263,12 +263,12 @@ public class Journal extends ListenerAdapter {
                                          "install halal minecraft cheats hacks 2021 still works (STILL WORKS 2018) Impostor " +
                                          "Gameplay (Among Us) Zamn").queue();
             }
-            if (message.toLowerCase().contains("nft")) {
+            if (message.toLowerCase().contains(" nft ")) {
                 event.getMessage().reply("Dude I own this NFT. Do you really think that you can get away with theft when you’re " +
                                          "showing what you stole from me directly to my face? My lawyer will make an easy job of this " +
                                          "case. Prepare to say goodbye to your luscious life and start preparing for the streets. I will ruin you.").queue();
             }
-            if (message.toLowerCase().contains("1984")) {
+            if (message.toLowerCase().contains(" 1984 ")) {
                 event.getMessage().reply("> LiTeRaLlY nInEtEeN eIgHtY-fOuR\n" + "* George Orwell, 1948").queue();
             }
             if (message.toLowerCase().contains("ukraine") | message.toLowerCase().contains("ยูเครน")) {
@@ -307,9 +307,9 @@ public class Journal extends ListenerAdapter {
                 event.getMessage().reply(":regional_indicator_e::regional_indicator_m::regional_indicator_o::regional_indicator_j::regional_indicator_i::regional_indicator_s:" +
                         ":clown::camera_with_flash:").queue();
             }
-            if (message.toLowerCase().contains("cope") | message.toLowerCase().contains("ew") | message.toLowerCase().contains("skill issue")
+            if (message.toLowerCase().contains(" cope ") | message.toLowerCase().contains(" ew") | message.toLowerCase().contains("skill issue")
                     | message.toLowerCase().contains("wtf bro") | message.toLowerCase().contains("ur mom") | message.toLowerCase().contains("fatherless")
-                    | message.toLowerCase().contains("ez") | message.toLowerCase().contains("skull issue") | message.toLowerCase().contains("idiot")
+                    | message.toLowerCase().contains(" ez ") | message.toLowerCase().contains("skull issue") | message.toLowerCase().contains("idiot")
                     | message.toLowerCase().contains("ididit") | message.toLowerCase().contains("fuck you") | message.toLowerCase().contains("fk you")
                     | message.toLowerCase().contains("fk u") | message.toLowerCase().contains("fuck u")) {
                 event.getMessage().reply("Don't care + didn't ask + L + Ratio + soyjak + beta + cringe + stfu +" +
