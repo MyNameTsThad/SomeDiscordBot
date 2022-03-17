@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.exceptions.HierarchyException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.fastily.jwiki.core.Wiki;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
@@ -467,6 +468,14 @@ public class Commands extends ListenerAdapter {
                             .addFile(SomeDiscordBot.instance.configs.getServerRulesPath())
                             .queue();
                 }
+            }
+
+            else if (args[0].equalsIgnoreCase("sdb|wiki") | (event.isFromGuild() && args[0].equalsIgnoreCase(SomeDiscordBot.instance.configs.prefixes.get(event.getGuild().getId()) + "wiki"))) {
+                if (args.length > 1) {
+                    Wiki wiki = new Wiki.Builder().withLogin("Some Discord Bot", "Sdb_TH2147483648").build();
+                    event.getMessage().reply(wiki.getPageText(args[1])).queue();
+                }
+                event.getMessage().reply("The prefix for this guild is: `" + SomeDiscordBot.instance.configs.prefixes.get(event.getGuild().getId()) + "`").queue();
             }
         }
     }

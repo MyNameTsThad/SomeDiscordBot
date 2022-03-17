@@ -135,7 +135,8 @@ public class Journal extends ListenerAdapter {
             String message = event.getMessage().getContentRaw();
             if (message.toLowerCase().contains("america")
                     | message.toLowerCase().contains("united states")
-                    | message.toLowerCase().contains("อเมริกา") | message.toLowerCase().contains("อเมริกัน")) {
+                    | message.toLowerCase().contains("อเมริกา") | message.toLowerCase().contains("อเมริกัน")
+                    | message.toLowerCase().contains("flag_us")) {
                 event.getMessage().reply("I'm a regular John from city Kansas. I love burgers, soda and my native country very much, " +
                                          "but I do not understand our government. Everyone says America is a great country, and I look " +
                                          "around and see who else is a great China. China has a very strong government and economy. " +
@@ -175,19 +176,19 @@ public class Journal extends ListenerAdapter {
                 event.getMessage().reply("""
                         No bitches?
                         ```
-                        ⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝
-                        ⠸⡸⠜⠕⠕⠁⢁⢇⢏⢽⢺⣪⡳⡝⣎⣏⢯⢞⡿⣟⣷⣳⢯⡷⣽⢽⢯⣳⣫⠇
-                        ⠀⠀⢀⢀⢄⢬⢪⡪⡎⣆⡈⠚⠜⠕⠇⠗⠝⢕⢯⢫⣞⣯⣿⣻⡽⣏⢗⣗⠏⠀\s
-                         ⠀⠪⡪⡪⣪⢪⢺⢸⢢⢓⢆⢤⢀⠀⠀⠀⠀⠈⢊⢞⡾⣿⡯⣏⢮⠷⠁⠀⠀ ⠀
-                         ⠀⠀⠈⠊⠆⡃⠕⢕⢇⢇⢇⢇⢇⢏⢎⢎⢆⢄⠀⢑⣽⣿⢝⠲⠉⠀⠀⠀⠀ ⠀⠀
-                          ⠀⠀⠀⡿⠂⠠⠀⡇⢇⠕⢈⣀⠀⠁⠡⠣⡣⡫⣂⣿⠯⢪⠰⠂⠀⠀⠀⠀ ⠀⠀⠀
-                            ⠀⡦⡙⡂⢀⢤⢣⠣⡈⣾⡃⠠⠄⠀⡄⢱⣌⣶⢏⢊⠂⠀⠀⠀⠀⠀⠀ ⠀⠀⠀⠀
-                              ⢝⡲⣜⡮⡏⢎⢌⢂⠙⠢⠐⢀⢘⢵⣽⣿⡿⠁⠁⠀⠀⠀⠀⠀⠀⠀ ⠀⠀⠀⠀
-                              ⠨⣺⡺⡕⡕⡱⡑⡆⡕⡅⡕⡜⡼⢽⡻⠏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ ⠀⠀⠀⠀
-                              ⣼⣳⣫⣾⣵⣗⡵⡱⡡⢣⢑⢕⢜⢕⡝⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ ⠀⠀⠀
-                            ⣴⣿⣾⣿⣿⣿⡿⡽⡑⢌⠪⡢⡣⣣⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ ⠀⠀⠀
-                            ⡟⡾⣿⢿⢿⢵⣽⣾⣼⣘⢸⢸⣞⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ ⠀⠀⠀
-                            ⠀⠁⠇⠡⠩⡫⢿⣝⡻⡮⣒⢽⠋⠀⠀⠀⠀⠀
+                        ⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝⠀⠀⠀⠀
+                        ⠸⡸⠜⠕⠕⠁⢁⢇⢏⢽⢺⣪⡳⡝⣎⣏⢯⢞⡿⣟⣷⣳⢯⡷⣽⢽⢯⣳⣫⠇⠀⠀⠀
+                        ⠀⠀⢀⢀⢄⢬⢪⡪⡎⣆⡈⠚⠜⠕⠇⠗⠝⢕⢯⢫⣞⣯⣿⣻⡽⣏⢗⣗⠏⠀⠀⠀⠀
+                        ⠀⠀⠪⡪⡪⣪⢪⢺⢸⢢⢓⢆⢤⢀⠀⠀⠀⠀⠈⢊⢞⡾⣿⡯⣏⢮⠷⠁⠀⠀⠀⠀⠀
+                        ⠀⠀⠀⠈⠊⠆⡃⠕⢕⢇⢇⢇⢇⢇⢏⢎⢎⢆⢄⠀⢑⣽⣿⢝⠲⠉⠀⠀⠀⠀⠀⠀⠀
+                        ⠀⠀⠀⠀⠀⡿⠂⠠⠀⡇⢇⠕⢈⣀⠀⠁⠡⠣⡣⡫⣂⣿⠯⢪⠰⠂⠀⠀⠀⠀⠀⠀⠀
+                        ⠀⠀⠀⠀⠀⡦⡙⡂⢀⢤⢣⠣⡈⣾⡃⠠⠄⠀⡄⢱⣌⣶⢏⢊⠂⠀⠀⠀⠀⠀⠀⠀⠀
+                        ⠀⠀⠀⠀⠀⠀⢝⡲⣜⡮⡏⢎⢌⢂⠙⠢⠐⢀⢘⢵⣽⣿⡿⠁⠁⠀⠀⠀⠀⠀⠀⠀⠀
+                        ⠀⠀⠀⠀⠀⠀⠨⣺⡺⡕⡕⡱⡑⡆⡕⡅⡕⡜⡼⢽⡻⠏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+                        ⠀⠀⠀⠀⠀⠀⣼⣳⣫⣾⣵⣗⡵⡱⡡⢣⢑⢕⢜⢕⡝⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+                        ⠀⠀⠀⠀⣴⣿⣾⣿⣿⣿⡿⡽⡑⢌⠪⡢⡣⣣⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+                        ⠀⠀⠀⠀⡟⡾⣿⢿⢿⢵⣽⣾⣼⣘⢸⢸⣞⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+                        ⠀⠀⠀⠀⠀⠁⠇⠡⠩⡫⢿⣝⡻⡮⣒⢽⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
                         ```""").queue();
             }
             if (message.toLowerCase().contains("source") | message.toLowerCase().contains("proof")) {
@@ -223,7 +224,7 @@ public class Journal extends ListenerAdapter {
                                 I just looked through all 308 pages of your user history, figures I'm debating a glormpf supporter. A moron.""")
                         .queue();
             }
-            if (message.toLowerCase().contains(" ww3 ")) {
+            if (message.toLowerCase().contains("ww3")) {
                 event.getMessage().reply("Russia vs Ukraine is just an Attack on Titan (Shingeki no Kyojin) allegory. Ukraine has been " +
                                          "pushed back (some may caged (like a bird?)) by the Russian (Titans). Not only does Russia have " +
                                          "soldiers (normal titans), they have armored tanks (the armored titan) and nukes (the colossal " +
@@ -268,18 +269,18 @@ public class Journal extends ListenerAdapter {
                                          "install halal minecraft cheats hacks 2021 still works (STILL WORKS 2018) Impostor " +
                                          "Gameplay (Among Us) Zamn").queue();
             }
-            if (message.toLowerCase().contains(" nft ")) {
+            if (message.toLowerCase().contains("nft")) {
                 event.getMessage().reply("Dude I own this NFT. Do you really think that you can get away with theft when you’re " +
                                          "showing what you stole from me directly to my face? My lawyer will make an easy job of this " +
                                          "case. Prepare to say goodbye to your luscious life and start preparing for the streets. I will ruin you.").queue();
             }
-            if (message.toLowerCase().contains(" 1984 ")) {
+            if (message.toLowerCase().contains(" 1984") | (message.split(" ").length == 1 && message.toLowerCase().contains("1984"))) {
                 event.getMessage().reply("> LiTeRaLlY nInEtEeN eIgHtY-fOuR\n" + "* George Orwell, 1948").queue();
             }
-            if (message.toLowerCase().contains("ukraine") | message.toLowerCase().contains("ยูเครน")) {
-                event.getMessage().reply("**SLAVA UKRAINI! :flag_ua::flag_ua::flag_ua:** \n **GLORY TO UKRAINE!!**").queue();
+            if (message.toLowerCase().contains("ukraine") | message.toLowerCase().contains("ยูเครน") | message.toLowerCase().contains("flag_ua")) {
+                event.getMessage().reply("**SLAVA UKRAINI! :flag_ua::flag_ua::flag_ua:** \n **GLORY TO UKRAINE!!** \n Russia ").queue();
             }
-            if (message.toLowerCase().contains("russia") | message.toLowerCase().contains("รัสเซีย")) {
+            if (message.toLowerCase().contains("russia") | message.toLowerCase().contains("รัสเซีย") | message.toLowerCase().contains("flag_ru")) {
                 event.getMessage().reply("imagine having a currency worth less than bobux :dollar: :dollar: :dollar: :money_mouth: :flag_ru: " +
                         ":face_vomiting: :nauseated_face: :nauseated_face: :nauseated_face: :face_vomiting: :face_vomiting: :face_vomiting: :face_vomiting: " +
                         ":face_vomiting: :face_vomiting: :face_vomiting: :face_vomiting: :face_vomiting: :face_vomiting:").queue();
@@ -302,13 +303,13 @@ public class Journal extends ListenerAdapter {
                     message.toLowerCase().contains("ควย")) {
                 event.getMessage().reply("No sex before marriage").queue();
             }
-            if (message.toLowerCase().contains("69420")) {
+            if (message.toLowerCase().contains("69") | message.toLowerCase().contains("420")) {
                 event.getMessage().reply("""
                         🤢🤢🤮🤢🤮🤮🤮🤮🤢🤮🤮🤮🤮🤮😩😩😩😩😩😩😩😩😩😩😩😩😩😩😩😩😩😩😩😩😩😩
                         😩😩😩😩😩😩😩😩😩😩😩😩😩😩😩😩🤢🤮🤢🤮🤢🤮🤢
                         """).queue();
             }
-            if (message.toLowerCase().contains("fucktion") | message.toLowerCase().contains("thad") | message.toLowerCase().contains("choyrum")) {
+            if (message.toLowerCase().contains("fucktion") /*| message.toLowerCase().contains("thad") | message.toLowerCase().contains("choyrum")*/) {
                 event.getMessage().reply(":regional_indicator_e::regional_indicator_m::regional_indicator_o::regional_indicator_j::regional_indicator_i::regional_indicator_s:" +
                         ":clown::camera_with_flash:").queue();
             }
@@ -329,6 +330,45 @@ public class Journal extends ListenerAdapter {
                         "fancam + cry more + how's your wife's boyfriend doing + Cheetos breath + Intelligence 0 +" +
                         " blocked and reported + yo Momma so fat + I fucked your mom last night + what zero pussy does to a mf +" +
                         " Jesse what the fuck are you talking about + holy shit go touch some grass + cry about it + get triggered").queue();
+            }
+            if (message.toLowerCase().contains("skull")) {
+                event.getMessage().reply("https://tenor.com/view/spinning-skeleton-skeleton-gif-22598892").queue();
+            }
+            if (message.toLowerCase().contains("umu")) {
+                event.getMessage().reply("UwU so I wuz watching Sword Art Online, you know, like, the greatest " +
+                        "anime ever, in class. And someone made fun of my Fairy Tail mug and my Tokyo Ghoul hoodie. " +
+                        "And I was like ÒwÓ baka! Watashi gonna Kamehameha you UMU. And then I made him read every " +
+                        "chapter of Boku No Hero Academia and we had an otaku discussion on why we think all the gay" +
+                        " ships are superior and anyone who disagrees can rot in otaku hell. And then some cringe " +
+                        "otaku who watches seasonal anime ÒwÓ told us that SAO is bad and that none of the characters" +
+                        " in Boku No Hero Academia are gay. So we fucking strangled him to death with our Naruto " +
+                        "hoodies. After that everyone clapped and gave us free anime girl body pillow covers and Astolfo" +
+                        " figurines. And I was like UwU watashi gonna go home and read 177013 while cuddling my Sakura " +
+                        "body pillow ÒwÓ \n\n Anyways, SHUT UP.").queue();
+            }
+            if (message.toLowerCase().contains("hack") | message.toLowerCase().contains("krnl") | message.toLowerCase().contains("roblox script")) {
+                event.getMessage().reply("Cheating is basically pretending you're not a loser. When you rely on" +
+                        " hacks for a false sense of gratification; It only accentuates that you, yourself realized it" +
+                        " was something you needed. If you stop cheating you can spare yourself the embarrassment. If " +
+                        "you need cheats, you're obviously too dumb for this game. Play something else. Your participation" +
+                        " ins't wanted. Everyone else loathes you, why not just come to terms with yourself?" +
+                        "\n\n" +
+                        "Playing games with skill is becoming a thing of the past. I can't see the joy in faking a win," +
+                        " but I sure as hell CAN see how desperate people are for gratification these days. I guess it's" +
+                        " their \"modern-day\" participation trophy. Except its ONLY given to the loser!" +
+                        "\n\n" +
+                        "You're basically the mentally handicapped kid on the team who got a medal, even when the team" +
+                        " lost. The other players don't admire you, they feel sorry for you. \"look, he thinks he won\"" +
+                        ", \"How adorable!\"" +
+                        "\n\n" +
+                        "If you're too dumb to compete with skill. Do us all a favor and leave. Being too dumb to compete" +
+                        " isn't your fault, but cheating like a \uD83D\uDCF7\uD83D\uDCF7\uD83D\uDCF7\uD83D\uDCF7\uD83D\uDCF7 " +
+                        "is not only wasting everyone else's time, but is revealing how stupid you must be to actually enjoy" +
+                        " \"pretending to play a game\". I mean, that is stupid on a level I will never understand." +
+                        "\n\n" +
+                        "Turn them off or play something that is in your mental grasp. You should have deleted the game" +
+                        " the moment you decided that cheating is the only way to boost your ego enough pretend you have" +
+                        " half a brain. Just play something else, the game is only fun when you're not playing!").queue();
             }
         }
     }
