@@ -303,7 +303,7 @@ public class Journal extends ListenerAdapter {
                     message.toLowerCase().contains("ควย")) {
                 event.getMessage().reply("No sex before marriage").queue();
             }
-            if (message.toLowerCase().contains("69") | message.toLowerCase().contains("420")) {
+            if ((message.split(" ").length == 1 && (message.toLowerCase().contains("69") | message.toLowerCase().contains("420") | message.toLowerCase().contains("69420"))) || (message.toLowerCase().contains(" 69") | message.toLowerCase().contains(" 420") | message.toLowerCase().contains(" 69420"))) {
                 event.getMessage().reply("""
                         🤢🤢🤮🤢🤮🤮🤮🤮🤢🤮🤮🤮🤮🤮😩😩😩😩😩😩😩😩😩😩😩😩😩😩😩😩😩😩😩😩😩😩
                         😩😩😩😩😩😩😩😩😩😩😩😩😩😩😩😩🤢🤮🤢🤮🤢🤮🤢
