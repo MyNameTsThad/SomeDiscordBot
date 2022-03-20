@@ -105,7 +105,7 @@ public class Commands extends ListenerAdapter {
             if (args[0].equalsIgnoreCase("sdb|ver") | (event.isFromGuild() && args[0].equalsIgnoreCase(SomeDiscordBot.instance.configs.prefixes.get(event.getGuild().getId()) + "ver"))) {
                 event.getMessage().reply(
                         SomeDiscordBot.NAME + " version " + SomeDiscordBot.VERSION +
-                                "\n" + "(" + SomeDiscordBot.SHORTNAME + ":" + SomeDiscordBot.VERSION_ID + ")" +
+                                "\n" + "(" + SomeDiscordBot.PACKAGENAME + ":" + SomeDiscordBot.VERSION_ID + ")" +
                                 "\n" + "Bot made by <@600496278857842698>.").queue();
             } else if (event.isFromGuild() && args[0].equalsIgnoreCase(SomeDiscordBot.instance.configs.prefixes.get(event.getGuild().getId()) + "botctl") && isSudoersRole) {
                 if (args.length > 1) {
