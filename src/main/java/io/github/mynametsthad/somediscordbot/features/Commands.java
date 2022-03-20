@@ -1,12 +1,13 @@
 package io.github.mynametsthad.somediscordbot.features;
 
-import Jwiki.Jwiki;
+//import Jwiki.Jwiki;
 import io.github.mynametsthad.somediscordbot.SomeDiscordBot;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.exceptions.HierarchyException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.fastily.jwiki.core.Wiki;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
@@ -472,8 +473,12 @@ public class Commands extends ListenerAdapter {
 
             else if (args[0].equalsIgnoreCase("sdb|wiki") | (event.isFromGuild() && args[0].equalsIgnoreCase(SomeDiscordBot.instance.configs.prefixes.get(event.getGuild().getId()) + "wiki"))) {
                 if (args.length > 1) {
-                    Jwiki wiki = new Jwiki(args[1]);
-                    event.getMessage().reply(wiki.getExtractText()).queue();
+                    Wiki wiki = new Wiki.Builder().build();
+                    if (wiki.exists(args[1])) {
+                        event.getMessage().reply(wiki.getTextExtract(args[1])).queue();
+                    }else{
+                        event.getMessage().reply("The page you requested does not exist.").queue();
+                    }
                 }
                 event.getMessage().reply("The prefix for this guild is: `" + SomeDiscordBot.instance.configs.prefixes.get(event.getGuild().getId()) + "`").queue();
             }
