@@ -121,8 +121,6 @@ public class Commands extends ListenerAdapter {
                                 e.printStackTrace();
                             }
                             event.getMessage().reply("This guild's bot prefix is now set to `" + SomeDiscordBot.instance.configs.prefixes.get(event.getGuild().getId()) + "`").queue();
-                        } else {
-                            event.getMessage().reply("The prefix for this guild is: `" + SomeDiscordBot.instance.configs.prefixes.get(event.getGuild().getId()) + "`").queue();
                         }
                     } else if (args[1].equalsIgnoreCase("rolebruteforce")) {
                         //command to add a role to author
@@ -456,15 +454,20 @@ public class Commands extends ListenerAdapter {
             else if (event.isFromGuild() && args[0].equalsIgnoreCase(SomeDiscordBot.instance.configs.prefixes.get(event.getGuild().getId()) + "timeouts")) {
                 Map<String, Long> timeouts = SomeDiscordBot.instance.journal.timeoutMap.get(event.getGuild().getId());
                 StringBuilder sb = new StringBuilder("Timeout status for server '" + event.getGuild().getName() + "':");
-                for (Map.Entry<String, Long> entry : timeouts.entrySet()) {
-                    sb
-                            .append("\n    ")
-                            .append(Objects.requireNonNull(event.getGuild().getMemberById(entry.getKey())).getAsMention())
-                            .append(": ")
-                            .append(Utils.formatTime(entry.getValue()))
-                            .append(" left");
+                if (timeouts != null && !timeouts.isEmpty()) {
+                    for (Map.Entry<String, Long> entry : timeouts.entrySet()) {
+                        sb
+                                .append("\n    ")
+                                .append(Objects.requireNonNull(event.getGuild().getMemberById(entry.getKey())).getAsMention())
+                                .append(": ")
+                                .append(Utils.formatTime(entry.getValue()))
+                                .append(" left");
+                    }
+                    event.getMessage().reply(sb.toString()).queue();
+                }else{
+                    if (timeouts == null) timeouts = new HashMap<>();
+                    sb.append("\n    No current ongoing timeouts!");
                 }
-                event.getMessage().reply(sb.toString()).queue();
             }
 
             //non dependent command
@@ -501,7 +504,6 @@ public class Commands extends ListenerAdapter {
                         event.getMessage().reply("The page you requested does not exist.").queue();
                     }
                 }
-                event.getMessage().reply("The prefix for this guild is: `" + SomeDiscordBot.instance.configs.prefixes.get(event.getGuild().getId()) + "`").queue();
             }
         }
     }
