@@ -16,12 +16,14 @@ import org.slf4j.LoggerFactory;
 
 import javax.security.auth.login.LoginException;
 import java.util.Objects;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class SomeDiscordBot {
     public static final String NAME = "Some Discord Bot";
     public static final String PACKAGENAME = "io.github.mynametsthad.somediscordbot";
-    public static final String VERSION = "1.4.0-1";
-    public static final int VERSION_ID = 79;
+    public static final String VERSION = "1.4.0-2";
+    public static final int VERSION_ID = 80;
     public static final String TOKEN = ""; //token here
 
     public static final boolean devMode = false;
@@ -64,26 +66,24 @@ public class SomeDiscordBot {
     }
 
     public void startLoop(){
-        new Thread("loop"){
+        new Timer().scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                while(true){
-                    long currentTime = System.currentTimeMillis();
-                    //loop through the journal.timeoutMap and check if the time has passed, if so, remove the entry
-                    for(String serverID : journal.timeoutMap.keySet()){
-                        if (configs.journalStatus.get(serverID)) {
-                            for (String userID : journal.timeoutMap.get(serverID).keySet()) {
-                                if(journal.timeoutMap.get(serverID).get(userID) <= currentTime){
-                                    journal.timeoutMap.get(serverID).remove(userID);
-                                    Objects.requireNonNull(jda.getTextChannelById(configs.journalChannels.get(serverID)))
-                                            .sendMessage(Utils.formatBold(Objects.requireNonNull(jda.getUserById(userID)).getAsMention()) +
-                                                    "'s timeout has been lifted.").queue();
-                                }
+                long currentTime = System.currentTimeMillis();
+                //loop through the journal.timeoutMap and check if the time has passed, if so, remove the entry
+                for(String serverID : journal.timeoutMap.keySet()){
+                    if (configs.journalStatus.get(serverID)) {
+                        for (String userID : journal.timeoutMap.get(serverID).keySet()) {
+                            if(journal.timeoutMap.get(serverID).get(userID) <= currentTime){
+                                journal.timeoutMap.get(serverID).remove(userID);
+                                Objects.requireNonNull(jda.getTextChannelById(configs.journalChannels.get(serverID)))
+                                        .sendMessage(Utils.formatBold(Objects.requireNonNull(jda.getUserById(userID)).getAsMention()) +
+                                                "'s timeout has been lifted.").queue();
                             }
                         }
                     }
                 }
             }
-        }.start();
+        }, 500, 500);
     }
 }
