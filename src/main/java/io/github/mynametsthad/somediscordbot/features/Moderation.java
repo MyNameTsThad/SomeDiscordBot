@@ -28,11 +28,16 @@ public class Moderation {
         }
         //if warns is divisible by 3, timeout member for their current warns number of minutes
         if (configs.memberWarns.get(guild.getId()).get(member.getId()) % 3 == 0) {
-            guild.timeoutFor(member, configs.memberWarns.get(guild.getId()).get(member.getId()), TimeUnit.MINUTES).queue();
+            guild.timeoutFor(member, configs.memberWarns.get(guild.getId()).get(member.getId()), TimeUnit.MINUTES).queue(success -> {
+            }, failure ->
+                    Objects.requireNonNull(guild.getTextChannelById(configs.journalChannels.get(guild.getId()))).sendMessage("ERROR: \n`" + failure.getMessage() + "`").queue());
             //send message to journal channel
             if (configs.journalChannels.get(guild.getId()) != null) {
                 Objects.requireNonNull(guild.getTextChannelById(configs.journalChannels.get(guild.getId()))).sendMessage("**" + member.getAsMention() + "** was timed out for " + configs.memberWarns.get(guild.getId()).get(member.getId()) + " minutes due to having " + configs.memberWarns.get(guild.getId()).get(member.getId()) + " warns.").queue();
             }
+            //add to timed out list
+            SomeDiscordBot.instance.journal.timeoutMap.get(guild.getId()).put(member.getId(),
+                    System.currentTimeMillis() + configs.memberWarns.get(guild.getId()).get(member.getId()) * 60000);
         }
 
         //save to file

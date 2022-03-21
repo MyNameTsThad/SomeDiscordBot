@@ -7,7 +7,7 @@ plugins {
 
 mainClassName = "io.github.mynametsthad.somediscordbot.SomeDiscordBot"
 group 'io.github.mynametsthad'
-version '1.3.2'
+version '1.4.0'
 
 //task createProperties {
 //    doLast {

@@ -1,6 +1,7 @@
 package io.github.mynametsthad.somediscordbot.features;
 
 import io.github.mynametsthad.somediscordbot.SomeDiscordBot;
+import io.github.mynametsthad.somediscordbot.Utils;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.Role;
@@ -38,6 +39,8 @@ public class Journal extends ListenerAdapter {
     public Map<String, String[]> addConfirmationMap = new HashMap<>();
     public Map<String, String[]> removeConfirmationMap = new HashMap<>();
 
+    public Map<String, Map<String, Long>> timeoutMap = new HashMap<>();
+
     @Override
     public void onMessageReceived(@Nonnull MessageReceivedEvent event) {
         if (event.isFromGuild() && !event.getMessage().getType().isSystem() && SomeDiscordBot.instance.configs.journalStatus.get(event.getGuild().getId()) != null && SomeDiscordBot.instance.configs.journalStatus.get(event.getGuild().getId())) {
@@ -56,6 +59,22 @@ public class Journal extends ListenerAdapter {
                 } else {
                     //get last 50 messages in journal channel
                     last50MessagesInJournalChannel = event.getChannel().getHistory().retrievePast(50).complete();
+                }
+            }
+
+            if (timeoutMap.containsKey(event.getGuild().getId())) {
+                if (timeoutMap.get(event.getGuild().getId()).containsKey(event.getAuthor().getId())) {
+                    //check if timeout is still valid
+                    event.getMessage().delete().queue(success -> {
+                        event.getAuthor().openPrivateChannel().queue(channel -> {
+                            StringBuilder timeLeft = new StringBuilder();
+                            long timeLeftInMilliSeconds = timeoutMap.get(event.getGuild().getId()).get(event.getAuthor().getId()) - System.currentTimeMillis();
+
+                            channel.sendMessage("You are currently timed out in the server '" +
+                                    Objects.requireNonNull(SomeDiscordBot.instance.jda.getGuildById(event.getGuild().getId())).getName() +
+                                    "'. Your timeout will be lifted in " + Utils.formatTime(timeLeftInMilliSeconds) + ".").queue();
+                        });
+                    });
                 }
             }
 
@@ -79,8 +98,8 @@ public class Journal extends ListenerAdapter {
             }
 
             //decrease the social credit of the author if the message says that they hate and shame to the CCP or that Taiwan is a country
-            if ((event.getMessage().getContentRaw().toLowerCase().contains("hate") && event.getMessage().getContentRaw().toLowerCase().contains("CCP"))
-                    || (event.getMessage().getContentRaw().toLowerCase().contains("shame") && event.getMessage().getContentRaw().toLowerCase().contains("CCP"))
+            if ((event.getMessage().getContentRaw().toLowerCase().contains("hate") && event.getMessage().getContentRaw().toLowerCase().contains("ccp"))
+                    || (event.getMessage().getContentRaw().toLowerCase().contains("shame") && event.getMessage().getContentRaw().toLowerCase().contains("ccp"))
                     || event.getMessage().getContentRaw().toLowerCase().contains("taiwan") || event.getMessage().getContentRaw().toLowerCase().contains("taiwanese")
                     || event.getMessage().getContentRaw().toLowerCase().contains("taiwanese people")
                     || event.getMessage().getContentRaw().toLowerCase().contains("taiwanese people are good people")
@@ -138,11 +157,11 @@ public class Journal extends ListenerAdapter {
                     | message.toLowerCase().contains("อเมริกา") | message.toLowerCase().contains("อเมริกัน")
                     | message.toLowerCase().contains("flag_us")) {
                 event.getMessage().reply("I'm a regular John from city Kansas. I love burgers, soda and my native country very much, " +
-                                         "but I do not understand our government. Everyone says America is a great country, and I look " +
-                                         "around and see who else is a great China. China has a very strong government and economy. " +
-                                         "Chinese resident is a great man. And the greatest leader Xi. Thick hair, strong grip, jade rod! " +
-                                         "We would have such a leader instead of sleeping in negotiations, rare hair, soft pickle, bad " +
-                                         "memory old Beadon. Punch!").queue();
+                        "but I do not understand our government. Everyone says America is a great country, and I look " +
+                        "around and see who else is a great China. China has a very strong government and economy. " +
+                        "Chinese resident is a great man. And the greatest leader Xi. Thick hair, strong grip, jade rod! " +
+                        "We would have such a leader instead of sleeping in negotiations, rare hair, soft pickle, bad " +
+                        "memory old Beadon. Punch!").queue();
             }
             if (message.contains("biden")) {
                 event.getMessage().reply("""
@@ -226,53 +245,53 @@ public class Journal extends ListenerAdapter {
             }
             if (message.toLowerCase().contains("ww3")) {
                 event.getMessage().reply("Russia vs Ukraine is just an Attack on Titan (Shingeki no Kyojin) allegory. Ukraine has been " +
-                                         "pushed back (some may caged (like a bird?)) by the Russian (Titans). Not only does Russia have " +
-                                         "soldiers (normal titans), they have armored tanks (the armored titan) and nukes (the colossal " +
-                                         "titan(pre-episode 55, Midnight Sun (9.9/10 on IMDB) this will be important later) Beroltolt " +
-                                         " Hoober). Bertie is Russian. Now here's the scary thing. There are Russians within the walls " +
-                                         "(Ukraine border) that pledge their allegiance to none other than Russia (just like the \"Eldians\" " +
-                                         "that \"came\" from Marley). And of course the one leading the charge is Putin, or should I say " +
-                                         "Zeke, son of monkey, Yeager. And just like the monkey himself, Putin sneaks into territories, " +
-                                         "converts people to Russian, and leaves. Horrifying I know. But what if I told you it gets worse? " +
-                                         "What if I told you the tanks along the border are actually the wall. Or more specifically the colossal titans within the " +
-                                         "wall. Putin will talk and talk and scream (like monkey) but all he wants is " +
-                                         "to youthenize (to make young) the Ukrainians. Luckily Eren, other son of monkey, Yeager wants " +
-                                         "the Ukraine to stay old. So Donald Trump (Eren) decided to get close with Putin and have him " +
-                                         "come to Mar-a-Largo (Paths). Putin accepted expecting to be able to use some of Trump's eternal " +
-                                         "youth, but Trump had a trump card and an ulterior motive. Of course before Trump acted on his " +
-                                         "plan, he gathered all Ukrainese people in paths and told them how great he was. Ultimately, " +
-                                         "Trump wanted Russia to attack Ukraine so he used his power to put the walls in motion " +
-                                         "(Rumbling?) by having the tanks move into Ukraine (Rumbling). The world looked in disbelief as " +
-                                         "the tanks began to move, but there was still a hero to save the day; a hope Ukraine; a man that " +
-                                         "has been around since the dawn of time- Joeseph R Biden. Joeseph R Biden is the one man " +
-                                         "capable of defeating Trump once his plan was in motion. Joeseph R Biden, who is Armin Artlet " +
-                                         "(the colossal titan)")
+                                "pushed back (some may caged (like a bird?)) by the Russian (Titans). Not only does Russia have " +
+                                "soldiers (normal titans), they have armored tanks (the armored titan) and nukes (the colossal " +
+                                "titan(pre-episode 55, Midnight Sun (9.9/10 on IMDB) this will be important later) Beroltolt " +
+                                " Hoober). Bertie is Russian. Now here's the scary thing. There are Russians within the walls " +
+                                "(Ukraine border) that pledge their allegiance to none other than Russia (just like the \"Eldians\" " +
+                                "that \"came\" from Marley). And of course the one leading the charge is Putin, or should I say " +
+                                "Zeke, son of monkey, Yeager. And just like the monkey himself, Putin sneaks into territories, " +
+                                "converts people to Russian, and leaves. Horrifying I know. But what if I told you it gets worse? " +
+                                "What if I told you the tanks along the border are actually the wall. Or more specifically the colossal titans within the " +
+                                "wall. Putin will talk and talk and scream (like monkey) but all he wants is " +
+                                "to youthenize (to make young) the Ukrainians. Luckily Eren, other son of monkey, Yeager wants " +
+                                "the Ukraine to stay old. So Donald Trump (Eren) decided to get close with Putin and have him " +
+                                "come to Mar-a-Largo (Paths). Putin accepted expecting to be able to use some of Trump's eternal " +
+                                "youth, but Trump had a trump card and an ulterior motive. Of course before Trump acted on his " +
+                                "plan, he gathered all Ukrainese people in paths and told them how great he was. Ultimately, " +
+                                "Trump wanted Russia to attack Ukraine so he used his power to put the walls in motion " +
+                                "(Rumbling?) by having the tanks move into Ukraine (Rumbling). The world looked in disbelief as " +
+                                "the tanks began to move, but there was still a hero to save the day; a hope Ukraine; a man that " +
+                                "has been around since the dawn of time- Joeseph R Biden. Joeseph R Biden is the one man " +
+                                "capable of defeating Trump once his plan was in motion. Joeseph R Biden, who is Armin Artlet " +
+                                "(the colossal titan)")
                         .queue(message1 -> {
                             message1.reply("(post-episode 55, Midnight Sun (9.9/10 on IMDB) I said this would be important later)Armin Artlet), " +
-                                           "used his nuclear power to stop the Russian troops from rumbling to victory. This was only possible " +
-                                           "because the Russian nukes (Bernie) were inside the American nukes (Armin). But more " +
-                                           "importantly, Mikasa Akerman (staring Kamala Harris) went in before the rumbling started to cut Putin down to " +
-                                           "size. So keeping with the theme of Attack on Titan, War was stopped by Joeseph " +
-                                           "R Biden by defeating the Russians, which helped Putin's plan to make Ukraine young again " +
-                                           "(MUYA). War will never again plague the people of Eastern Europe and all will be forever young.").queue();
+                                    "used his nuclear power to stop the Russian troops from rumbling to victory. This was only possible " +
+                                    "because the Russian nukes (Bernie) were inside the American nukes (Armin). But more " +
+                                    "importantly, Mikasa Akerman (staring Kamala Harris) went in before the rumbling started to cut Putin down to " +
+                                    "size. So keeping with the theme of Attack on Titan, War was stopped by Joeseph " +
+                                    "R Biden by defeating the Russians, which helped Putin's plan to make Ukraine young again " +
+                                    "(MUYA). War will never again plague the people of Eastern Europe and all will be forever young.").queue();
                         });
             }
             if (message.toLowerCase().contains("among us") | message.toLowerCase().contains("amogus") | message.toLowerCase().contains("sus") | message.toLowerCase().contains("imposter")) {
                 event.getMessage().reply("AMONG US Funny Moments! How to Free Robux and VBUCKS in SQUID GAME " +
-                                         "FORTNITE UPDATE! (NOT CLICKBAIT) MUKBANG ROBLOX GAMEPLAY TUTORIAL (GONE " +
-                                         "WRONG) Finger Family Learn Your ABCs at 3AM! Fortnite Impostor Potion! MrBeast " +
-                                         "free toys halal gameplay nae nae download حدث خطأ في الساعة 3 صباحًا " +
-                                         "حدث خطأ في الساعة 3 صباحًاحدث خطأ في الساعة 3 صباحًا Super Idol的笑容都没你的甜八月正午的阳光都没" +
-                                         "你耀眼热爱 105 °C的你滴滴清纯的蒸馏水 amongla download Meme Compilation (POLICE " +
-                                         "CALLED) (GONE WRONG) (GONE SEXUAL) (NOT CLICKBAIT) Minecraft Series Lets Play " +
-                                         "Videos Number 481 - Poop Funny Hilarious Minecraft Roblox Fails for Fortnite - How to " +
-                                         "install halal minecraft cheats hacks 2021 still works (STILL WORKS 2018) Impostor " +
-                                         "Gameplay (Among Us) Zamn").queue();
+                        "FORTNITE UPDATE! (NOT CLICKBAIT) MUKBANG ROBLOX GAMEPLAY TUTORIAL (GONE " +
+                        "WRONG) Finger Family Learn Your ABCs at 3AM! Fortnite Impostor Potion! MrBeast " +
+                        "free toys halal gameplay nae nae download حدث خطأ في الساعة 3 صباحًا " +
+                        "حدث خطأ في الساعة 3 صباحًاحدث خطأ في الساعة 3 صباحًا Super Idol的笑容都没你的甜八月正午的阳光都没" +
+                        "你耀眼热爱 105 °C的你滴滴清纯的蒸馏水 amongla download Meme Compilation (POLICE " +
+                        "CALLED) (GONE WRONG) (GONE SEXUAL) (NOT CLICKBAIT) Minecraft Series Lets Play " +
+                        "Videos Number 481 - Poop Funny Hilarious Minecraft Roblox Fails for Fortnite - How to " +
+                        "install halal minecraft cheats hacks 2021 still works (STILL WORKS 2018) Impostor " +
+                        "Gameplay (Among Us) Zamn").queue();
             }
             if (message.toLowerCase().contains("nft")) {
                 event.getMessage().reply("Dude I own this NFT. Do you really think that you can get away with theft when you’re " +
-                                         "showing what you stole from me directly to my face? My lawyer will make an easy job of this " +
-                                         "case. Prepare to say goodbye to your luscious life and start preparing for the streets. I will ruin you.").queue();
+                        "showing what you stole from me directly to my face? My lawyer will make an easy job of this " +
+                        "case. Prepare to say goodbye to your luscious life and start preparing for the streets. I will ruin you.").queue();
             }
             if (message.toLowerCase().contains(" 1984") | (message.split(" ").length == 1 && message.toLowerCase().contains("1984"))) {
                 event.getMessage().reply("> LiTeRaLlY nInEtEeN eIgHtY-fOuR\n" + "* George Orwell, 1948").queue();

@@ -2,6 +2,7 @@ package io.github.mynametsthad.somediscordbot.features;
 
 //import Jwiki.Jwiki;
 import io.github.mynametsthad.somediscordbot.SomeDiscordBot;
+import io.github.mynametsthad.somediscordbot.Utils;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 
 public class Commands extends ListenerAdapter {
@@ -450,6 +452,21 @@ public class Commands extends ListenerAdapter {
                         + "    Social credit: " + (SomeDiscordBot.instance.configs.socialCreditStatus.get(event.getGuild().getId()) ? ":green_circle:" : ":red_circle:")).queue();
             }
 
+            //timeout status command
+            else if (event.isFromGuild() && args[0].equalsIgnoreCase(SomeDiscordBot.instance.configs.prefixes.get(event.getGuild().getId()) + "timeouts")) {
+                Map<String, Long> timeouts = SomeDiscordBot.instance.journal.timeoutMap.get(event.getGuild().getId());
+                StringBuilder sb = new StringBuilder("Timeout status for server '" + event.getGuild().getName() + "':");
+                for (Map.Entry<String, Long> entry : timeouts.entrySet()) {
+                    sb
+                            .append("\n    ")
+                            .append(Objects.requireNonNull(event.getGuild().getMemberById(entry.getKey())).getAsMention())
+                            .append(": ")
+                            .append(Utils.formatTime(entry.getValue()))
+                            .append(" left");
+                }
+                event.getMessage().reply(sb.toString()).queue();
+            }
+
             //non dependent command
             else if (args[0].equalsIgnoreCase("sdb|prefix") | (event.isFromGuild() && args[0].equalsIgnoreCase(SomeDiscordBot.instance.configs.prefixes.get(event.getGuild().getId()) + "prefix"))) {
                 event.getMessage().reply("The prefix for this guild is: `" + SomeDiscordBot.instance.configs.prefixes.get(event.getGuild().getId()) + "`").queue();
@@ -474,8 +491,12 @@ public class Commands extends ListenerAdapter {
             else if (args[0].equalsIgnoreCase("sdb|wiki") | (event.isFromGuild() && args[0].equalsIgnoreCase(SomeDiscordBot.instance.configs.prefixes.get(event.getGuild().getId()) + "wiki"))) {
                 if (args.length > 1) {
                     Wiki wiki = new Wiki.Builder().build();
-                    if (wiki.exists(args[1])) {
-                        event.getMessage().reply(wiki.getTextExtract(args[1])).queue();
+                    StringBuilder query = new StringBuilder();
+                    for (int i = 1; i < args.length; i++) {
+                        query.append(args[i]).append("_");
+                    }
+                    if (wiki.exists(query.toString())) {
+                        event.getMessage().reply(wiki.getTextExtract(query.toString())).queue();
                     }else{
                         event.getMessage().reply("The page you requested does not exist.").queue();
                     }
