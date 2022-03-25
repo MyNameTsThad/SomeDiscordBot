@@ -2,6 +2,7 @@ package io.github.mynametsthad.somediscordbot.features;
 
 import io.github.mynametsthad.somediscordbot.SomeDiscordBot;
 import io.github.mynametsthad.somediscordbot.Utils;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.Role;
@@ -21,6 +22,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
+import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,7 +51,11 @@ public class Journal extends ListenerAdapter {
                     String authorID = event.getAuthor().getId();
                     deleteLockOverride = true;
                     event.getMessage().delete().queue(delete -> {
-                        event.getChannel().sendMessage("<@" + authorID + ">, you are not allowed to send Messages in this channel. You will be warned.").queue();
+                        EmbedBuilder embedBuilder = new EmbedBuilder();
+                        embedBuilder.setTitle("Warning! :warning:")
+                                .setColor(Color.orange)
+                                .setDescription("<@" + authorID + ">, you are not allowed to send Messages in this channel. You will be warned.");
+                        event.getMessage().replyEmbeds(embedBuilder.build()).queue();
                         try {
                             SomeDiscordBot.instance.moderation.warn(event.getGuild(), Objects.requireNonNull(event.getGuild().getMember(event.getAuthor())), event.getGuild().getMember(SomeDiscordBot.instance.jda.getSelfUser()), "Sending messages in journal channel");
                         } catch (IOException e) {
@@ -70,9 +76,13 @@ public class Journal extends ListenerAdapter {
                             StringBuilder timeLeft = new StringBuilder();
                             long timeLeftInMilliSeconds = timeoutMap.get(event.getGuild().getId()).get(event.getAuthor().getId()) - System.currentTimeMillis();
 
-                            channel.sendMessage("You are currently timed out in the server '" +
-                                    Objects.requireNonNull(SomeDiscordBot.instance.jda.getGuildById(event.getGuild().getId())).getName() +
-                                    "'. Your timeout will be lifted in " + Utils.formatTime(timeLeftInMilliSeconds) + ".").queue();
+                            EmbedBuilder embedBuilder = new EmbedBuilder();
+                            embedBuilder.setTitle("Currently in timeout")
+                                    .setColor(Color.orange)
+                                    .setDescription("You are currently timed out in the server '" +
+                                            Objects.requireNonNull(SomeDiscordBot.instance.jda.getGuildById(event.getGuild().getId())).getName() +
+                                            "'. Your timeout will be lifted in " + Utils.formatTime(timeLeftInMilliSeconds) + ".");
+                            channel.sendMessageEmbeds(embedBuilder.build()).queue();
                         });
                     });
                 }
@@ -134,7 +144,7 @@ public class Journal extends ListenerAdapter {
         if (event.isFromGuild() && event.getGuild().getId().equals("915071717901238304")) {
             if (event.getAuthor().getId().equals("829231018191749120")) {
                 //if message contains more than 2 emotes
-                if (event.getMessage().getEmotes().size() >= 1) {
+                if (event.getMessage().getEmotes().size() > 1) {
                     //react the message with "cringe" emojis
                     event.getMessage().addReaction("\uD83C\uDDEA").queue();
                     event.getMessage().addReaction("\uD83C\uDDF2").queue();
@@ -145,7 +155,7 @@ public class Journal extends ListenerAdapter {
                     event.getMessage().addReaction("\uD83E\uDD21").queue();
                     event.getMessage().addReaction("\uD83D\uDCF8").queue();
                 }
-                System.out.println("cringe");
+                //System.out.println("cringe");
             }
         }
 
@@ -322,12 +332,13 @@ public class Journal extends ListenerAdapter {
                     message.toLowerCase().contains("ควย")) {
                 event.getMessage().reply("No sex before marriage").queue();
             }
-            if ((message.split(" ").length == 1 && (message.toLowerCase().contains("69") | message.toLowerCase().contains("420") | message.toLowerCase().contains("69420"))) || (message.toLowerCase().contains(" 69") | message.toLowerCase().contains(" 420") | message.toLowerCase().contains(" 69420"))) {
-                event.getMessage().reply("""
-                        🤢🤢🤮🤢🤮🤮🤮🤮🤢🤮🤮🤮🤮🤮😩😩😩😩😩😩😩😩😩😩😩😩😩😩😩😩😩😩😩😩😩😩
-                        😩😩😩😩😩😩😩😩😩😩😩😩😩😩😩😩🤢🤮🤢🤮🤢🤮🤢
-                        """).queue();
-            }
+            //pann moment
+//            if ((message.split(" ").length == 1 && (message.toLowerCase().contains("69") | message.toLowerCase().contains("420") | message.toLowerCase().contains("69420"))) || (message.toLowerCase().contains(" 69") | message.toLowerCase().contains(" 420") | message.toLowerCase().contains(" 69420"))) {
+//                event.getMessage().reply("""
+//                        🤢🤢🤮🤢🤮🤮🤮🤮🤢🤮🤮🤮🤮🤮😩😩😩😩😩😩😩😩😩😩😩😩😩😩😩😩😩😩😩😩😩😩
+//                        😩😩😩😩😩😩😩😩😩😩😩😩😩😩😩😩🤢🤮🤢🤮🤢🤮🤢
+//                        """).queue();
+//            }
             if (message.toLowerCase().contains("fucktion") /*| message.toLowerCase().contains("thad") | message.toLowerCase().contains("choyrum")*/) {
                 event.getMessage().reply(":regional_indicator_e::regional_indicator_m::regional_indicator_o::regional_indicator_j::regional_indicator_i::regional_indicator_s:" +
                         ":clown::camera_with_flash:").queue();
@@ -447,9 +458,17 @@ public class Journal extends ListenerAdapter {
                                             guild.addRoleToMember(Objects.requireNonNull(guild.getMemberById(userID)),
                                                     Objects.requireNonNull(guild.getRoleById(SomeDiscordBot.instance.configs.sudoersRankIDs.get(guild.getId())))).queue();
                                             //dm the member that they were added to sudoers
-                                            message.getChannel().sendMessage(Objects.requireNonNull(guild.getMemberById(userID)).getAsMention() + " has been added to the sudoers list on '" + guild.getName() + "'.").queue();
+                                            EmbedBuilder embedBuilder = new EmbedBuilder();
+                                            embedBuilder.setTitle("Success! :white_check_mark:")
+                                                    .setColor(Color.green)
+                                                    .setDescription(Objects.requireNonNull(guild.getMemberById(userID)).getAsMention() + " has been added to the sudoers list on '" + guild.getName() + "'.");
+                                            message.getChannel().sendMessageEmbeds(embedBuilder.build()).queue();
+                                            EmbedBuilder embedBuilderOther = new EmbedBuilder();
+                                            embedBuilderOther.setTitle("Success! :white_check_mark:")
+                                                    .setColor(Color.green)
+                                                    .setDescription("You have been added to the sudoers list on '" + guild.getName() + "'.");
                                             Objects.requireNonNull(guild.getMemberById(userID)).getUser().openPrivateChannel().queue(privateChannel1 ->
-                                                    privateChannel1.sendMessage("You have been added to the sudoers list on '" + guild.getName() + "'.").queue());
+                                                    privateChannel1.sendMessageEmbeds(embedBuilderOther.build()).queue());
                                             addConfirmationMap.remove(event.getUser().getId(), new String[]{event.getMessageId(), guild.getId()});
                                         }
                                     }
@@ -470,9 +489,17 @@ public class Journal extends ListenerAdapter {
                                                 guild.removeRoleFromMember(Objects.requireNonNull(guild.getMemberById(userID)),
                                                         Objects.requireNonNull(guild.getRoleById(SomeDiscordBot.instance.configs.sudoersRankIDs.get(guild.getId())))).queue();
                                                 //dm the member that they were removed from sudoers
-                                                message.getChannel().sendMessage(Objects.requireNonNull(guild.getMemberById(userID)).getAsMention() + " has been removed from the sudoers list on '" + guild.getName() + "'.").queue();
+                                                EmbedBuilder embedBuilder = new EmbedBuilder();
+                                                embedBuilder.setTitle("Success! :white_check_mark:")
+                                                        .setColor(Color.green)
+                                                        .setDescription(Objects.requireNonNull(guild.getMemberById(userID)).getAsMention() + " has been removed from the sudoers list on '" + guild.getName() + "'.");
+                                                message.getChannel().sendMessageEmbeds(embedBuilder.build()).queue();
+                                                EmbedBuilder embedBuilderOther = new EmbedBuilder();
+                                                embedBuilderOther.setTitle("Success! :white_check_mark:")
+                                                        .setColor(Color.green)
+                                                        .setDescription("You have been removed from the sudoers list on '" + guild.getName() + "'.");
                                                 Objects.requireNonNull(guild.getMemberById(userID)).getUser().openPrivateChannel().queue(privateChannel1 ->
-                                                        privateChannel1.sendMessage("You have been removed from the sudoers list on '" + guild.getName() + "'.").queue());
+                                                        privateChannel1.sendMessageEmbeds(embedBuilderOther.build()).queue());
                                                 removeConfirmationMap.remove(event.getUser().getId(), new String[]{event.getMessageId(), guild.getId()});
                                             }
                                         }
@@ -495,9 +522,17 @@ public class Journal extends ListenerAdapter {
                                             guild.removeRoleFromMember(Objects.requireNonNull(guild.getMemberById(userID)),
                                                     Objects.requireNonNull(guild.getRoleById(SomeDiscordBot.instance.configs.sudoersRankIDs.get(guild.getId())))).queue();
                                             //dm the member that they were removed from sudoers
-                                            message.getChannel().sendMessage(Objects.requireNonNull(guild.getMemberById(userID)).getAsMention() + " has been removed from the sudoers list on '" + guild.getName() + "'.").queue();
+                                            EmbedBuilder embedBuilder = new EmbedBuilder();
+                                            embedBuilder.setTitle("Success! :white_check_mark:")
+                                                    .setColor(Color.green)
+                                                    .setDescription(Objects.requireNonNull(guild.getMemberById(userID)).getAsMention() + " has been removed from the sudoers list on '" + guild.getName() + "'.");
+                                            message.getChannel().sendMessageEmbeds(embedBuilder.build()).queue();
+                                            EmbedBuilder embedBuilderOther = new EmbedBuilder();
+                                            embedBuilderOther.setTitle("Success! :white_check_mark:")
+                                                    .setColor(Color.green)
+                                                    .setDescription("You have been removed from the sudoers list on '" + guild.getName() + "'.");
                                             Objects.requireNonNull(guild.getMemberById(userID)).getUser().openPrivateChannel().queue(privateChannel1 ->
-                                                    privateChannel1.sendMessage("You have been removed from the sudoers list on '" + guild.getName() + "'.").queue());
+                                                    privateChannel1.sendMessageEmbeds(embedBuilderOther.build()).queue());
                                             removeConfirmationMap.remove(event.getUser().getId(), new String[]{event.getMessageId(), guild.getId()});
                                         }
                                     }
@@ -523,12 +558,16 @@ public class Journal extends ListenerAdapter {
     @Override
     public void onGuildMemberRoleAdd(@NotNull GuildMemberRoleAddEvent event) {
         if (SomeDiscordBot.instance.configs.journalStatus.get(event.getGuild().getId()) != null && SomeDiscordBot.instance.configs.journalStatus.get(event.getGuild().getId())) {
-            StringBuilder message = new StringBuilder("<@" + event.getMember().getId() + "> got added the following roles:\n");
+            StringBuilder message = new StringBuilder();
             for (Role added : event.getRoles()) {
                 message.append("`").append(added.getName()).append("` (").append(added.getId()).append("), ");
             }
             message.setLength(message.length() - 2);
-            Objects.requireNonNull(event.getGuild().getTextChannelById(SomeDiscordBot.instance.configs.journalChannels.get(event.getGuild().getId()))).sendMessage(message.toString()).queue();
+            EmbedBuilder embedBuilder = new EmbedBuilder();
+            embedBuilder.setTitle("<@" + event.getMember().getId() + "> got added the following roles:")
+                    .setColor(Color.cyan)
+                    .setDescription(message.toString());
+            Objects.requireNonNull(event.getGuild().getTextChannelById(SomeDiscordBot.instance.configs.journalChannels.get(event.getGuild().getId()))).sendMessageEmbeds(embedBuilder.build()).queue();
         } else if (SomeDiscordBot.instance.configs.journalStatus.get(event.getGuild().getId()) == null) {
             SomeDiscordBot.instance.configs.journalStatus = new HashMap<>();
             if (SomeDiscordBot.instance.configs.journalStatus.putIfAbsent(event.getGuild().getId(), true) == null) {
@@ -546,8 +585,12 @@ public class Journal extends ListenerAdapter {
                 if (added.getId().equals(roleId)) {
                     SomeDiscordBot.instance.overrideSudoersRoleProtection = true;
                     event.getGuild().removeRoleFromMember(event.getMember(), added).queue(success -> {
+                        EmbedBuilder embedBuilder = new EmbedBuilder();
+                        embedBuilder.setTitle("Error! :x:")
+                                .setColor(Color.red)
+                                .setDescription("You cannot add the <@&" + roleId + "> role by yourself. Please contact a person with the role to add it for you.");
                         Objects.requireNonNull(event.getGuild().getTextChannelById(SomeDiscordBot.instance.configs.journalChannels.get(event.getGuild().getId())))
-                                .sendMessage("You cannot add the <@&" + roleId + "> role by yourself. Please contact a person with the role to add it for you.").queue();
+                                .sendMessageEmbeds(embedBuilder.build()).queue();
                     });
                 }
             }
@@ -571,12 +614,16 @@ public class Journal extends ListenerAdapter {
     @Override
     public void onGuildMemberRoleRemove(@NotNull GuildMemberRoleRemoveEvent event) {
         if (SomeDiscordBot.instance.configs.journalStatus.get(event.getGuild().getId()) != null && SomeDiscordBot.instance.configs.journalStatus.get(event.getGuild().getId())) {
-            StringBuilder message = new StringBuilder("<@" + event.getMember().getId() + "> got removed the following roles:\n");
+            StringBuilder message = new StringBuilder();
             for (Role added : event.getRoles()) {
                 message.append("`").append(added.getName()).append("` (").append(added.getId()).append("), ");
             }
             message.setLength(message.length() - 2);
-            Objects.requireNonNull(event.getGuild().getTextChannelById(SomeDiscordBot.instance.configs.journalChannels.get(event.getGuild().getId()))).sendMessage(message.toString()).queue();
+            EmbedBuilder embedBuilder = new EmbedBuilder();
+            embedBuilder.setTitle("<@" + event.getMember().getId() + "> got removed the following roles:")
+                    .setColor(Color.cyan)
+                    .setDescription(message.toString());
+            Objects.requireNonNull(event.getGuild().getTextChannelById(SomeDiscordBot.instance.configs.journalChannels.get(event.getGuild().getId()))).sendMessageEmbeds(embedBuilder.build()).queue();
         } else if (SomeDiscordBot.instance.configs.journalStatus.get(event.getGuild().getId()) == null) {
             SomeDiscordBot.instance.configs.journalStatus = new HashMap<>();
             if (SomeDiscordBot.instance.configs.journalStatus.putIfAbsent(event.getGuild().getId(), true) == null) {
@@ -608,6 +655,12 @@ public class Journal extends ListenerAdapter {
                     event.getGuild().addRoleToMember(event.getMember(), removed).queue(success -> {
                         Objects.requireNonNull(event.getGuild().getTextChannelById(SomeDiscordBot.instance.configs.journalChannels.get(event.getGuild().getId())))
                                 .sendMessage("You cannot remove the <@&" + roleId + "> role by using Discord alone.").queue();
+                        EmbedBuilder embedBuilder = new EmbedBuilder();
+                        embedBuilder.setTitle("Error! :x:")
+                                .setColor(Color.red)
+                                .setDescription("You cannot remove the <@&" + roleId + "> role by using Discord alone.");
+                        Objects.requireNonNull(event.getGuild().getTextChannelById(SomeDiscordBot.instance.configs.journalChannels.get(event.getGuild().getId())))
+                                .sendMessageEmbeds(embedBuilder.build()).queue();
                     });
                 }
             }
@@ -619,17 +672,14 @@ public class Journal extends ListenerAdapter {
 
     @Override
     public void onGuildMemberUpdateNickname(@NotNull GuildMemberUpdateNicknameEvent event) {
-//        if (event.getMember().getUser().getName().equals("Some Discord Bot") && event.getMember().getUser().getDiscriminator().contains("4709")){
-//            String oldNick = event.getNewNickname();
-//            event.getGuild().modifyNickname(event.getMember(), "Some Discord Bot").queue(success -> {
-//                Objects.requireNonNull(event.getGuild().getTextChannelById(SomeDiscordBot.instance.configs.journalChannels.get(event.getGuild().getId()))).sendMessage("Someone tried to change My Nickname! The nickname attempted to be applied is `" + oldNick + "`.").queue();
-//            });
-//        }
-        //prevent the bot from its nickname being changed
         if (event.getMember().getId().equals(SomeDiscordBot.instance.getSelfUser().getId())) {
             String newNick = event.getNewNickname();
             event.getGuild().modifyNickname(event.getMember(), "Some Discord Bot").queue(success -> {
-                Objects.requireNonNull(event.getGuild().getTextChannelById(SomeDiscordBot.instance.configs.journalChannels.get(event.getGuild().getId()))).sendMessage("Someone tried to change My Nickname! The nickname attempted to be applied is `" + newNick + "`.").queue();
+                EmbedBuilder embedBuilder = new EmbedBuilder();
+                embedBuilder.setTitle("Nickname change not allowed!")
+                        .setColor(Color.red)
+                        .setDescription("Someone tried to change My Nickname! The nickname attempted to be applied is " + Utils.formatCode(newNick) + ".");
+                Objects.requireNonNull(event.getGuild().getTextChannelById(SomeDiscordBot.instance.configs.journalChannels.get(event.getGuild().getId()))).sendMessageEmbeds(embedBuilder.build()).queue();
             });
         }
     }

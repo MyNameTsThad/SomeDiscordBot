@@ -3,6 +3,7 @@ package io.github.mynametsthad.somediscordbot;
 import io.github.mynametsthad.somediscordbot.features.Commands;
 import io.github.mynametsthad.somediscordbot.features.Journal;
 import io.github.mynametsthad.somediscordbot.features.Moderation;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
@@ -15,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.security.auth.login.LoginException;
+import java.awt.*;
 import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -22,8 +24,8 @@ import java.util.TimerTask;
 public class SomeDiscordBot {
     public static final String NAME = "Some Discord Bot";
     public static final String PACKAGENAME = "io.github.mynametsthad.somediscordbot";
-    public static final String VERSION = "1.4.0-2";
-    public static final int VERSION_ID = 80;
+    public static final String VERSION = "2.0.0";
+    public static final int VERSION_ID = 81;
     public static final String TOKEN = ""; //token here
 
     public static final boolean devMode = false;
@@ -76,9 +78,12 @@ public class SomeDiscordBot {
                         for (String userID : journal.timeoutMap.get(serverID).keySet()) {
                             if(journal.timeoutMap.get(serverID).get(userID) <= currentTime){
                                 journal.timeoutMap.get(serverID).remove(userID);
+                                EmbedBuilder embedBuilder = new EmbedBuilder();
+                                embedBuilder.setTitle(Utils.formatBold(Objects.requireNonNull(jda.getUserById(userID)).getAsMention()) +
+                                                "'s timeout has been lifted.")
+                                        .setColor(Color.green);
                                 Objects.requireNonNull(jda.getTextChannelById(configs.journalChannels.get(serverID)))
-                                        .sendMessage(Utils.formatBold(Objects.requireNonNull(jda.getUserById(userID)).getAsMention()) +
-                                                "'s timeout has been lifted.").queue();
+                                        .sendMessageEmbeds(embedBuilder.build()).queue();
                             }
                         }
                     }

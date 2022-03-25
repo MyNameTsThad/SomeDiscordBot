@@ -39,6 +39,9 @@ public class Utils {
         return "`" + text + "`";
     }
 
+    public static String formatBlockCode(String text) {
+        return formatBlockCode(text, "");
+    }
     public static String formatBlockCode(String text, String language) {
         return "```" + language + "\n" + text + "\n```";
     }
@@ -58,4 +61,6 @@ public class Utils {
     public static String formatMentionRole(String id) {
         return "<@&" + id + ">";
     }
+
+
 }
