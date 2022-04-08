@@ -31,14 +31,6 @@ public class Moderation {
         }
         //if warns is divisible by 3, timeout member for their current warns number of minutes
         if (configs.memberWarns.get(guild.getId()).get(member.getId()) % 3 == 0) {
-            guild.timeoutFor(member, configs.memberWarns.get(guild.getId()).get(member.getId()), TimeUnit.MINUTES).queue(success -> {
-            }, failure -> {
-                EmbedBuilder embedBuilder = new EmbedBuilder();
-                embedBuilder.setTitle("Error! :x:")
-                        .setColor(Color.red)
-                        .setDescription(Utils.formatSpoiler(Utils.formatBlockCode(failure.getMessage())));
-                Objects.requireNonNull(guild.getTextChannelById(configs.journalChannels.get(guild.getId()))).sendMessageEmbeds(embedBuilder.build()).queue();
-            });
             //send message to journal channel
             if (configs.journalChannels.get(guild.getId()) != null) {
                 EmbedBuilder embedBuilder = new EmbedBuilder();
@@ -50,6 +42,14 @@ public class Moderation {
             //add to timed out list
             SomeDiscordBot.instance.journal.timeoutMap.get(guild.getId()).put(member.getId(),
                     System.currentTimeMillis() + configs.memberWarns.get(guild.getId()).get(member.getId()) * 60000);
+            guild.timeoutFor(member, configs.memberWarns.get(guild.getId()).get(member.getId()), TimeUnit.MINUTES).queue(success -> {
+            }, failure -> {
+                EmbedBuilder embedBuilder = new EmbedBuilder();
+                embedBuilder.setTitle("Error! :x:")
+                        .setColor(Color.red)
+                        .setDescription(Utils.formatSpoiler(Utils.formatBlockCode(failure.getMessage())));
+                Objects.requireNonNull(guild.getTextChannelById(configs.journalChannels.get(guild.getId()))).sendMessageEmbeds(embedBuilder.build()).queue();
+            });
         }
 
         //save to file

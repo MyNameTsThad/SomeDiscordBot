@@ -24,8 +24,8 @@ import java.util.TimerTask;
 public class SomeDiscordBot {
     public static final String NAME = "Some Discord Bot";
     public static final String PACKAGENAME = "io.github.mynametsthad.somediscordbot";
-    public static final String VERSION = "2.0.0";
-    public static final int VERSION_ID = 81;
+    public static final String VERSION = "2.0.0-1";
+    public static final int VERSION_ID = 82;
     public static final String TOKEN = ""; //token here
 
     public static final boolean devMode = false;
