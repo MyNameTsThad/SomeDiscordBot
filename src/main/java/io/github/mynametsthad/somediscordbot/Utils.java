@@ -5,10 +5,15 @@ public class Utils {
         StringBuilder sb = new StringBuilder();
         long seconds = time / 1000;
         long minutes = seconds / 60;
+        seconds -= minutes * 60;
         long hours = minutes / 60;
+        minutes -= hours * 60;
         long days = hours / 24;
+        hours -= days * 24;
         long months = days / 30;
+        days -= months * 30;
         long years = months / 12;
+        months -= years * 12;
 
         if (years > 0) sb.append(years).append(years > 1 ? " years, " : " year, ");
         if (months > 0) sb.append(months).append(months > 1 ? " months " : " month, ");

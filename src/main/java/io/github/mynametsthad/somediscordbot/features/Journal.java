@@ -567,7 +567,9 @@ public class Journal extends ListenerAdapter {
             embedBuilder.setTitle("<@" + event.getMember().getId() + "> got added the following roles:")
                     .setColor(Color.cyan)
                     .setDescription(message.toString());
-            Objects.requireNonNull(event.getGuild().getTextChannelById(SomeDiscordBot.instance.configs.journalChannels.get(event.getGuild().getId()))).sendMessageEmbeds(embedBuilder.build()).queue();
+            if (SomeDiscordBot.instance.configs.journalChannels.get(event.getGuild().getId()) != null) {
+                Objects.requireNonNull(event.getGuild().getTextChannelById(SomeDiscordBot.instance.configs.journalChannels.get(event.getGuild().getId()))).sendMessageEmbeds(embedBuilder.build()).queue();
+            }
         } else if (SomeDiscordBot.instance.configs.journalStatus.get(event.getGuild().getId()) == null) {
             SomeDiscordBot.instance.configs.journalStatus = new HashMap<>();
             if (SomeDiscordBot.instance.configs.journalStatus.putIfAbsent(event.getGuild().getId(), true) == null) {

@@ -100,6 +100,9 @@ public class Commands extends ListenerAdapter {
                     e.printStackTrace();
                 }
             }
+            if (SomeDiscordBot.instance.journal.timeoutMap == null)
+                SomeDiscordBot.instance.journal.timeoutMap = new HashMap<>();
+            SomeDiscordBot.instance.journal.timeoutMap.putIfAbsent(event.getGuild().getId(), new HashMap<>());
 
             //main stuff
             String[] args = event.getMessage().getContentRaw().split(" ");
@@ -341,6 +344,7 @@ public class Commands extends ListenerAdapter {
                                                                 SomeDiscordBot.instance.configs.prefixes.put(event.getGuild().getId(), "sdb|");
                                                                 SomeDiscordBot.instance.configs.journalChannels.put(event.getGuild().getId(), "");
                                                                 SomeDiscordBot.instance.configs.memberWarns.put(event.getGuild().getId(), new HashMap<>());
+                                                                SomeDiscordBot.instance.journal.timeoutMap.putIfAbsent(event.getGuild().getId(), new HashMap<>());
                                                                 try {
                                                                     SomeDiscordBot.instance.configs.saveToFile(1);
                                                                     SomeDiscordBot.instance.configs.saveToFile(2);
@@ -370,6 +374,7 @@ public class Commands extends ListenerAdapter {
                                                     SomeDiscordBot.instance.configs.socialCreditStatus.put(event.getGuild().getId(), true);
                                                     SomeDiscordBot.instance.configs.socialCredits.put(event.getGuild().getId(), new HashMap<>());
                                                     SomeDiscordBot.instance.configs.serverRules.put(event.getGuild().getId(), new ArrayList<>());
+                                                    SomeDiscordBot.instance.journal.timeoutMap.putIfAbsent(event.getGuild().getId(), new HashMap<>());
                                                     try {
                                                         SomeDiscordBot.instance.configs.saveToFile(1);
                                                         SomeDiscordBot.instance.configs.saveToFile(2);
