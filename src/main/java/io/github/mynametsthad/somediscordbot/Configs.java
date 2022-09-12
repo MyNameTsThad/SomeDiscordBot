@@ -13,14 +13,14 @@ import java.util.List;
 import java.util.Map;
 
 public class Configs {
-    File prefixesPath = new File(System.getProperty("user.home") + "/somediscordbot/Prefixes-current.json");
-    File journalChannelsPath = new File(System.getProperty("user.home") + "/somediscordbot/JournalChannels-current.json");
-    File sudoersRankIDsPath = new File(System.getProperty("user.home") + "/somediscordbot/SudoersRankIDs-current.json");
-    File memberWarnsPath = new File(System.getProperty("user.home") + "/somediscordbot/MemberWarns-current.json");
-    File journalStatusPath = new File(System.getProperty("user.home") + "/somediscordbot/JournalStatus-current.json");
-    File socialCreditStatusPath = new File(System.getProperty("user.home") + "/somediscordbot/SocialCreditStatus-current.json");
-    File socialCreditsPath = new File(System.getProperty("user.home") + "/somediscordbot/SocialCredits-current.json");
-    File serverRulesPath = new File(System.getProperty("user.home") + "/somediscordbot/ServerRules-current.json");
+    File prefixesPath = new File("/somediscordbot/Prefixes-current.json");
+    File journalChannelsPath = new File("/somediscordbot/JournalChannels-current.json");
+    File sudoersRankIDsPath = new File("/somediscordbot/SudoersRankIDs-current.json");
+    File memberWarnsPath = new File("/somediscordbot/MemberWarns-current.json");
+    File journalStatusPath = new File("/somediscordbot/JournalStatus-current.json");
+    File socialCreditStatusPath = new File("/somediscordbot/SocialCreditStatus-current.json");
+    File socialCreditsPath = new File("/somediscordbot/SocialCredits-current.json");
+    File serverRulesPath = new File("/somediscordbot/ServerRules-current.json");
 
     public Map<String, Map<String, Integer>> socialCredits = new HashMap<>();
     public Map<String, Boolean> journalStatus = new HashMap<>();
@@ -125,7 +125,7 @@ public class Configs {
             String json1 = FileUtils.readFileToString(prefixesPath);
             prefixes = new Gson().fromJson(json1, new TypeToken<Map<String, String>>() {
             }.getType());
-            System.out.println("Loaded Prefixes from: " + System.getProperty("user.home") + "/somediscordbot/Prefixes-current.json");
+            System.out.println("Loaded Prefixes from: " + "/somediscordbot/Prefixes-current.json");
         }catch (IOException e){
             System.out.println("Prefixes File not found; Creating empty file.");
             saveToFile(1);
@@ -136,7 +136,7 @@ public class Configs {
             String json2 = FileUtils.readFileToString(journalChannelsPath);
             journalChannels = new Gson().fromJson(json2, new TypeToken<Map<String, String>>() {
             }.getType());
-            System.out.println("Loaded JournalChannels from: " + System.getProperty("user.home") + "/somediscordbot/JournalChannels-current.json");
+            System.out.println("Loaded JournalChannels from: " + "/somediscordbot/JournalChannels-current.json");
         }catch (IOException e){
             System.out.println("JournalChannels File not found; Creating empty file.");
             saveToFile(2);
@@ -147,7 +147,7 @@ public class Configs {
             String json3 = FileUtils.readFileToString(sudoersRankIDsPath);
             sudoersRankIDs = new Gson().fromJson(json3, new TypeToken<Map<String, String>>() {
             }.getType());
-            System.out.println("Loaded SudoersRankIDs from: " + System.getProperty("user.home") + "/somediscordbot/SudoersRankIDs-current.json");
+            System.out.println("Loaded SudoersRankIDs from: " + "/somediscordbot/SudoersRankIDs-current.json");
         }catch (IOException e){
             System.out.println("SudoersRankIDs File not found; Creating empty file.");
             saveToFile(3);
@@ -158,7 +158,7 @@ public class Configs {
             String json4 = FileUtils.readFileToString(memberWarnsPath);
             memberWarns = new Gson().fromJson(json4, new TypeToken<Map<String, Map<String, Integer>>>() {
             }.getType());
-            System.out.println("Loaded MemberWarns from: " + System.getProperty("user.home") + "/somediscordbot/MemberWarns-current.json");
+            System.out.println("Loaded MemberWarns from: " + "/somediscordbot/MemberWarns-current.json");
         } catch (IOException e) {
             System.out.println("MemberWarns File not found; Creating empty file.");
             saveToFile(4);
@@ -169,7 +169,7 @@ public class Configs {
             String json5 = FileUtils.readFileToString(journalStatusPath);
             journalStatus = new Gson().fromJson(json5, new TypeToken<Map<String, Boolean>>() {
             }.getType());
-            System.out.println("Loaded JournalStatus from: " + System.getProperty("user.home") + "/somediscordbot/JournalStatus-current.json");
+            System.out.println("Loaded JournalStatus from: " + "/somediscordbot/JournalStatus-current.json");
         } catch (IOException e) {
             System.out.println("JournalStatus File not found; Creating empty file.");
             saveToFile(5);
@@ -180,7 +180,7 @@ public class Configs {
             String json6 = FileUtils.readFileToString(socialCreditStatusPath);
             socialCreditStatus = new Gson().fromJson(json6, new TypeToken<Map<String, Boolean>>() {
             }.getType());
-            System.out.println("Loaded SocialCreditStatus from: " + System.getProperty("user.home") + "/somediscordbot/SocialCreditStatus-current.json");
+            System.out.println("Loaded SocialCreditStatus from: " + "/somediscordbot/SocialCreditStatus-current.json");
         } catch (IOException e) {
             System.out.println("SocialCreditStatus File not found; Creating empty file.");
             saveToFile(6);
@@ -191,7 +191,7 @@ public class Configs {
             String json7 = FileUtils.readFileToString(socialCreditsPath);
             socialCredits = new Gson().fromJson(json7, new TypeToken<Map<String, Map<String, Integer>>>() {
             }.getType());
-            System.out.println("Loaded SocialCredits from: " + System.getProperty("user.home") + "/somediscordbot/SocialCredits-current.json");
+            System.out.println("Loaded SocialCredits from: " + "/somediscordbot/SocialCredits-current.json");
         } catch (IOException e) {
             System.out.println("SocialCredits File not found; Creating empty file.");
             saveToFile(7);
@@ -202,7 +202,7 @@ public class Configs {
             String json8 = FileUtils.readFileToString(serverRulesPath);
             serverRules = new Gson().fromJson(json8, new TypeToken<Map<String, List<String>>>() {
             }.getType());
-            System.out.println("Loaded ServerRules from: " + System.getProperty("user.home") + "/somediscordbot/ServerRules-current.json");
+            System.out.println("Loaded ServerRules from: " + "/somediscordbot/ServerRules-current.json");
         } catch (IOException e) {
             System.out.println("ServerRules File not found; Creating empty file.");
             saveToFile(8);
